@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMSLibrary", "OMSLibrary\OMSLibrary.csproj", "{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Dokumentation", "System Dokumentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		DCD - modellag.mmd = DCD - modellag.mmd
+		SD - UC1.mmd = SD - UC1.mmd
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FF6E327-450C-4F48-B863-F1E24298C200}
+	EndGlobalSection
+EndGlobal
