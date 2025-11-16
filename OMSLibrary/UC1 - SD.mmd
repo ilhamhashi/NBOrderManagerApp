@@ -1,5 +1,32 @@
-sequence diagram
-{
+sequenceDiagram
+actor User
+participant NewOrderView
+participant OrderViewModel
+participant OrderService
+participant OrderRepository
+participant OrderLineRepository
+participant Database
+
+User->>NewOrderView: Enter New Order Information
+User->>NewOrderView: Click "Create order"
+NewOrderView->>OrderViewModel: CreateOrderCommand.Execute()
+OrderViewModel->>OrderService: CreateOrder(newOrder, orderLines)
+OrderService->>OrderRepository: Add(newOrder)
+OrderRepository->>Database: EXEC uspCreateOrder(OrderDate, IsDraft, CustomerId)
+Database-->>OrderRepository: return OrderId
+OrderRepository->>OrderService: return OrderId
+loop For each OrderLine
+	OrderService ->> OrderLineRepository: Add(newOrder)
+	OrderLineRepository ->> Database: EXEC uspCreateOrderLine(OrderId, ProductId, Quantity, ...)
+	Database ->> OrderLineRepository: Comfirmation
+	OrderLineRepository ->> OrderService: Comfirmation
+end
+OrderService ->> Database: COMMIT (transaction)
+Database ->> OrderService: Comfirmation
+OrderService ->> OrderViewModel: return result
+OrderViewModel ->> NewOrderView: Update UI with result
+NewOrderView->>User: Show success/failure message
 
 
-}
+
+
