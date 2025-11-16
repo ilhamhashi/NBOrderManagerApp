@@ -1,5 +1,4 @@
-﻿namespace OrderManagerLibrary.Models;
-
+﻿namespace OrderManagerLibrary.Model.Interfaces;
 internal interface IRepository<T> where T : class
 {
     Task<IEnumerable<T>> GetAll();

@@ -1,6 +1,8 @@
 ﻿using OrderManagerLibrary.DataAccess;
+using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Model.Classes;
 
-namespace OrderManagerLibrary.Models;
+namespace OrderManagerLibrary.Model.Repositories;
 
 internal class OrderRepository : IRepository<Order>
 {
@@ -31,5 +33,5 @@ internal class OrderRepository : IRepository<Order>
 
 
     public Task Delete(int Id) => 
-        _db.SaveData(storedProcedure: "", new { Id = Id });
+        _db.SaveData(storedProcedure: "", new { Id });
 }

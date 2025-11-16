@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagerLibrary", "OMSLibrary\OrderManagerLibrary.csproj", "{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBOrderManagerDesktopUI", "OMSUI\NBOrderManagerDesktopUI.csproj", "{2327A796-CF7F-4B5E-9444-277EAFCC74EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagerDesktopUI", "OMSUI\OrderManagerDesktopUI.csproj", "{2327A796-CF7F-4B5E-9444-277EAFCC74EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagerLibrary.Tests", "OMSLibrary.Tests\OrderManagerLibrary.Tests.csproj", "{61098C30-076E-4614-88C3-9659DE6667C8}"
 EndProject
