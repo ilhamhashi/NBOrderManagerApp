@@ -35,3 +35,4 @@ internal class OrderRepository : IRepository<Order>
     public Task Delete(int Id) => 
         _db.SaveData(storedProcedure: "", new { Id });
 }
+
