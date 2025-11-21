@@ -4,6 +4,7 @@ using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Service;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace OrderManagerLibrary.ViewModel;
