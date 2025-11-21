@@ -6,4 +6,10 @@ public class Payment
     public DateTime PaymentDate { get; set; }
     public int OrderId { get; set; }
     public int PaymentMethodId { get; set; }
+
+    public Payment(int paymentMethodId, decimal paymentAmount)
+    {
+        PaymentMethodId = paymentMethodId;
+        PaymentAmount = paymentAmount;
+    }
 }
