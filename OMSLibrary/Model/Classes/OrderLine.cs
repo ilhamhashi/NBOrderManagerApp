@@ -5,14 +5,25 @@ public class OrderLine
     public int OrderId { get; set; }
     public int Quantity { get; set; }
     public decimal Price { get; set; }
-    public bool IsCustomProduct { get; set; }
+    public decimal Discount { get; set; } = 0;
 
-    public OrderLine(int productId, int orderId, int quantity, decimal price, bool isCustomProduct)
+    public OrderLine(int productId, int orderId, int quantity, decimal price)
     {
         ProductId = productId;
         OrderId = orderId;
         Quantity = quantity;
         Price = price;
-        IsCustomProduct = isCustomProduct;
+    }
+
+    public OrderLine(int productId, int quantity, decimal price)
+    {
+        ProductId = productId;
+        Quantity = quantity;
+        Price = price;
+    }
+
+    public void ReducePrice()
+    {
+        Price -= Discount;
     }
 }

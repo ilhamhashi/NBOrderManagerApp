@@ -15,4 +15,10 @@ public class Delivery : ICollectionType
         OrderId = orderId;
         Neighborhood = neighborhood;
     }
+
+    public Delivery(DateTime collectionDate, string neighborhood)
+    {
+        CollectionDate = collectionDate;
+        Neighborhood = neighborhood;
+    }
 }

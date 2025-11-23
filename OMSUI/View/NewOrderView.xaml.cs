@@ -5,9 +5,9 @@ namespace OrderManagerDesktopUI.View;
 /// <summary>
 /// Interaction logic for View1.xaml
 /// </summary>
-public partial class View1 : Window
+public partial class NewOrderView : Window
 {
-    public View1()
+    public NewOrderView()
     {
         InitializeComponent();
     }

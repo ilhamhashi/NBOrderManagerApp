@@ -10,9 +10,9 @@ public class OrderService
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<ICollectionType> _collectionRepository;
-    private readonly IRepository<Note> _noteRepository;
+    private readonly IRepository<INote> _noteRepository;
 
-    public OrderService(IDbConnection connection, IRepository<Order> orderRepository, IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository, IRepository<ICollectionType> collectionRepository, IRepository<Note> noteRepository)
+    public OrderService(IDbConnection connection, IRepository<Order> orderRepository, IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository, IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
     {
         _connection = connection;
         _orderRepository = orderRepository;
@@ -23,7 +23,7 @@ public class OrderService
     }
 
     public void CreateOrder(Order order, List<OrderLine> orderLines, List<IPaymentMethod> paymentMethods, 
-        List<Payment> payments, ICollectionType collection, INote note)
+        List<Payment> payments, ICollectionType collection, INote? note)
     {
         using (var transaction = _connection.BeginTransaction())
         {
@@ -66,6 +66,3 @@ public class OrderService
         }
     }
 }
-
-//sæt ordrestatus (draft??)
-//
