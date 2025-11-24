@@ -1,12 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OrderManagerLibrary.DataAccess;
+using OrderManagerLibrary.Model.Classes;
+using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories
 {
-    internal class PaymentRepository
+    public class PaymentRepository : IRepository<Payment>
     {
+        private readonly ISqlDataAccess _db;
+
+        public PaymentRepository(ISqlDataAccess db)
+        {
+            _db = db;
+        }
+
+        public void Add(Payment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Payment> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Payment GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Payment entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace OrderManagerLibrary.Model.Classes;
 public class OrderLine
 {
+    public Product Product { get; set; }
     public int ProductId { get; set; }
     public int OrderId { get; set; }
     public int Quantity { get; set; }
@@ -15,9 +16,9 @@ public class OrderLine
         Price = price;
     }
 
-    public OrderLine(int productId, int quantity, decimal price)
+    public OrderLine(Product product, int quantity, decimal price)
     {
-        ProductId = productId;
+        Product = product;
         Quantity = quantity;
         Price = price;
     }

@@ -13,26 +13,29 @@ internal class OrderRepository : IRepository<Order>
         _db = db;
     }
 
-    public Task<IEnumerable<Order>> GetAll() =>
-        _db.LoadData<Order, dynamic>(storedProcedure:"dbo.spOrder_GetAll", new { });
-
-    public async Task<Order?> GetById(int id)
+    public void Add(Order entity)
     {
-        var results = await _db.LoadData<Order, dynamic>(
-            storedProcedure: "dbo.spOrder_GetById",
-            new { Id = id });
-        return results.FirstOrDefault();
+        throw new NotImplementedException();
     }
 
-    public Task Insert(Order entity) =>
-        _db.SaveData(storedProcedure: "", new  { entity });
-    
+    public void Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
 
-    public Task Update(Order entity) => 
-        _db.SaveData(storedProcedure: "", entity);
+    public IEnumerable<Order> GetAll()
+    {
+        throw new NotImplementedException();
+    }
 
+    public Order GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
 
-    public Task Delete(int Id) => 
-        _db.SaveData(storedProcedure: "", new { Id });
+    public void Update(Order entity)
+    {
+        throw new NotImplementedException();
+    }
 }
 

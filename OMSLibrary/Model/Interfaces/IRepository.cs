@@ -1,9 +1,9 @@
 ﻿namespace OrderManagerLibrary.Model.Interfaces;
 public interface IRepository<T> where T : class
 {
-    Task<IEnumerable<T>> GetAll();
-    Task<T?> GetById(int id);
-    Task Insert(T entity);
-    Task Update(T entity);
-    Task Delete(int Id);
+    IEnumerable<T> GetAll();
+    T GetById(int id);
+    void Add(T entity);
+    void Update(T entity);
+    void Delete(int id);
 }

@@ -1,31 +1,38 @@
-﻿using OrderManagerLibrary.Model.Classes;
+﻿using OrderManagerLibrary.DataAccess;
+using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
-
 public class PickUpRepository : IRepository<PickUp>
 {
-    public Task Delete(int Id)
+    private readonly ISqlDataAccess _db;
+
+    public PickUpRepository(ISqlDataAccess db)
+    {
+        _db = db;
+    }
+
+    public void Add(PickUp entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<PickUp>> GetAll()
+    public void Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<PickUp?> GetById(int id)
+    public IEnumerable<PickUp> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Task Insert(PickUp entity)
+    public PickUp GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task Update(PickUp entity)
+    public void Update(PickUp entity)
     {
         throw new NotImplementedException();
     }

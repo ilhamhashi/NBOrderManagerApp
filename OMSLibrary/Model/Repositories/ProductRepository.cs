@@ -3,16 +3,16 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
-public class NoteRepository : IRepository<Note>
+public class ProductRepository : IRepository<Product>
 {
     private readonly ISqlDataAccess _db;
 
-    public NoteRepository(ISqlDataAccess db)
+    public ProductRepository(ISqlDataAccess db)
     {
         _db = db;
     }
 
-    public void Add(Note entity)
+    public void Add(Product entity)
     {
         throw new NotImplementedException();
     }
@@ -22,17 +22,17 @@ public class NoteRepository : IRepository<Note>
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Note> GetAll()
+    public IEnumerable<Product> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Note GetById(int id)
+    public Product GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(Note entity)
+    public void Update(Product entity)
     {
         throw new NotImplementedException();
     }
