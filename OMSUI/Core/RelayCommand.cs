@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace OrderManagerDesktopUI.ViewModel;
+namespace OrderManagerDesktopUI.Core;
 
 public class RelayCommand : ICommand
 {

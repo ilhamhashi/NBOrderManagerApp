@@ -2,7 +2,7 @@
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
-namespace OrderManagerLibrary.Service;
+namespace OrderManagerLibrary.Services;
 public class OrderService
 {
     private readonly IDbConnection _connection;

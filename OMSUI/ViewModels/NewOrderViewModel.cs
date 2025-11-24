@@ -1,12 +1,12 @@
-﻿using OrderManagerDesktopUI.ViewModel;
+﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
-using OrderManagerLibrary.Service;
+using OrderManagerLibrary.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace OrderManagerLibrary.ViewModel;
+namespace OrderManagerDesktopUI.ViewModels;
 public class NewOrderViewModel : ViewModelBase
 {
     private readonly OrderService _orderservice;
