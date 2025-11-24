@@ -1,22 +1,26 @@
-﻿using OrderManagerLibrary.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class OrderLineRepository : IRepository<OrderLine>
 {
-    private readonly ISqlDataAccess _db;
+    private readonly SqlConnection _connection;
 
-    public OrderLineRepository(ISqlDataAccess db)
+    public OrderLineRepository(ISqlDataAccess sqlDataAccess)
     {
-        _db = db;
+        _connection = sqlDataAccess.GetSqlConnection();
     }
-
-    public void Add(OrderLine entity)
+    public int Insert(OrderLine entity)
     {
         throw new NotImplementedException();
     }
 
+    public void Update(OrderLine entity)
+    {
+        throw new NotImplementedException();
+    }
     public void Delete(int id)
     {
         throw new NotImplementedException();
@@ -28,11 +32,6 @@ public class OrderLineRepository : IRepository<OrderLine>
     }
 
     public OrderLine GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(OrderLine entity)
     {
         throw new NotImplementedException();
     }

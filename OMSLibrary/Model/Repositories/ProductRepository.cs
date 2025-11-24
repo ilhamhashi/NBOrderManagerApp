@@ -1,22 +1,26 @@
-﻿using OrderManagerLibrary.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class ProductRepository : IRepository<Product>
 {
-    private readonly ISqlDataAccess _db;
+    private readonly SqlConnection _connection;
 
-    public ProductRepository(ISqlDataAccess db)
+    public ProductRepository(ISqlDataAccess sqlDataAccess)
     {
-        _db = db;
+        _connection = sqlDataAccess.GetSqlConnection();
     }
-
-    public void Add(Product entity)
+    public int Insert(Product entity)
     {
         throw new NotImplementedException();
     }
 
+    public void Update(Product entity)
+    {
+        throw new NotImplementedException();
+    }
     public void Delete(int id)
     {
         throw new NotImplementedException();
@@ -28,11 +32,6 @@ public class ProductRepository : IRepository<Product>
     }
 
     public Product GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Product entity)
     {
         throw new NotImplementedException();
     }

@@ -1,7 +1,7 @@
-﻿
-namespace OrderManagerLibrary.DataAccess
+﻿using Microsoft.Data.SqlClient;
+
+namespace OrderManagerLibrary.DataAccess;
+public interface ISqlDataAccess
 {
-    public interface ISqlDataAccess
-    {
-    }
+    SqlConnection GetSqlConnection();
 }

@@ -1,22 +1,26 @@
-﻿using OrderManagerLibrary.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class NoteRepository : IRepository<Note>
 {
-    private readonly ISqlDataAccess _db;
+    private readonly SqlConnection _connection;
 
-    public NoteRepository(ISqlDataAccess db)
+    public NoteRepository(ISqlDataAccess sqlDataAccess)
     {
-        _db = db;
+        _connection = sqlDataAccess.GetSqlConnection();
     }
-
-    public void Add(Note entity)
+     public int Insert(Note entity)
     {
         throw new NotImplementedException();
     }
 
+    public void Update(Note entity)
+    {
+        throw new NotImplementedException();
+    }   
     public void Delete(int id)
     {
         throw new NotImplementedException();
@@ -32,8 +36,5 @@ public class NoteRepository : IRepository<Note>
         throw new NotImplementedException();
     }
 
-    public void Update(Note entity)
-    {
-        throw new NotImplementedException();
-    }
+
 }

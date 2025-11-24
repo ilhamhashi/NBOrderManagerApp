@@ -1,18 +1,23 @@
-﻿using OrderManagerLibrary.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class CustomerRepository : IRepository<Customer>
 {
-    private readonly ISqlDataAccess _db;
+    private readonly SqlConnection _connection;
 
-    public CustomerRepository(ISqlDataAccess db)
+    public CustomerRepository(ISqlDataAccess sqlDataAccess)
     {
-        _db = db;
+        _connection = sqlDataAccess.GetSqlConnection();
     }
 
-    public void Add(Customer entity)
+    public int Insert(Customer entity)
+    {
+        throw new NotImplementedException();
+    }
+    public void Update(Customer entity)
     {
         throw new NotImplementedException();
     }
@@ -21,18 +26,12 @@ public class CustomerRepository : IRepository<Customer>
     {
         throw new NotImplementedException();
     }
-
-    public IEnumerable<Customer> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
     public Customer GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(Customer entity)
+    public IEnumerable<Customer> GetAll()
     {
         throw new NotImplementedException();
     }

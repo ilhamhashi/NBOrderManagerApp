@@ -1,18 +1,23 @@
-﻿using OrderManagerLibrary.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class DeliveryRepository : IRepository<Delivery>
 {
-    private readonly ISqlDataAccess _db;
+    private readonly SqlConnection _connection;
 
-    public DeliveryRepository(ISqlDataAccess db)
+    public DeliveryRepository(ISqlDataAccess sqlDataAccess)
     {
-        _db = db;
+        _connection = sqlDataAccess.GetSqlConnection();
+    }
+    public int Insert(Delivery entity)
+    {
+        throw new NotImplementedException();
     }
 
-    public void Add(Delivery entity)
+    public void Update(Delivery entity)
     {
         throw new NotImplementedException();
     }
@@ -28,11 +33,6 @@ public class DeliveryRepository : IRepository<Delivery>
     }
 
     public Delivery GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Delivery entity)
     {
         throw new NotImplementedException();
     }
