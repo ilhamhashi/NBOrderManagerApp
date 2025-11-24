@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OMSDesktopUI.ViewModel
+namespace OrderManagerLibrary.Services
 {
-    public class NewOrderViewModel
+    internal class NavigationService
     {
     }
 }

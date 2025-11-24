@@ -1,19 +1,18 @@
 ﻿using OrderManagerLibrary.DataAccess;
-using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Classes;
+using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
-
-internal class OrderRepository : IRepository<Order>
+public class PickUpRepository : IRepository<PickUp>
 {
     private readonly ISqlDataAccess _db;
 
-    public OrderRepository(ISqlDataAccess db)
+    public PickUpRepository(ISqlDataAccess db)
     {
         _db = db;
     }
 
-    public void Add(Order entity)
+    public void Add(PickUp entity)
     {
         throw new NotImplementedException();
     }
@@ -23,19 +22,18 @@ internal class OrderRepository : IRepository<Order>
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Order> GetAll()
+    public IEnumerable<PickUp> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Order GetById(int id)
+    public PickUp GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(Order entity)
+    public void Update(PickUp entity)
     {
         throw new NotImplementedException();
     }
 }
-

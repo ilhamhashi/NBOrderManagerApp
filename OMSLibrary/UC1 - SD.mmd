@@ -1,5 +1,53 @@
-sequence diagram
-{
+sequenceDiagram 
+
+actor User 
+participant NewOrderView 
+participant OrderViewModel 
+participant OrderService 
+participant OrderRepository 
+participant OrderLineRepository 
+participant PaymentRepository 
+participant DeliveryRepository 
+participant PickUpRepository 
+participant Database 
+
+User->>NewOrderView: Enter new order information 
+User->>NewOrderView: Click "Create order" 
+NewOrderView->>OrderViewModel: CreateOrderCommand.Execute() 
+OrderViewModel->>OrderService: CreateOrder(newOrder, orderLines, paymentMethodId) 
+OrderService->>OrderRepository: Insert(newOrder) 
+OrderRepository->>Database: EXEC spOrder_Insert(OrderDate, OrderStatusId, CustomerId) 
+Database-->>OrderRepository: return OrderId 
+OrderRepository->>OrderService: return OrderId 
+loop For each OrderLine 
+	OrderService ->> OrderLineRepository: Insert(orderLine) 
+	OrderLineRepository ->> Database: EXEC spOrderLine_Insert(OrderId, ProductId, Quantity, ...) 
+	Database ->> OrderLineRepository: Confirmation 
+	OrderLineRepository ->> OrderService: Confirmation 
+end 
+loop For each Payment 
+	OrderService ->> PaymentRepository: Insert(payment) 
+	PaymentRepository ->> Database: EXEC spPayment_Insert(PaymentAmount, PaymentDate, OrderId, PaymentMethodId) 
+	Database ->> PaymentRepository: Confirmation 
+	PaymentRepository ->> OrderService: Confirmation 
+end 
+alt isDelivery 
+	OrderService ->> DeliveryRepository: Insert(delivery) 
+	DeliveryRepository->> Database: EXEC spDelivery_Insert(CollectionDate, Neighborhood, OrderId) 
+	Database ->> DeliveryRepository: Confirmation 
+	DeliveryRepository->> OrderService: Confirmation 
+else isPickUp 
+	OrderService ->> PickUpRepository: Insert(pickup) 
+	PickUpRepository->> Database: EXEC spPickUp_Insert(CollectionDate, OrderId) 
+	Database ->> PickUpRepository: Confirmation 
+	PickUpRepository->> OrderService: Confirmation 
+end 
+OrderService ->> Database: COMMIT (transaction) 
+Database ->> OrderService: Confirmation 
+OrderService ->> OrderViewModel: return result 
+OrderViewModel ->> NewOrderView: Update UI with result 
+NewOrderView->>User: Show success/failure message 
 
 
-}
+
+
