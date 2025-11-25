@@ -1,38 +1,39 @@
-﻿using OrderManagerLibrary.Model.Classes;
+﻿using OrderManagerLibrary.DataAccess;
+using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OrderManagerLibrary.Model.Repositories
+namespace OrderManagerLibrary.Model.Repositories;
+public class OrderLineRepository : IRepository<OrderLine>
 {
-    public class OrderLineRepository : IRepository<OrderLine>
+    private readonly ISqlDataAccess _db;
+
+    public OrderLineRepository(ISqlDataAccess db)
     {
-        public Task Delete(int Id)
-        {
-            throw new NotImplementedException();
-        }
+        _db = db;
+    }
 
-        public Task<IEnumerable<OrderLine>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+    public void Add(OrderLine entity)
+    {
+        throw new NotImplementedException();
+    }
 
-        public Task<OrderLine?> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+    public void Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
 
-        public Task Insert(OrderLine entity)
-        {
-            throw new NotImplementedException();
-        }
+    public IEnumerable<OrderLine> GetAll()
+    {
+        throw new NotImplementedException();
+    }
 
-        public Task Update(OrderLine entity)
-        {
-            throw new NotImplementedException();
-        }
+    public OrderLine GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(OrderLine entity)
+    {
+        throw new NotImplementedException();
     }
 }

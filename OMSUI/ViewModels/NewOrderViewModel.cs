@@ -15,6 +15,7 @@ public class NewOrderViewModel : ViewModelBase
     private ICustomer selectedCustomer;
     private IPaymentMethod? selectedPaymentMethod;
     private OrderStatus orderStatus;
+    private OrderLine selectedOrderLine;
     private string noteText;
     private DateTime collectionDateTime;
     private string collectionNeighborhood;
@@ -73,6 +74,11 @@ public class NewOrderViewModel : ViewModelBase
     {
         get { return orderStatus; }
         set { orderStatus = value; }
+    }
+    public OrderLine SelectedOrderLine
+    {
+        get { return selectedOrderLine; }
+        set { selectedOrderLine = value; }
     }
     public string NoteText
     {
@@ -139,7 +145,7 @@ public class NewOrderViewModel : ViewModelBase
     private void AddProductToOrder()
     {
         // Create a new OrderLine
-        OrderLine newOrderLine = new(SelectedProduct.ProductId, SelectedQuantity, SelectedProduct.Price);
+        OrderLine newOrderLine = new(SelectedProduct, SelectedQuantity, SelectedProduct.Price);
         newOrderLine.ReducePrice();
         // Add the new OrderLine to the collection
         _orderLines.Add(newOrderLine);
