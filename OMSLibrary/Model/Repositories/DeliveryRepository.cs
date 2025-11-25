@@ -1,30 +1,38 @@
-﻿using OrderManagerLibrary.Model.Classes;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
+using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class DeliveryRepository : IRepository<Delivery>
 {
-    public Task Delete(int Id)
+    private readonly SqlConnection _connection;
+
+    public DeliveryRepository(ISqlDataAccess sqlDataAccess)
+    {
+        _connection = sqlDataAccess.GetSqlConnection();
+    }
+    public int Insert(Delivery entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Delivery>> GetAll()
+    public void Update(Delivery entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Delivery?> GetById(int id)
+    public void Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task Insert(Delivery entity)
+    public IEnumerable<Delivery> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Task Update(Delivery entity)
+    public Delivery GetById(int id)
     {
         throw new NotImplementedException();
     }

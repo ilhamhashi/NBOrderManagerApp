@@ -4,20 +4,20 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
-public class MobilePaymentMethodRepository : IRepository<MobilePaymentMethod>
+public class ProductRepository : IRepository<Product>
 {
     private readonly SqlConnection _connection;
 
-    public MobilePaymentMethodRepository(ISqlDataAccess sqlDataAccess)
+    public ProductRepository(ISqlDataAccess sqlDataAccess)
     {
         _connection = sqlDataAccess.GetSqlConnection();
-    }   
-    public int Insert(MobilePaymentMethod entity)
+    }
+    public int Insert(Product entity)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(MobilePaymentMethod entity)
+    public void Update(Product entity)
     {
         throw new NotImplementedException();
     }
@@ -26,12 +26,12 @@ public class MobilePaymentMethodRepository : IRepository<MobilePaymentMethod>
         throw new NotImplementedException();
     }
 
-    public IEnumerable<MobilePaymentMethod> GetAll()
+    public IEnumerable<Product> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public MobilePaymentMethod GetById(int id)
+    public Product GetById(int id)
     {
         throw new NotImplementedException();
     }

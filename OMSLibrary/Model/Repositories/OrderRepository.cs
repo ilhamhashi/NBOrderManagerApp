@@ -1,38 +1,96 @@
-﻿using OrderManagerLibrary.DataAccess;
-using OrderManagerLibrary.Model.Interfaces;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
+using OrderManagerLibrary.Model.Interfaces;
+using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
-
-internal class OrderRepository : IRepository<Order>
+public class OrderRepository : IRepository<Order>
 {
-    private readonly ISqlDataAccess _db;
+    private readonly SqlConnection _connection;
 
-    public OrderRepository(ISqlDataAccess db)
+    public OrderRepository(ISqlDataAccess sqlDataAccess)
     {
-        _db = db;
+        _connection = sqlDataAccess.GetSqlConnection();
     }
 
-    public Task<IEnumerable<Order>> GetAll() =>
-        _db.LoadData<Order, dynamic>(storedProcedure:"dbo.spOrder_GetAll", new { });
-
-    public async Task<Order?> GetById(int id)
+    public int Insert(Order entity)
     {
-        var results = await _db.LoadData<Order, dynamic>(
-            storedProcedure: "dbo.spOrder_GetById",
-            new { Id = id });
-        return results.FirstOrDefault();
+        using SqlCommand command = new SqlCommand("spOrder_Insert", _connection);
+        command.CommandType = CommandType.StoredProcedure;
+        SqlParameter outputParam = new SqlParameter("@OrderId", SqlDbType.Int);
+        outputParam.Direction = ParameterDirection.Output;
+
+        command.Parameters.AddWithValue("@OrderDate", entity.OrderDate);
+        command.Parameters.AddWithValue("@OrderStatus", entity.Status);
+        command.Parameters.AddWithValue("@CustomerId", entity.CustomerId);
+        command.Parameters.Add(outputParam);
+        
+        _connection.Open();
+        command.ExecuteNonQuery();
+        return (int)outputParam.Value;
     }
 
-    public Task Insert(Order entity) =>
-        _db.SaveData(storedProcedure: "", new  { entity });
-    
+    public void Update(Order entity)
+    {
+        using SqlCommand command = new SqlCommand("spOrder_Update", _connection);
+        command.CommandType = CommandType.StoredProcedure;
+        command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+        command.Parameters.AddWithValue("@OrderDate", entity.OrderDate);
+        command.Parameters.AddWithValue("@OrderStatus", entity.Status);
+        command.Parameters.AddWithValue("@CustomerId", entity.CustomerId);
+        _connection.Open();
+        command.ExecuteNonQuery();
+    }
 
-    public Task Update(Order entity) => 
-        _db.SaveData(storedProcedure: "", entity);
+    public void Delete(int id)
+    {
+        using SqlCommand command = new SqlCommand("spOrder_Delete", _connection);
+        command.CommandType = CommandType.StoredProcedure;
+        command.Parameters.AddWithValue("@OrderId", id);
+        _connection.Open();
+        command.ExecuteNonQuery();
+    }
+    public Order GetById(int id)
+    {
+        Order order = null;
+        using SqlCommand command = new SqlCommand("spOrder_GetById", _connection);
+        command.CommandType = CommandType.StoredProcedure;
+        command.Parameters.AddWithValue("@OrderId", id);
+        _connection.Open();
 
+        using SqlDataReader reader = command.ExecuteReader();
 
-    public Task Delete(int Id) => 
-        _db.SaveData(storedProcedure: "", new { Id });
+        if (reader.Read())
+        {
+            order = new Order
+                ((int)reader["OrderId"],
+                (DateTime)reader["OrderDate"],
+                (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["OrderStatus"]),
+                (int)reader["CustomerId"]);
+        }
+        return order;
+    }
+
+    public IEnumerable<Order> GetAll()
+    {
+        var orders = new List<Order>();
+        using SqlCommand command = new("spOrder_Insert", _connection);
+        command.CommandType = CommandType.StoredProcedure;
+        _connection.Open();
+
+        using SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            orders.Add(new Order
+            (
+                (int)reader["OrderId"],
+                (DateTime)reader["OrderDate"],
+                (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["OrderStatus"]),
+                (int)reader["CustomerId"]
+            ));
+        }
+        return orders;
+    }
 }
 
