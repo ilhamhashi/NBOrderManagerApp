@@ -2,17 +2,22 @@
 public class Product
 {
     public int ProductId { get; set; }
-    public string ProductName { get; set; }
+    public string Name { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
-    public string ImagePath { get; set; }
 
-    public Product(int productId, string productName, string description, decimal price, string imagePath)
+    public Product(int productId, string name, string description, decimal price)
     {
         ProductId = productId;
-        ProductName = productName;
+        Name = name;
         Description = description;
         Price = price;
-        ImagePath = imagePath;
+    }
+
+    public Product(string name, string description, decimal price)
+    {
+        Name = name;
+        Description = description;
+        Price = price;
     }
 }
