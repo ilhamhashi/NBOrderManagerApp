@@ -3,7 +3,7 @@ using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
-namespace OMSLibrary.Tests;
+namespace OrderManagerLibrary.Tests;
 
 [TestClass]
 public sealed class OrderRepositoryTests
@@ -84,7 +84,7 @@ public sealed class OrderRepositoryTests
     }
 
     [TestMethod]
-    public void GetById_ShouldGetOrderSuccesfully()
+    public void GetById_ShouldGetOrderByIdSuccesfully()
     {
         // Arrange
         var order = new Order

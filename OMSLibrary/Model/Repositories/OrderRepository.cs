@@ -14,7 +14,7 @@ public class OrderRepository : IRepository<Order>
         _connection = sqlDataAccess.GetSqlConnection();
     }
 
-    public int Insert(Order entity)
+    public int? Insert(Order entity)
     {
         using SqlCommand command = new SqlCommand("spOrder_Insert", _connection);
         command.CommandType = CommandType.StoredProcedure;
@@ -51,12 +51,12 @@ public class OrderRepository : IRepository<Order>
         _connection.Open();
         command.ExecuteNonQuery();
     }
-    public Order GetById(int id)
+    public Order GetById(params object[] keyValues)
     {
         Order order = null;
         using SqlCommand command = new SqlCommand("spOrder_GetById", _connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.AddWithValue("@OrderId", id);
+        command.Parameters.AddWithValue("@OrderId", keyValues[0]);
         _connection.Open();
 
         using SqlDataReader reader = command.ExecuteReader();
@@ -75,7 +75,7 @@ public class OrderRepository : IRepository<Order>
     public IEnumerable<Order> GetAll()
     {
         var orders = new List<Order>();
-        using SqlCommand command = new("spOrder_Insert", _connection);
+        using SqlCommand command = new("spOrder_GetAll", _connection);
         command.CommandType = CommandType.StoredProcedure;
         _connection.Open();
 
