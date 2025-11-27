@@ -127,7 +127,7 @@ public class NewOrderViewModel : ViewModelBase
         Order newOrder = new(DateTime.Now, OrderStatus.Draft, selectedCustomer.CustomerId);
         if (outstandingAmount == 0)
         {
-            newOrder.Status = OrderStatus.Confirmed;
+            newOrder.Status = OrderStatus.FullyPaid;
         }
         ICollectionType collection = HandleCollectionType();
         INote orderNote = new Note(NoteText);

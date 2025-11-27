@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using OrderManagerLibrary.DataAccessNS;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
@@ -7,18 +8,18 @@ using System.Data;
 namespace OrderManagerLibrary.Services;
 public class OrderService : IOrderService
 {
-    private readonly SqlConnection _connection;
+    private readonly DataAccess _db;
     private readonly IRepository<Order> _orderRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<ICollectionType> _collectionRepository;
     private readonly IRepository<INote> _noteRepository;
 
-    public OrderService(IConfiguration config, IRepository<Order> orderRepository,
+    public OrderService(DataAccess dataAccess, IRepository<Order> orderRepository,
                         IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
                         IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
     {
-        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
+        _db = dataAccess;
         _orderRepository = orderRepository;
         _orderLineRepository = orderLineRepository;
         _paymentRepository = paymentRepository;
@@ -30,7 +31,7 @@ public class OrderService : IOrderService
                             List<IPaymentMethod> paymentMethods, List<Payment> payments,
                             ICollectionType collection, INote? note)
     {
-        using (var transaction = _connection.BeginTransaction())
+        using (var transaction = _db.GetConnection().BeginTransaction())
         {
             try
             {
