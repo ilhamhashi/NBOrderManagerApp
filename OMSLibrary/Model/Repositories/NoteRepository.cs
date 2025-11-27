@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
@@ -8,20 +8,12 @@ public class NoteRepository : IRepository<Note>
 {
     private readonly SqlConnection _connection;
 
-    public NoteRepository(ISqlDataAccess sqlDataAccess)
+    public NoteRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
-    }
-     public int Insert(Note entity)
-    {
-        throw new NotImplementedException();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
 
-    public void Update(Note entity)
-    {
-        throw new NotImplementedException();
-    }   
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         throw new NotImplementedException();
     }
@@ -31,10 +23,18 @@ public class NoteRepository : IRepository<Note>
         throw new NotImplementedException();
     }
 
-    public Note GetById(int id)
+    public Note GetById(params object[] keyValues)
     {
         throw new NotImplementedException();
     }
 
+    public int Insert(Note entity)
+    {
+        throw new NotImplementedException();
+    }
 
+    public void Update(Note entity)
+    {
+        throw new NotImplementedException();
+    }
 }

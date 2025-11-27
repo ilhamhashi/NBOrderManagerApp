@@ -15,7 +15,7 @@
             <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="76*"/>
@@ -74,7 +74,7 @@
                     </ListBox>
                 </StackPanel>
             </ScrollViewer>
-            
+
             <!-- Add Note -->
             <Button Grid.Row="1" 
                     Content="Ku dar qoraal"
@@ -99,8 +99,6 @@
                     Padding="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
-
         </Grid>
     </Grid>
-
 </UserControl>

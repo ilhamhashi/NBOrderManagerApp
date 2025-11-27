@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
@@ -8,20 +8,11 @@ public class PickUpRepository : IRepository<PickUp>
 {
     private readonly SqlConnection _connection;
 
-    public PickUpRepository(ISqlDataAccess sqlDataAccess)
+    public PickUpRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
-    public int Insert(PickUp entity)
-    {
-        throw new NotImplementedException();
-    }
-    public void Update(PickUp entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         throw new NotImplementedException();
     }
@@ -31,7 +22,17 @@ public class PickUpRepository : IRepository<PickUp>
         throw new NotImplementedException();
     }
 
-    public PickUp GetById(int id)
+    public PickUp GetById(params object[] keyValues)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int Insert(PickUp entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(PickUp entity)
     {
         throw new NotImplementedException();
     }

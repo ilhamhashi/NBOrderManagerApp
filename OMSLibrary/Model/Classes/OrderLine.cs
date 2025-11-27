@@ -8,19 +8,21 @@ public class OrderLine
     public decimal Price { get; set; }
     public decimal Discount { get; set; } = 0;
 
-    public OrderLine(int productId, int orderId, int quantity, decimal price)
+    public OrderLine(int productId, int orderId, int quantity, decimal price, decimal discount)
     {
         ProductId = productId;
         OrderId = orderId;
         Quantity = quantity;
         Price = price;
+        Discount = discount;
     }
 
-    public OrderLine(Product product, int quantity, decimal price)
+    public OrderLine(Product product, int quantity, decimal price, decimal discount)
     {
         Product = product;
         Quantity = quantity;
         Price = price;
+        Discount = discount;
     }
 
     public void ReducePrice()
