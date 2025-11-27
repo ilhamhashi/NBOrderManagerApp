@@ -79,10 +79,9 @@ public sealed class OrderRepositoryTests
         int orderId = _orderRepository.Insert(order);
 
         // Act
-        _orderRepository.GetById(orderId);
+        var retrievedOrder = _orderRepository.GetById(orderId);
 
         // Assert
-        var retrievedOrder = _orderRepository.GetById(orderId);
         Assert.IsNotNull(retrievedOrder);
         Assert.AreEqual(retrievedOrder.OrderDate.ToString(), order.OrderDate.ToString());
         Assert.AreEqual(retrievedOrder.Status, order.Status);
