@@ -43,20 +43,20 @@ public class OrderRepository : IRepository<Order>
         command.ExecuteNonQuery();
     }
 
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         using SqlCommand command = new SqlCommand("spOrder_Delete", _connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.AddWithValue("@OrderId", id);
+        command.Parameters.AddWithValue("@OrderId", keyValues[0]);
         _connection.Open();
         command.ExecuteNonQuery();
     }
-    public Order GetById(int id)
+    public Order GetById(params object[] keyValues)
     {
         Order order = null;
         using SqlCommand command = new SqlCommand("spOrder_GetById", _connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.AddWithValue("@OrderId", id);
+        command.Parameters.AddWithValue("@OrderId", keyValues[0]);
         _connection.Open();
 
         using SqlDataReader reader = command.ExecuteReader();
@@ -75,7 +75,7 @@ public class OrderRepository : IRepository<Order>
     public IEnumerable<Order> GetAll()
     {
         var orders = new List<Order>();
-        using SqlCommand command = new("spOrder_Insert", _connection);
+        using SqlCommand command = new("spOrder_GetAll", _connection);
         command.CommandType = CommandType.StoredProcedure;
         _connection.Open();
 
