@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
@@ -9,9 +9,9 @@ public class ProductRepository : IRepository<Product>
 {
     private readonly SqlConnection _connection;
 
-    public ProductRepository(ISqlDataAccess sqlDataAccess)
+    public ProductRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
 
     public void Delete(params object[] keyValues)

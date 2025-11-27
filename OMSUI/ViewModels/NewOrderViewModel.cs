@@ -9,7 +9,7 @@ using System.Windows.Input;
 namespace OrderManagerDesktopUI.ViewModels;
 public class NewOrderViewModel : ViewModelBase
 {
-    private readonly OrderService _orderservice;
+    private readonly IOrderService _orderservice;
 
     private Product? selectedProduct;
 	private ICustomer selectedCustomer;
@@ -117,7 +117,7 @@ public class NewOrderViewModel : ViewModelBase
 		set { outstandingAmount = value; }
 	}
 
-    public NewOrderViewModel(OrderService orderservice)
+    public NewOrderViewModel(IOrderService orderservice)
     {
         _orderservice = orderservice;
     }
@@ -127,7 +127,7 @@ public class NewOrderViewModel : ViewModelBase
         Order newOrder = new(DateTime.Now, OrderStatus.Draft, selectedCustomer.CustomerId);
         if (outstandingAmount == 0)
         {
-            newOrder.Status = OrderStatus.Confirmed;
+            newOrder.Status = OrderStatus.FullyPaid;
         }
         ICollectionType collection = HandleCollectionType();
         INote orderNote = new Note(NoteText);
@@ -141,7 +141,7 @@ public class NewOrderViewModel : ViewModelBase
     private void AddProductToOrder()
     {
         // Create a new OrderLine
-        OrderLine newOrderLine = new(SelectedProduct, SelectedQuantity, SelectedProduct.Price);
+        OrderLine newOrderLine = new(SelectedProduct, SelectedQuantity, SelectedProduct.Price, SelectedOrderLine.Discount);
         newOrderLine.ReducePrice();
         // Add the new OrderLine to the collection
         _orderLines.Add(newOrderLine);

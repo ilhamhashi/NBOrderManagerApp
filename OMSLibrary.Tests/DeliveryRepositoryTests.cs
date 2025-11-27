@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
@@ -10,15 +9,13 @@ namespace OrderManagerLibrary.Tests;
 public sealed class DeliveryRepositoryTests
 {
     private IRepository<Delivery> _deliveryRepository;
-    private ISqlDataAccess _dataAccess;
-    private IConfigurationRoot _config;
+    private IConfiguration _config;
 
     [TestInitialize]
     public void Setup()
     {
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        _dataAccess = new SqlDataAccess(_config);
-        _deliveryRepository = new DeliveryRepository(_dataAccess);
+        _deliveryRepository = new DeliveryRepository(_config);
     }
 
     [TestMethod]

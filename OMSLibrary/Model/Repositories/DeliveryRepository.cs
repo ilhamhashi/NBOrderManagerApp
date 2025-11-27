@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
@@ -9,9 +9,9 @@ public class DeliveryRepository : IRepository<Delivery>
 {
     private readonly SqlConnection _connection;
 
-    public DeliveryRepository(ISqlDataAccess sqlDataAccess)
+    public DeliveryRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
 
     public int Insert(Delivery entity)
@@ -43,20 +43,20 @@ public class DeliveryRepository : IRepository<Delivery>
         command.ExecuteNonQuery();
     }
 
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         using SqlCommand command = new SqlCommand("spDelivery_Delete", _connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.AddWithValue("@CollectionId", id);
+        command.Parameters.AddWithValue("@CollectionId", keyValues[0]);
         _connection.Open();
         command.ExecuteNonQuery();
     }
-    public Delivery GetById(int id)
+    public Delivery GetById(params object[] keyValues)
     {
         Delivery delivery = null;
         using SqlCommand command = new SqlCommand("spDelivery_GetById", _connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.AddWithValue("@CollectionId", id);
+        command.Parameters.AddWithValue("@CollectionId", keyValues[0]);
         _connection.Open();
 
         using SqlDataReader reader = command.ExecuteReader();

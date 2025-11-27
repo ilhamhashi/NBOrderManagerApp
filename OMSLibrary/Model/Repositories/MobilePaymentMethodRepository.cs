@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
@@ -8,20 +8,11 @@ public class MobilePaymentMethodRepository : IRepository<MobilePaymentMethod>
 {
     private readonly SqlConnection _connection;
 
-    public MobilePaymentMethodRepository(ISqlDataAccess sqlDataAccess)
+    public MobilePaymentMethodRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
-    }   
-    public int Insert(MobilePaymentMethod entity)
-    {
-        throw new NotImplementedException();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
-
-    public void Update(MobilePaymentMethod entity)
-    {
-        throw new NotImplementedException();
-    }
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         throw new NotImplementedException();
     }
@@ -31,7 +22,17 @@ public class MobilePaymentMethodRepository : IRepository<MobilePaymentMethod>
         throw new NotImplementedException();
     }
 
-    public MobilePaymentMethod GetById(int id)
+    public MobilePaymentMethod GetById(params object[] keyValues)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int Insert(MobilePaymentMethod entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(MobilePaymentMethod entity)
     {
         throw new NotImplementedException();
     }

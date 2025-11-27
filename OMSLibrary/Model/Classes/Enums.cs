@@ -2,10 +2,11 @@
 
 public enum OrderStatus
 {
-    Draft = 0,
-    Confirmed = 1,
-    ReadyForCollection = 2,
-    Completed = 3
+    Draft,
+    PartiallyPaid,
+    FullyPaid,
+    ReadyForCollection,
+    Completed
 }
 
 

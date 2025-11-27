@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
@@ -9,20 +9,12 @@ public class PaymentRepository : IRepository<Payment>
 {
     private readonly SqlConnection _connection;
 
-    public PaymentRepository(ISqlDataAccess sqlDataAccess)
+    public PaymentRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
-    }
-    public int Insert(Payment entity)
-    {
-        throw new NotImplementedException();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
 
-    public void Update(Payment entity)
-    {
-        throw new NotImplementedException();
-    }
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         throw new NotImplementedException();
     }
@@ -32,7 +24,17 @@ public class PaymentRepository : IRepository<Payment>
         throw new NotImplementedException();
     }
 
-    public Payment GetById(int id)
+    public Payment GetById(params object[] keyValues)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int Insert(Payment entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(Payment entity)
     {
         throw new NotImplementedException();
     }

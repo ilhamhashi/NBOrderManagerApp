@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
@@ -9,9 +9,9 @@ public class OrderLineRepository : IRepository<OrderLine>
 {
     private readonly SqlConnection _connection;
 
-    public OrderLineRepository(ISqlDataAccess sqlDataAccess)
+    public OrderLineRepository(IConfiguration config)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
+        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
     }
 
     public void Delete(params object[] keyValues)
@@ -81,7 +81,7 @@ public class OrderLineRepository : IRepository<OrderLine>
         _connection.Open();
         command.ExecuteNonQuery();
 
-        return null;
+        return -1;
     }
 
     public void Update(OrderLine entity)
