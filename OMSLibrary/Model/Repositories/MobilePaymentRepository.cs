@@ -5,26 +5,24 @@ using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
-public class NoteRepository : IRepository<Note>
+public class MobilePaymentRepository : IRepository<MobilePayment>
 {
     private readonly IDataAccess _db;
 
-    public NoteRepository(IDataAccess db)
+    public MobilePaymentRepository(IDataAccess db)
     {
         _db = db;
     }
-
-    public int Insert(Note entity)
+    public int Insert(MobilePayment entity)
     {
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_Insert", connection))
+        using (SqlCommand command = new SqlCommand("spMobilePayment_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            SqlParameter outputParam = new("@NoteId", SqlDbType.Int);
+            SqlParameter outputParam = new("@PaymentMethodId", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
-            command.Parameters.AddWithValue("@NoteText", entity.NoteText);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@Name", entity.Name);
             command.Parameters.Add(outputParam);
             connection.Open();
             command.ExecuteNonQuery();
@@ -33,15 +31,14 @@ public class NoteRepository : IRepository<Note>
         }
     }
 
-    public void Update(Note entity)
+    public void Update(MobilePayment entity)
     {
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_Update", connection))
+        using (SqlCommand command = new SqlCommand("spMobilePayment_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@NoteId", entity.NoteId);
-            command.Parameters.AddWithValue("@NoteText", entity.NoteText);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethodId);
+            command.Parameters.AddWithValue("@Name", entity.Name);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -49,45 +46,43 @@ public class NoteRepository : IRepository<Note>
     public void Delete(params object[] keyValues)
     {
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_Delete", connection))
+        using (SqlCommand command = new SqlCommand("spMobilePayment_Delete", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@NoteId", keyValues[0]);
+            command.Parameters.AddWithValue("@PaymentMethodId", keyValues[0]);
             connection.Open();
             command.ExecuteNonQuery();
         }
     }
-
-    public Note GetById(params object[] keyValues)
+    public MobilePayment GetById(params object[] keyValues)
     {
-        Note note = null;
+        MobilePayment mobilePayment = null;
 
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_GetById", connection))
+        using (SqlCommand command = new SqlCommand("spMobilePayment_GetById", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@NoteId", keyValues[0]);
+            command.Parameters.AddWithValue("@PaymentMethodId", keyValues[0]);
             connection.Open();
 
             using SqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
             {
-                note = new Note(
-                    (int)reader["NoteId"],
-                    (string)reader["NoteText"],
-                    (int)reader["OrderId"]
-
+                mobilePayment = new MobilePayment(
+                    (int)reader["PaymentMethodId"],
+                    (string)reader["Name"]
                 );
             }
-            return note;
+            return mobilePayment;
         }
     }
 
-    public IEnumerable<Note> GetAll()
+
+    public IEnumerable<MobilePayment> GetAll()
     {
-        var notes = new List<Note>();
+        var mobilePayments = new List<MobilePayment>();
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_GetAll", connection))
+        using (SqlCommand command = new SqlCommand("spMobilePayment_GetAll", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
             connection.Open();
@@ -95,13 +90,12 @@ public class NoteRepository : IRepository<Note>
 
             while (reader.Read())
             {
-                notes.Add(new Note(
-                    (int)reader["NoteId"],
-                    (string)reader["NoteText"],
-                    (int)reader["OrderId"]
+                mobilePayments.Add(new MobilePayment(
+                    (int)reader["PaymentMethodId"],
+                    (string)reader["Name"]
                 ));
             }
-            return notes;
+            return mobilePayments;
         }
     }
 }

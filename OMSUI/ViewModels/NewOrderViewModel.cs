@@ -9,12 +9,13 @@ using System.Windows.Input;
 namespace OrderManagerDesktopUI.ViewModels;
 public class NewOrderViewModel : ViewModelBase
 {
-    private readonly OrderService _orderservice;
+    private readonly IOrderService _orderservice;
 
     private Product? selectedProduct;
 	private ICustomer selectedCustomer;
 	private IPaymentMethod? selectedPaymentMethod;
     private OrderStatus orderStatus;
+    private int lineNumber;
     private OrderLine selectedOrderLine;
     private string noteText;
     private DateTime collectionDateTime;
@@ -71,6 +72,11 @@ public class NewOrderViewModel : ViewModelBase
         get { return orderStatus; }
         set { orderStatus = value; }
     }
+    public int LineNumber
+    {
+        get { return lineNumber; }
+        set { lineNumber = value; }
+    }
     public OrderLine SelectedOrderLine
     {
         get { return selectedOrderLine; }
@@ -117,7 +123,7 @@ public class NewOrderViewModel : ViewModelBase
 		set { outstandingAmount = value; }
 	}
 
-    public NewOrderViewModel(OrderService orderservice)
+    public NewOrderViewModel(IOrderService orderservice)
     {
         _orderservice = orderservice;
     }
@@ -127,7 +133,7 @@ public class NewOrderViewModel : ViewModelBase
         Order newOrder = new(DateTime.Now, OrderStatus.Draft, selectedCustomer.CustomerId);
         if (outstandingAmount == 0)
         {
-            newOrder.Status = OrderStatus.Confirmed;
+            newOrder.Status = OrderStatus.FullyPaid;
         }
         ICollectionType collection = HandleCollectionType();
         INote orderNote = new Note(NoteText);
@@ -136,12 +142,14 @@ public class NewOrderViewModel : ViewModelBase
         MessageBox.Show($"Order {newOrder.OrderId} has been saved succesfully");
 
         //Nulstil felter
+        OrderLines.Clear();
     }
 
     private void AddProductToOrder()
     {
+        LineNumber = OrderLines.Count() + 1;
         // Create a new OrderLine
-        OrderLine newOrderLine = new(SelectedProduct, SelectedQuantity, SelectedProduct.Price);
+        OrderLine newOrderLine = new(SelectedProduct, LineNumber, SelectedQuantity, SelectedProduct.Price, SelectedOrderLine.Discount);
         newOrderLine.ReducePrice();
         // Add the new OrderLine to the collection
         _orderLines.Add(newOrderLine);

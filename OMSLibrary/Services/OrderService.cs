@@ -1,22 +1,25 @@
-﻿using OrderManagerLibrary.Model.Classes;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using OrderManagerLibrary.DataAccessNS;
+using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Services;
-public class OrderService
+public class OrderService : IOrderService
 {
-    private readonly IDbConnection _connection;
+    private readonly DataAccess _db;
     private readonly IRepository<Order> _orderRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<ICollectionType> _collectionRepository;
     private readonly IRepository<INote> _noteRepository;
 
-    public OrderService(IDbConnection connection, IRepository<Order> orderRepository, 
-                        IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository, 
+    public OrderService(DataAccess dataAccess, IRepository<Order> orderRepository,
+                        IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
                         IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
     {
-        _connection = connection;
+        _db = dataAccess;
         _orderRepository = orderRepository;
         _orderLineRepository = orderLineRepository;
         _paymentRepository = paymentRepository;
@@ -24,11 +27,11 @@ public class OrderService
         _noteRepository = noteRepository;
     }
 
-    public void CreateOrder(Order order, List<OrderLine> orderLines, 
-                            List<IPaymentMethod> paymentMethods, List<Payment> payments, 
+    public void CreateOrder(Order order, List<OrderLine> orderLines,
+                            List<IPaymentMethod> paymentMethods, List<Payment> payments,
                             ICollectionType collection, INote? note)
     {
-        using (var transaction = _connection.BeginTransaction())
+        using (var transaction = _db.GetConnection().BeginTransaction())
         {
             try
             {

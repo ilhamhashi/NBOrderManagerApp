@@ -1,39 +1,116 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrderManagerLibrary.DataAccess;
+using Microsoft.Extensions.Configuration;
+using OrderManagerLibrary.DataAccessNS;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
+using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
 
 public class PaymentRepository : IRepository<Payment>
 {
-    private readonly SqlConnection _connection;
+    private readonly IDataAccess _db;
 
-    public PaymentRepository(ISqlDataAccess sqlDataAccess)
+    public PaymentRepository(IDataAccess db)
     {
-        _connection = sqlDataAccess.GetSqlConnection();
+        _db = db;
     }
+
     public int Insert(Payment entity)
     {
-        throw new NotImplementedException();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spPayment_Insert", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            SqlParameter outputParam = new SqlParameter("@PaymentId", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.Output;
+
+            command.Parameters.AddWithValue("@PaymentDate", entity.PaymentDate);
+            command.Parameters.AddWithValue("@PaymentAmount", entity.PaymentAmount);
+            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethodId);
+            command.Parameters.Add(outputParam);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+            return (int)outputParam.Value;
+        }
     }
 
     public void Update(Payment entity)
     {
-        throw new NotImplementedException();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spPayment_Update", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@PaymentId", entity.OrderId);
+            command.Parameters.AddWithValue("@PaymentDate", entity.PaymentDate);
+            command.Parameters.AddWithValue("@PaymentAmount", entity.PaymentAmount);
+            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethodId);
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
     }
-    public void Delete(int id)
+
+    public void Delete(params object[] keyValues)
     {
-        throw new NotImplementedException();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spPayment_Delete", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@PaymentId", keyValues[0]);
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+    }
+    public Payment GetById(params object[] keyValues)
+    {
+        Payment payment = null;
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spPayment_GetById", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@PaymentId", keyValues[0]);
+            connection.Open();
+
+            using SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                payment = new Payment
+                    ((int)reader["PaymentId"],
+                    (decimal)reader["PaymentAmount"],
+                    (DateTime)reader["PaymentDate"], 
+                    (int)reader["OrderId"],
+                    (int)reader["PaymentMethodId"]);
+            }
+            return payment;
+        }
     }
 
     public IEnumerable<Payment> GetAll()
     {
-        throw new NotImplementedException();
-    }
+        var payments = new List<Payment>();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spPayment_GetAll", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            connection.Open();
 
-    public Payment GetById(int id)
-    {
-        throw new NotImplementedException();
+            using SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                payments.Add(new Payment
+                (
+                    (int)reader["PaymentId"],
+                    (decimal)reader["PaymentAmount"],
+                    (DateTime)reader["PaymentDate"],
+                    (int)reader["OrderId"],
+                    (int)reader["PaymentMethodId"]
+                ));
+            }
+            return payments;
+        }
     }
 }
