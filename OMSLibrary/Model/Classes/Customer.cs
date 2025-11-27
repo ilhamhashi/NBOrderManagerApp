@@ -15,4 +15,11 @@ public class Customer : ICustomer
         LastName = lastName;
         PhoneNumber = phoneNumber;
     }
+
+    public Customer(string firstName, string lastName, string phoneNumber)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        PhoneNumber = phoneNumber;
+    }
 }

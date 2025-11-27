@@ -75,7 +75,7 @@ public class DeliveryRepository : IRepository<Delivery>
     public IEnumerable<Delivery> GetAll()
     {
         var deliveries = new List<Delivery>();
-        using SqlCommand command = new("spDelivery_Insert", _connection);
+        using SqlCommand command = new("spDelivery_GetAll", _connection); // Husk at rette fejl fra Insert til GetAll i de andre repositories
         command.CommandType = CommandType.StoredProcedure;
         _connection.Open();
 
