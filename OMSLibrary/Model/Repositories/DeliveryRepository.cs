@@ -37,8 +37,8 @@ public class DeliveryRepository : IRepository<Delivery>
         command.CommandType = CommandType.StoredProcedure;
         command.Parameters.AddWithValue("@CollectionId", entity.CollectionId);
         command.Parameters.AddWithValue("@CollectionDate", entity.CollectionDate);
-        command.Parameters.AddWithValue("@OrderId", entity.OrderId);
         command.Parameters.AddWithValue("@Neighborhood", entity.Neighborhood);
+        command.Parameters.AddWithValue("@OrderId", entity.OrderId);
         _connection.Open();
         command.ExecuteNonQuery();
     }
@@ -66,8 +66,8 @@ public class DeliveryRepository : IRepository<Delivery>
             delivery = new Delivery
                 ((int)reader["CollectionId"],
                 (DateTime)reader["CollectionDate"],
-                (int)reader["OrderId"],
-                (string)reader["Neighborhood"]);
+                (string)reader["Neighborhood"],
+                (int)reader["OrderId"]);
         }
         return delivery;
     }
@@ -86,8 +86,8 @@ public class DeliveryRepository : IRepository<Delivery>
             (
                 (int)reader["CollectionId"],
                 (DateTime)reader["CollectionDate"],
-                (int)reader["OrderId"],
-                (string)reader["Neighborhood"]
+                (string)reader["Neighborhood"],
+                (int)reader["OrderId"]
             ));
         }
         return deliveries;

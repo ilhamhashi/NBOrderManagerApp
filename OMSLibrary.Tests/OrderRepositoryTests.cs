@@ -24,7 +24,7 @@ public sealed class OrderRepositoryTests
     public void InsertOrder_ShouldInsertOrderSuccesfully()
     {
         // Arrange
-        var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 1);
+        var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 17);
        
         // Act
         order.OrderId = _orderRepository.Insert(order);
@@ -41,7 +41,7 @@ public sealed class OrderRepositoryTests
     public void UpdateOrder_ShouldUpdateOrderSuccesfully()
     {
         // Arrange
-        var order = new Order (DateTime.Now, OrderStatus.FullyPaid,1);
+        var order = new Order (DateTime.Now, OrderStatus.FullyPaid,17);
         int orderId = _orderRepository.Insert(order);
 
         // Act
@@ -60,7 +60,7 @@ public sealed class OrderRepositoryTests
     public void DeleteOrder_ShouldDeleteOrderSuccesfully()
     {
         // Arrange
-        var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 1);
+        var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 17);
         int orderId = _orderRepository.Insert(order);
         Assert.IsNotNull(_orderRepository.GetById(orderId));
 
@@ -75,7 +75,7 @@ public sealed class OrderRepositoryTests
     public void GetById_ShouldGetOrderByIdSuccesfully()
     {
         // Arrange
-        var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 1);
+        var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 17);
         int orderId = _orderRepository.Insert(order);
 
         // Act
