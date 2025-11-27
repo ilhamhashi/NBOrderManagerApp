@@ -31,7 +31,7 @@ namespace OrderManagerDesktopUI
             services.AddSingleton<MainWindowViewModel>();
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
             services.AddScoped<IRepository<Delivery>,  DeliveryRepository>();
-            services.AddScoped<IRepository<MobilePaymentMethod>, MobilePaymentMethodRepository>();
+            services.AddScoped<IRepository<MobilePayment>, MobilePaymentRepository>();
             services.AddScoped<IRepository<Note>, NoteRepository>();
             services.AddScoped<IRepository<OrderLine>, OrderLineRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
