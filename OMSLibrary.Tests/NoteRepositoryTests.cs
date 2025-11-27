@@ -4,7 +4,8 @@ using OrderManagerLibrary.Model.Repositories;
 
 namespace OrderManagerLibrary.Tests;
 
-public class NoteRepositoryTests
+[TestClass]
+public sealed class NoteRepositoryTests
 {
 
 
