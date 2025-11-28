@@ -31,7 +31,7 @@ public class NewOrderViewModel : ViewModel
     private List<Payment>? _payments { get; set; } = [];
     private List<OrderLine> _orderLines { get; set; }
     public ObservableCollection<OrderLine>? OrderLines { get; set; }    
-    public ObservableCollection<Product>? Products;
+    public ObservableCollection<Product>? Products { get; set; }
 
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
@@ -126,6 +126,7 @@ public class NewOrderViewModel : ViewModel
     public NewOrderViewModel(IOrderService orderservice)
     {
         _orderservice = orderservice;
+        Products = new ObservableCollection<Product>(_orderservice.ViewProductCatalogue());
     }
 
     private void AddNewOrder()

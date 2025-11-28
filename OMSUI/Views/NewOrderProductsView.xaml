@@ -43,7 +43,7 @@
                                     UpdateSourceTrigger=PropertyChanged}"
                                     Width="200"/>
 
-                <!-- Product Size -->
+                <!-- Product Size 
                 <DataGridComboBoxColumn Header="Cabbir"                                        
                                         ItemsSource="{Binding Source={StaticResource Sizes}}"
                                         SelectedValueBinding="{Binding SizeId}"
@@ -51,7 +51,7 @@
                                         DisplayMemberPath="Name"
                                         Width="100"/>
 
-                <!-- Flavour -->
+                Flavour
                 <DataGridComboBoxColumn Header="Dhadhan"                                        
                                         ItemsSource="{Binding Source={StaticResource Flavours}}"
                                         SelectedValueBinding="{Binding FlavourId}"
@@ -59,12 +59,13 @@
                                         DisplayMemberPath="Name"
                                         Width="100"/>
 
-                <!-- Add Button -->
+                Add Button -->
                 <DataGridTemplateColumn Width="70">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Ku dar"
-                                    Command="{Binding AddToOrderCommand}"/>
+                                    Command="{Binding AddToOrderCommand}"
+                                    CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

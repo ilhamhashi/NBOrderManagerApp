@@ -28,6 +28,10 @@ namespace OrderManagerDesktopUI
             {
                 DataContext = provider.GetRequiredService<MainWindowViewModel>()
             });
+            services.AddSingleton<NewOrderProductsView>(provider => new NewOrderProductsView
+            {
+                DataContext = provider.GetRequiredService<NewOrderViewModel>()
+            });
 
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<NewOrderViewModel>();

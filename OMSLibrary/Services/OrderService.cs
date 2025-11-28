@@ -1,5 +1,4 @@
-﻿using OrderManagerLibrary.DataAccess;
-using OrderManagerLibrary.Model.Classes;
+﻿using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Services;
@@ -7,6 +6,7 @@ public class OrderService : IOrderService
 {
     private readonly DataAccess.DataAccess _db;
     private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<Product> _productRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<ICollectionType> _collectionRepository;
@@ -22,6 +22,11 @@ public class OrderService : IOrderService
         _paymentRepository = paymentRepository;
         _collectionRepository = collectionRepository;
         _noteRepository = noteRepository;
+    }
+
+    public IEnumerable<Product> ViewProductCatalogue()
+    {
+        return _productRepository.GetAll();
     }
 
     public void CreateOrder(Order order, List<OrderLine> orderLines,
