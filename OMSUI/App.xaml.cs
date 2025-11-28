@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderManagerDesktopUI.Core;
 using OrderManagerDesktopUI.ViewModels;
 using OrderManagerDesktopUI.Views;
 using OrderManagerLibrary.Model.Classes;
@@ -29,6 +30,9 @@ namespace OrderManagerDesktopUI
             });
 
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<NewOrderViewModel>();
+            services.AddSingleton<INavigationService, NavigationService>();
+
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
             services.AddScoped<IRepository<Delivery>,  DeliveryRepository>();
             services.AddScoped<IRepository<MobilePaymentMethod>, MobilePaymentMethodRepository>();
@@ -39,6 +43,9 @@ namespace OrderManagerDesktopUI
             services.AddScoped<IRepository<PickUp>, PickUpRepository>();
             services.AddScoped<IRepository<Product>, ProductRepository>();
             services.AddScoped<IOrderService, OrderService>();
+
+            services.AddSingleton<Func<Type, ViewModel>>(_serviceProvider =>
+                viewModelType => (ViewModel)_serviceProvider.GetRequiredService(viewModelType));
 
             _serviceProvider = services.BuildServiceProvider();
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using OrderManagerLibrary.DataAccessNS;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
@@ -7,16 +8,16 @@ using System.Data;
 namespace OrderManagerLibrary.Model.Repositories;
 public class DeliveryRepository : IRepository<Delivery>
 {
-    private readonly SqlConnection _connection;
+    private readonly IDataAccess _db;
 
-    public DeliveryRepository(IConfiguration config)
+    public DeliveryRepository(IDataAccess db)
     {
-        _connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
+        _db = db;
     }
 
     public int Insert(Delivery entity)
     {
-        using SqlCommand command = new SqlCommand("spDelivery_Insert", _connection);
+        using SqlCommand command = new SqlCommand("spDelivery_Insert", _db);
         command.CommandType = CommandType.StoredProcedure;
         SqlParameter outputParam = new SqlParameter("@CollectionId", SqlDbType.Int);
         outputParam.Direction = ParameterDirection.Output;
@@ -26,7 +27,7 @@ public class DeliveryRepository : IRepository<Delivery>
         command.Parameters.AddWithValue("@Neighborhood", entity.Neighborhood);
         command.Parameters.Add(outputParam);
 
-        _connection.Open();
+        _db.Open();
         command.ExecuteNonQuery();
         return (int)outputParam.Value;
     }
@@ -66,8 +67,8 @@ public class DeliveryRepository : IRepository<Delivery>
             delivery = new Delivery
                 ((int)reader["CollectionId"],
                 (DateTime)reader["CollectionDate"],
-                (string)reader["Neighborhood"],
-                (int)reader["OrderId"]);
+                (int)reader["OrderId"],
+                (string)reader["Neighborhood"]);
         }
         return delivery;
     }
@@ -86,8 +87,8 @@ public class DeliveryRepository : IRepository<Delivery>
             (
                 (int)reader["CollectionId"],
                 (DateTime)reader["CollectionDate"],
-                (string)reader["Neighborhood"],
-                (int)reader["OrderId"]
+                (int)reader["OrderId"],
+                (string)reader["Neighborhood"]
             ));
         }
         return deliveries;

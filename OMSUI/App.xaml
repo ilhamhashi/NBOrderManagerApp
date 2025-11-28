@@ -1,8 +1,13 @@
 ﻿<Application x:Class="OrderManagerDesktopUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:OrderManagerDesktopUI">
+             xmlns:local="clr-namespace:OrderManagerDesktopUI"
+             xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels"
+             xmlns:view="clr-namespace:OrderManagerDesktopUI.Views">
+    
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type TypeName=vm:NewOrderViewModel}">
+            <view:NewOrderView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

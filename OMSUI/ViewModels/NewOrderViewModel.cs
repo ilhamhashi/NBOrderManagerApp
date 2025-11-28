@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
-public class NewOrderViewModel : ViewModelBase
+public class NewOrderViewModel : ViewModel
 {
     private readonly IOrderService _orderservice;
 
