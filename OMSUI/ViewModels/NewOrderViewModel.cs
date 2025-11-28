@@ -149,14 +149,15 @@ public class NewOrderViewModel : ViewModelBase
     {
         LineNumber = OrderLines.Count() + 1;
         // Create a new OrderLine
-        OrderLine newOrderLine = new(SelectedProduct, LineNumber, SelectedQuantity, SelectedProduct.Price, SelectedOrderLine.Discount);
-        newOrderLine.ReducePrice();
+        OrderLine newOrderLine = new(SelectedProduct, LineNumber, SelectedQuantity, SelectedProduct.Price, 0);
+
         // Add the new OrderLine to the collection
         _orderLines.Add(newOrderLine);
         OrderLines?.Add(newOrderLine);
 
         // Update the OrderTotal
-        OrderTotal = (_orderLines.Sum(ol => ol.Price * ol.Quantity));
+        OrderTotal = (OrderLines?.Sum(ol => ol.Price * ol.Quantity));
+        MessageBox.Show($"{SelectedProduct.Name} added succesfully");
 
         // Nulstil felter
         SelectedProduct = null;

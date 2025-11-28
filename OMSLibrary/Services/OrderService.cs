@@ -1,21 +1,18 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using OrderManagerLibrary.DataAccessNS;
+﻿using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
-using System.Data;
 
 namespace OrderManagerLibrary.Services;
 public class OrderService : IOrderService
 {
-    private readonly DataAccess _db;
+    private readonly DataAccess.DataAccess _db;
     private readonly IRepository<Order> _orderRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<ICollectionType> _collectionRepository;
     private readonly IRepository<INote> _noteRepository;
 
-    public OrderService(DataAccess dataAccess, IRepository<Order> orderRepository,
+    public OrderService(DataAccess.DataAccess dataAccess, IRepository<Order> orderRepository,
                         IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
                         IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
     {

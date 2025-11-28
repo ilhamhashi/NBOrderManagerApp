@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using OrderManagerLibrary.DataAccessNS;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
@@ -17,7 +17,7 @@ public sealed class CustomerRepositoryTests
     public void Setup()
     {
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        _db = new DataAccess(_config);
+        _db = new DataAccess.DataAccess(_config);
         _customerRepository = new CustomerRepository(_db);
     }
 
