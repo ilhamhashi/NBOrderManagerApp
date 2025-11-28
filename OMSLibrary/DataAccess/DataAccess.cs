@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace OrderManagerLibrary.DataAccessNS;
+namespace OrderManagerLibrary.DataAccess;
 public class DataAccess : IDataAccess
 {
     private readonly IConfiguration _config;

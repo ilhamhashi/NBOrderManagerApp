@@ -15,6 +15,7 @@ public class NewOrderViewModel : ViewModel
 	private ICustomer selectedCustomer;
 	private IPaymentMethod? selectedPaymentMethod;
     private OrderStatus orderStatus;
+    private int lineNumber;
     private OrderLine selectedOrderLine;
     private string noteText;
     private DateTime collectionDateTime;
@@ -70,6 +71,11 @@ public class NewOrderViewModel : ViewModel
     {
         get { return orderStatus; }
         set { orderStatus = value; }
+    }
+    public int LineNumber
+    {
+        get { return lineNumber; }
+        set { lineNumber = value; }
     }
     public OrderLine SelectedOrderLine
     {
@@ -136,19 +142,22 @@ public class NewOrderViewModel : ViewModel
         MessageBox.Show($"Order {newOrder.OrderId} has been saved succesfully");
 
         //Nulstil felter
+        OrderLines.Clear();
     }
 
     private void AddProductToOrder()
     {
+        LineNumber = OrderLines.Count() + 1;
         // Create a new OrderLine
-        OrderLine newOrderLine = new(SelectedProduct, SelectedQuantity, SelectedProduct.Price, SelectedOrderLine.Discount);
-        newOrderLine.ReducePrice();
+        OrderLine newOrderLine = new(SelectedProduct, LineNumber, SelectedQuantity, SelectedProduct.Price, 0);
+
         // Add the new OrderLine to the collection
         _orderLines.Add(newOrderLine);
         OrderLines?.Add(newOrderLine);
 
         // Update the OrderTotal
-        OrderTotal = (_orderLines.Sum(ol => ol.Price * ol.Quantity));
+        OrderTotal = (OrderLines?.Sum(ol => ol.Price * ol.Quantity));
+        MessageBox.Show($"{SelectedProduct.Name} added succesfully");
 
         // Nulstil felter
         SelectedProduct = null;

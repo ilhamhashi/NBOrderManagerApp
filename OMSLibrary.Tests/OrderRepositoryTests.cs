@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OrderManagerLibrary.DataAccessNS;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
@@ -16,7 +16,7 @@ public sealed class OrderRepositoryTests
     public void Setup()
     {
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        _db = new DataAccess(_config);
+        _db = new DataAccess.DataAccess(_config);
         _orderRepository = new OrderRepository(_db);
     }
 
@@ -79,10 +79,9 @@ public sealed class OrderRepositoryTests
         int orderId = _orderRepository.Insert(order);
 
         // Act
-        _orderRepository.GetById(orderId);
+        var retrievedOrder = _orderRepository.GetById(orderId);
 
         // Assert
-        var retrievedOrder = _orderRepository.GetById(orderId);
         Assert.IsNotNull(retrievedOrder);
         Assert.AreEqual(retrievedOrder.OrderDate.ToString(), order.OrderDate.ToString());
         Assert.AreEqual(retrievedOrder.Status, order.Status);
