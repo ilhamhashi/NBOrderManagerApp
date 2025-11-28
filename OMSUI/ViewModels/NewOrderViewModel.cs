@@ -123,9 +123,23 @@ public class NewOrderViewModel : ViewModel
 		set { outstandingAmount = value; }
 	}
 
-    public NewOrderViewModel(IOrderService orderservice)
+    private INavigationService _navigation;
+    public INavigationService Navigation
+    {
+        get => _navigation;
+        set
+        {
+            _navigation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public NewOrderViewModel(IOrderService orderservice, INavigationService navigationService)
     {
         _orderservice = orderservice;
+        Navigation = navigationService;
+
+
     }
 
     private void AddNewOrder()

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OrderManagerDesktopUI.Core;
 using OrderManagerDesktopUI.ViewModels;
 using OrderManagerDesktopUI.Views;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
@@ -33,6 +34,7 @@ namespace OrderManagerDesktopUI
             services.AddSingleton<NewOrderViewModel>();
             services.AddSingleton<INavigationService, NavigationService>();
 
+            services.AddScoped<IDataAccess, DataAccess>(); // Tilføjet af Naimo: Var ikke registreret før i IServiceCollection
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
             services.AddScoped<IRepository<Delivery>,  DeliveryRepository>();
             services.AddScoped<IRepository<MobilePayment>, MobilePaymentRepository>();

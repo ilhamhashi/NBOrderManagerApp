@@ -34,8 +34,23 @@
                 
                 <!-- Menu -->
                 <StackPanel Grid.Column="0" Grid.Row="1">
+                    <RadioButton Height="30" Content="Bogga Hore"
+                                 Command="{Binding NavigateToHomeCommand}"/>
+                    
                     <RadioButton Height="30" Content="Amar Cusub"
                                  Command="{Binding NavigateToNewOrderCommand}"/>
+
+                    <RadioButton Height="30" Content="Amarro"
+                                 Command="{Binding NavigateToOrdersCommand}"/>
+
+                    <RadioButton Height="30" Content="Alaabooyin"
+                                 Command="{Binding NavigateToProductsCommand}"/>
+
+                    <RadioButton Height="30" Content="Macaamiil"
+                                 Command="{Binding NavigateToCustomersCommand}"/>
+
+                    <RadioButton Height="30" Content="Xogta Iibka"
+                                 Command="{Binding NavigateToSalesDataCommand}"/>
                 </StackPanel>
             </Grid>
 
