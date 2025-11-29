@@ -5,16 +5,16 @@ using OrderManagerLibrary.Model.Interfaces;
 namespace OrderManagerLibrary.Services;
 public class OrderService : IOrderService
 {
-    private readonly DataAccess.DataAccess _db;
+    private readonly IDataAccess _db;
     private readonly IRepository<Order> _orderRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
-    private readonly IRepository<ICollectionType> _collectionRepository;
-    private readonly IRepository<INote> _noteRepository;
+    private readonly IRepository<Delivery> _collectionRepository;
+    private readonly IRepository<Note> _noteRepository;
 
-    public OrderService(DataAccess.DataAccess dataAccess, IRepository<Order> orderRepository,
+    public OrderService(IDataAccess dataAccess, IRepository<Order> orderRepository,
                         IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
-                        IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
+                        IRepository<Delivery> collectionRepository, IRepository<Note> noteRepository)
     {
         _db = dataAccess;
         _orderRepository = orderRepository;
@@ -52,10 +52,10 @@ public class OrderService : IOrderService
                 }
 
                 collection.OrderId = order.OrderId;
-                _collectionRepository.Insert(collection);
+                //_collectionRepository.Insert(collection);
 
                 note.OrderId = note.OrderId;
-                _noteRepository.Insert(note);
+                //_noteRepository.Insert(note);
 
                 // Commit transaction
                 transaction.Commit();

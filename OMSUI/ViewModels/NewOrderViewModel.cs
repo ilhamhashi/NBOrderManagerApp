@@ -36,7 +36,7 @@ public class NewOrderViewModel : ViewModel
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
     public ICommand AddToOrderCommand => new RelayCommand(execute => AddProductToOrder(), canExecute => CanAddToOrder());
-
+    public ICommand NavigateToNewOrderRegistrationCommand { get; set; }
     // Navigation Commands - to be implemented
     //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
     //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
@@ -133,12 +133,13 @@ public class NewOrderViewModel : ViewModel
             OnPropertyChanged();
         }
     }
-
-    public NewOrderViewModel(IOrderService orderservice, INavigationService navigationService)
+    public NewOrderViewModel(IOrderService orderService, INavigationService navigationService)
     {
-        _orderservice = orderservice;
+        _orderservice = orderService;
         Navigation = navigationService;
-
+        Navigation.NavigateToNested<NewOrderProductsViewModel>();
+        NavigateToNewOrderRegistrationCommand = new RelayCommand(
+            execute => { Navigation.NavigateToNested<NewOrderDetailsViewModel>(); }, canExecute => true);
 
     }
 
