@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
         xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels"
         mc:Ignorable="d"
-        Height="425" Width="625"
-             Background="AliceBlue">
+        d:DesignHeight="450" d:DesignWidth="800"
+        Background="DarkGray">
 
     <Grid>
         <!-- Definerer kolonner -->
@@ -15,6 +15,9 @@
             <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
+
+        <ContentControl Grid.Column="0"
+                        Content="{Binding Navigation.CurrentNestedView}"/>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -101,9 +104,8 @@
 
             <!-- Continue Button -->
             <Button Grid.Row="3" 
-                    Content="Sii Soco"
-                    Command="{Binding NewOrderRegistrationCommand, 
-                    UpdateSourceTrigger=PropertyChanged}"
+                    Content="Continue to registration"
+                    Command="{Binding NavigateToNewOrderRegistrationCommand}"
                     Padding="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>

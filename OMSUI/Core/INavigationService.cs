@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OrderManagerDesktopUI.ViewModels;
-
-namespace OrderManagerDesktopUI.Core
+﻿namespace OrderManagerDesktopUI.Core;
+public interface INavigationService
 {
-    public interface INavigationService
-    {
-        public ViewModel CurrentView { get; set; }
-        public void NavigateTo<T>() where T : ViewModel;
-    }
+    ViewModel CurrentNestedView { get; }
+    ViewModel CurrentView { get; }
+    void NavigateTo<T>() where T : ViewModel;
+    void NavigateToNested<T>() where T : ViewModel;
 }

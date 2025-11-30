@@ -10,6 +10,7 @@ using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services;
 using System.Data;
+using System.IO;
 using System.Windows;
 
 namespace OrderManagerDesktopUI
@@ -27,14 +28,26 @@ namespace OrderManagerDesktopUI
 
             services.AddSingleton<MainWindow>(provider => new MainWindow
             {
-                DataContext = provider.GetRequiredService<MainWindowViewModel>()
+                DataContext = provider.GetRequiredService<MainViewModel>()
             });
 
-            services.AddSingleton<MainWindowViewModel>();
-            services.AddSingleton<NewOrderViewModel>();
-            services.AddSingleton<INavigationService, NavigationService>();
+            IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false)
+                .Build();
 
-            services.AddScoped<IDataAccess, DataAccess>(); // Tilføjet af Naimo: Var ikke registreret før i IServiceCollection
+            services.AddSingleton<IConfiguration>(config);
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<HomeViewModel>();
+            services.AddScoped<NewOrderViewModel>();
+            services.AddScoped<NewOrderProductsViewModel>();
+            services.AddScoped<NewOrderDetailsViewModel>();
+            services.AddSingleton<OrdersViewModel>();
+            services.AddSingleton<ProductsViewModel>();
+            services.AddSingleton<CustomersViewModel>();
+            services.AddSingleton<SalesDataViewModel>();
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddScoped<IDataAccess, DataAccess>();
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
             services.AddScoped<IRepository<Delivery>,  DeliveryRepository>();
             services.AddScoped<IRepository<MobilePayment>, MobilePaymentRepository>();
