@@ -1,20 +1,22 @@
 ﻿using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Model.Repositories;
 
 namespace OrderManagerLibrary.Services;
 public class OrderService : IOrderService
 {
     private readonly IDataAccess _db;
     private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<Product> _productRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<Delivery> _collectionRepository;
     private readonly IRepository<Note> _noteRepository;
 
     public OrderService(IDataAccess dataAccess, IRepository<Order> orderRepository,
-                        IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
-                        IRepository<Delivery> collectionRepository, IRepository<Note> noteRepository)
+                        IRepository<OrderLine> orderLineRepository,  IRepository<Payment> paymentRepository,
+                        IRepository<Delivery> collectionRepository, IRepository<Note> noteRepository, IRepository<Product> productRepository)
     {
         _db = dataAccess;
         _orderRepository = orderRepository;
@@ -22,6 +24,7 @@ public class OrderService : IOrderService
         _paymentRepository = paymentRepository;
         _collectionRepository = collectionRepository;
         _noteRepository = noteRepository;
+        _productRepository = productRepository;
     }
 
     public void CreateOrder(Order order, List<OrderLine> orderLines,
@@ -67,5 +70,9 @@ public class OrderService : IOrderService
                 throw; // Re-throw exception to handle it upstream
             }
         }
+    }
+    public IEnumerable<Product> ViewProductCatalogue()
+    {
+        return _productRepository.GetAll();
     }
 }

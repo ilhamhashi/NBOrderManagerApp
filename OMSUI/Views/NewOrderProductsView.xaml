@@ -9,44 +9,42 @@
              d:DesignHeight="425" d:DesignWidth="510"
              Background="AliceBlue">
     <Grid>
-        <DataGrid Grid.Row="1"
-          Height="350"
-          VerticalAlignment="Top"
-          ItemsSource="{Binding Products, UpdateSourceTrigger=PropertyChanged}"
-          Margin="0 0 0 20"
-          AutoGenerateColumns="False"
-          CanUserAddRows="False"
-          CanUserDeleteRows="False"
-          CanUserReorderColumns="False">
-            <DataGrid.Columns>
-                <!-- Product ID -->
-                <DataGridTextColumn Header="No."
-                            Binding="{Binding ProductId, 
-                            UpdateSourceTrigger=PropertyChanged}"
-                            Width="50"/>
+        <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NewOrderView}}">
+            <DataGrid Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  VerticalAlignment="Top"
+                  ItemsSource="{Binding DataContext.Products, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding DataContext.SelectedProduct, UpdateSourceTrigger=PropertyChanged}">
+                <DataGrid.Columns>
+                    <!-- Product ID -->
+                    <DataGridTextColumn Header="No."
+                    Binding="{Binding ProductId, UpdateSourceTrigger=PropertyChanged}"
+                    Width="50"/>
 
-                <!-- Product Name -->
-                <DataGridTextColumn Header="Magac"
-                            Binding="{Binding Name, 
-                            UpdateSourceTrigger=PropertyChanged}"
-                            Width="200"/>
-                
-                <!-- Product Price -->
-                <DataGridTextColumn Header="Qiimo"
-                            Binding="{Binding Price, 
-                            UpdateSourceTrigger=PropertyChanged}"
-                            Width="200"/>
+                    <!-- Product Name -->
+                    <DataGridTextColumn Header="Magac"
+                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                    Width="200"/>
 
-                <!-- Add Button -->
-                <DataGridTemplateColumn Width="70">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Ku dar"
-                            Command="{Binding AddToOrderCommand}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                    <!-- Product Price -->
+                    <DataGridTextColumn Header="Qiimo"
+                    Binding="{Binding Price, UpdateSourceTrigger=PropertyChanged}"
+                    Width="200"/>
+
+                    <!-- Add Button -->
+                    <DataGridTemplateColumn Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Ku dar"
+                            Command="{Binding Path=DataContext.AddToOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NewOrderView}}"
+                            CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label Content="{Binding DataContext.SelectedProduct.Name}"
+               FontSize="24"/>
+        </StackPanel>
     </Grid>
 </UserControl>
