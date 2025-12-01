@@ -39,7 +39,7 @@ public class NewOrderViewModel : ViewModel
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
     public ICommand AddToOrderCommand {  get; private set; }
-    public ICommand NavigateToNewOrderRegistrationCommand { get; set; }
+    public ICommand NavigateToNewOrderRegistrationCommand { get; private set; }
     // Navigation Commands - to be implemented
     //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
     //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());

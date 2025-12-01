@@ -31,6 +31,7 @@ public class MainViewModel : ViewModel
     {
         Navigation = navigationService;
         Navigation.NavigateTo<HomeViewModel>();
+
         NavigateToNewOrderCommand = new RelayCommand(
             execute => { Navigation.NavigateTo<NewOrderViewModel>(); }, canExecute => true);
         NavigateToOrdersCommand = new RelayCommand(
