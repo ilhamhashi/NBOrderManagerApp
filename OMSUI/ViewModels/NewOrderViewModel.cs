@@ -3,7 +3,9 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Services;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
@@ -17,7 +19,7 @@ public class NewOrderViewModel : ViewModel
     private OrderStatus orderStatus;
     private int lineNumber;
     private OrderLine selectedOrderLine;
-    private string noteText;
+    private string noteText = "newordervm";
     private DateTime collectionDateTime;
     private string collectionNeighborhood;    
     private decimal paymentAmount;	
@@ -30,13 +32,14 @@ public class NewOrderViewModel : ViewModel
     private List<IPaymentMethod>? _paymentMethods {  get; set; } = [];
     private List<Payment>? _payments { get; set; } = [];
     private List<OrderLine> _orderLines { get; set; }
-    public ObservableCollection<OrderLine>? OrderLines { get; set; }    
-    public ObservableCollection<Product>? Products;
+    public ObservableCollection<OrderLine>? OrderLines { get; set; } = []; 
+    public ObservableCollection<Product>? Products { get; set; }
+    public static ICollectionView? ProductsCollectionView { get; set; }
 
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
-    public ICommand AddToOrderCommand => new RelayCommand(execute => AddProductToOrder(), canExecute => CanAddToOrder());
-
+    public ICommand AddToOrderCommand {  get; private set; }
+    public ICommand NavigateToNewOrderRegistrationCommand { get; private set; }
     // Navigation Commands - to be implemented
     //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
     //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
@@ -47,7 +50,7 @@ public class NewOrderViewModel : ViewModel
     private bool CanCancelNewOrder() => true; // Placeholder for actual logic
     private bool CanContinueToPayment() => true; // Placeholder for actual logic
     private bool CanGoBackToOrderDetails() => true; // Placeholder for actual logic
-    private bool CanAddToOrder() => SelectedQuantity > 1 && SelectedProduct != null;
+    private bool CanAddToOrder() => true;
     private bool CanSelectProduct() => true; // Placeholder for actual logic
     private bool CanAddPaymentToOrder() => SelectedPaymentMethod != null && PaymentAmount > 0;
 
@@ -55,77 +58,96 @@ public class NewOrderViewModel : ViewModel
     public Product? SelectedProduct
     {
         get { return selectedProduct; }
-        set { selectedProduct = value; }
+        set { selectedProduct = value; OnPropertyChanged(); }
     }
      public ICustomer SelectedCustomer
     {
         get { return selectedCustomer; }
-        set { selectedCustomer = value; }
+        set { selectedCustomer = value; OnPropertyChanged(); }
     }
 	public IPaymentMethod? SelectedPaymentMethod
 	{
 		get { return selectedPaymentMethod; }
-		set { selectedPaymentMethod = value; }
+		set { selectedPaymentMethod = value; OnPropertyChanged(); }
 	}
     public OrderStatus OrderStatus
     {
         get { return orderStatus; }
-        set { orderStatus = value; }
+        set { orderStatus = value; OnPropertyChanged(); }
     }
     public int LineNumber
     {
         get { return lineNumber; }
-        set { lineNumber = value; }
+        set { lineNumber = value; OnPropertyChanged(); }
     }
     public OrderLine SelectedOrderLine
     {
         get { return selectedOrderLine; }
-        set { selectedOrderLine = value; }
+        set { selectedOrderLine = value; OnPropertyChanged(); }
     }
     public string NoteText
     {
         get { return noteText; }
-        set { noteText = value; }
+        set { noteText = value; OnPropertyChanged(); }
     }
     public DateTime CollectionDateTime
     {
         get { return collectionDateTime; }
-        set { collectionDateTime = value; }
+        set { collectionDateTime = value; OnPropertyChanged(); }
     }
     public string CollectionNeighborhood
     {
         get { return collectionNeighborhood; }
-        set { collectionNeighborhood = value; }
+        set { collectionNeighborhood = value; OnPropertyChanged(); }
     }
     public decimal PaymentAmount
 	{
 		get { return paymentAmount; }
-		set { paymentAmount = value; }
+		set { paymentAmount = value; OnPropertyChanged(); }
 	}
 	public int SelectedQuantity
     {
         get { return selectedQuantity; }
-        set { selectedQuantity = value; }
+        set { selectedQuantity = value; OnPropertyChanged(); }
     }
     public bool IsDelivery
     {
         get { return isDelivery; }
-        set { isDelivery = value; }
+        set { isDelivery = value; OnPropertyChanged(); }
     }
 	public decimal? OrderTotal
 	{
 		get { return orderTotal; }
-		set { orderTotal = value; }
+		set { orderTotal = value; OnPropertyChanged(); }
 	}
    public decimal OutstandingAmount
 	{
 		get { return outstandingAmount; }
-		set { outstandingAmount = value; }
+		set { outstandingAmount = value; OnPropertyChanged(); }
 	}
 
-    public NewOrderViewModel(IOrderService orderservice)
+    private INavigationService _navigation;
+    public INavigationService Navigation
     {
-        _orderservice = orderservice;
+        get => _navigation;
+        set
+        {
+            _navigation = value;
+            OnPropertyChanged();
+        }
+    }
+    public NewOrderViewModel(IOrderService orderService, INavigationService navigationService)
+    {
+        _orderservice = orderService;
+        Navigation = navigationService;
+        Navigation.NavigateToNested<NewOrderProductsViewModel>();
+        NavigateToNewOrderRegistrationCommand = new RelayCommand(
+            execute => { Navigation.NavigateToNested<NewOrderDetailsViewModel>(); }, canExecute => true);
+
+        Products = new(_orderservice.ViewProductCatalogue());
+        ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);
+
+        AddToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => CanAddToOrder());
     }
 
     private void AddNewOrder()
@@ -145,23 +167,22 @@ public class NewOrderViewModel : ViewModel
         OrderLines.Clear();
     }
 
-    private void AddProductToOrder()
+    private void AddProductToOrder(object rowData)
     {
+        Product product = rowData as Product;
         LineNumber = OrderLines.Count() + 1;
+        
         // Create a new OrderLine
-        OrderLine newOrderLine = new(SelectedProduct, LineNumber, SelectedQuantity, SelectedProduct.Price, 0);
+        OrderLine newOrderLine = new(product, LineNumber, 1, product.Price, 0);
 
         // Add the new OrderLine to the collection
-        _orderLines.Add(newOrderLine);
+        //_orderLines.Add(newOrderLine);
         OrderLines?.Add(newOrderLine);
 
         // Update the OrderTotal
         OrderTotal = (OrderLines?.Sum(ol => ol.Price * ol.Quantity));
-        MessageBox.Show($"{SelectedProduct.Name} added succesfully");
-
         // Nulstil felter
-        SelectedProduct = null;
-        SelectedQuantity = 1;
+
     }
 
     private void AddPaymentToOrder()

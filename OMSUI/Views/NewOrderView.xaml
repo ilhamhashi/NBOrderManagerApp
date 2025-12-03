@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
         xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels"
         mc:Ignorable="d"
-        Height="450" Width="800"
-             Background="AliceBlue">
+        d:DesignHeight="450" d:DesignWidth="800"
+        Background="GhostWhite">
 
     <Grid>
         <!-- Definerer kolonner -->
@@ -16,6 +16,9 @@
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
 
+        <ContentControl Grid.Column="0"
+                        Content="{Binding Navigation.CurrentNestedView}">
+        </ContentControl>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="76*"/>
@@ -27,7 +30,7 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
                     <!-- Header -->
-                    <TextBlock Text="Dalabka"
+                    <TextBlock Text="Order"
                                HorizontalAlignment="Center"
                                FontSize="18"/>
 
@@ -42,31 +45,27 @@
                             <DataTemplate>
                                 <StackPanel Margin="5">
                                     <!-- Product details -->
-                                    <TextBlock>
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0} | {1}, {2}">
-                                                <Binding Path="Product.ProductName"/>
-                                                <Binding Path="Product.Size.Name"/>
-                                                <Binding Path="Product.Flavour.Name"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
+                                    <TextBlock Text="{Binding Product.Name}"
+                                               FontWeight="Bold"/>
 
                                     <!-- Edit Quantity -->
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Tiro: " />
                                         <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
                                     </StackPanel>
-
+                                    
+                                    <!-- Enter Discount -->
                                     <StackPanel Orientation="Horizontal">
-                                        <!-- Enter Discount -->
-                                        <TextBlock Text="Rabat: "
-                                               FontSize="14" Foreground="AliceBlue"/>
-                                        <TextBox Text="{Binding Discount, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <!-- See Price -->
+                                        <TextBlock Text="Rabat: "/>
+                                        <TextBox Text="{Binding Discount, UpdateSourceTrigger=PropertyChanged}"
+                                             Background="Transparent"
+                                             BorderThickness=" 0"/>
+                                    </StackPanel>
+                                    
+                                    <!-- See Price -->
+                                    <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Price: "/>
-                                        <TextBlock Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" 
-                                               Foreground="AliceBlue" FontSize="14"/>
+                                        <TextBlock Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
@@ -94,8 +93,8 @@
 
             <!-- Continue Button -->
             <Button Grid.Row="3" 
-                    Content="Sii Soco"
-                    Command="{Binding NewOrderRegistrationCommand, UpdateSourceTrigger=PropertyChanged}"
+                    Content="Continue to registration"
+                    Command="{Binding NavigateToNewOrderRegistrationCommand}"
                     Padding="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>

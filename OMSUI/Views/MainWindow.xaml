@@ -5,42 +5,78 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
         xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels" xmlns:services="clr-namespace:OrderManagerLibrary.Services"
-        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="810" Width="1200"
+        Background="White">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
+
+        <Grid>
+            <Rectangle Fill="LightGray"/>
+            <Label
+               Content="Naema's Bakery | Order Management System 1.0"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"/>
+        </Grid>
+
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="175"/>
+                <ColumnDefinition Width="70"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions >
-                    <RowDefinition Height="55"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Title -->
-                <TextBlock Text="Naima's Bakery"
-                           FontSize="20" HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-                
                 <!-- Menu -->
                 <StackPanel Grid.Column="0" Grid.Row="1">
-                    <RadioButton Height="30" Content="Amar Cusub"
+                    <RadioButton Height="70" 
+                                 Content="Dashboard"
+                                 Style="{StaticResource MenuButtonTheme}"
+                                 IsChecked="True"
+                                 Command="{Binding NavigateToHomeCommand}"/>
+                    
+                    <RadioButton Height="70" Content="New Order" 
+                                 Style="{StaticResource MenuButtonTheme}"
                                  Command="{Binding NavigateToNewOrderCommand}"/>
+
+                    <RadioButton Height="70" Content="Orders"
+                                 Style="{StaticResource MenuButtonTheme}"
+                                 Command="{Binding NavigateToOrdersCommand}"/>
+
+                    <RadioButton Height="70" Content="Products"
+                                 Style="{StaticResource MenuButtonTheme}"
+                                 Command="{Binding NavigateToProductsCommand}"/>
+
+                    <RadioButton Height="70" Content="Customers"
+                                 Style="{StaticResource MenuButtonTheme}"
+                                 Command="{Binding NavigateToCustomersCommand}"/>
+
+                    <RadioButton Height="70" Content="SalesData"
+                                 Style="{StaticResource MenuButtonTheme}"
+                                 Command="{Binding NavigateToSalesDataCommand}"/>
                 </StackPanel>
             </Grid>
 
             <ContentControl Grid.Column="1"
                             Content="{Binding Navigation.CurrentView}"/>
+        </Grid>
+        
+        <Grid Grid.Row="2">
+            <Rectangle Fill="LightGray"/>
+            <Label
+               Content="Software Inc"
+               HorizontalAlignment="Stretch"
+               HorizontalContentAlignment="Center"
+               VerticalAlignment="Center"/>
         </Grid>
     </Grid>
 </Window>

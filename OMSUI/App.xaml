@@ -6,8 +6,42 @@
              xmlns:view="clr-namespace:OrderManagerDesktopUI.Views">
     
     <Application.Resources>
-        <DataTemplate DataType="{x:Type TypeName=vm:NewOrderViewModel}">
-            <view:NewOrderView/>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/MenuButtonTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:HomeViewModel}">
+                <view:HomeView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:NewOrderViewModel}">
+                <view:NewOrderView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:NewOrderProductsViewModel}">
+                <view:NewOrderProductsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:NewOrderDetailsViewModel}">
+                <view:NewOrderDetailsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:OrdersViewModel}">
+                <view:OrdersView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:ProductsViewModel}">
+                <view:ProductsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:CustomersViewModel}">
+                <view:CustomersView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:SalesDataViewModel}">
+                <view:SalesDataView/>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
