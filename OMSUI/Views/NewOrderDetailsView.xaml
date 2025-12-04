@@ -3,157 +3,107 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
+             xmlns:local="clr-namespace:OrderManagerDesktopUI.Views" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
-    <Grid>
-        <StackPanel Orientation="Vertical"
-                    Width="150">
-            <!-- Header for order details -->
-            <TextBlock Text="Order Details"
-                       FontSize="20" Margin="20"
+             d:DesignHeight="700" d:DesignWidth="1280">
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NewOrderView}}" 
+            HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="40*"/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource whiteBorder}"
+                Margin="0 0 7 0"
+                Background="#d1f0e5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="40*"/>
+                    <RowDefinition Height="60*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header for order details -->
+                <TextBlock Text="Order Details"
+                       FontSize="20"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Top"/>
+                       VerticalAlignment="Center"/>
 
-            <!-- Add a customer to order -->
-            <StackPanel Orientation="Horizontal"
-                        Width="150">
-                <!-- TextBox to select/search customer -->
-                <TextBox HorizontalAlignment="Left"
-                         Width="110"
-                         Text="{Binding SelectedCustomer.PhoneNumber, 
-                                UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- Add a customer to order -->
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0 40 0 0">
+                    <Button Style="{StaticResource addButton}" 
+                            Width="130" Height="25" Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="AccountPlusOutline" Margin="0 0 10 0"/>
+                            <TextBlock Text="Add Customer"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock Text="Customer Fullname" 
+                               HorizontalAlignment="Center" />
+                    <!-- {Binding SelectedCustomer.FullName, UpdateSourceTrigger=PropertyChanged}"-->
+                    <TextBlock Text="Customer PhoneNumber"
+                               HorizontalAlignment="Center" />
+                    <!-- {Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" -->
+                </StackPanel>
 
-                <!-- Save customer chose -->
-                <Button Content="Dooro" Width="40"
-                        Command="{Binding FindCustomerCommand, 
-                                 UpdateSourceTrigger=PropertyChanged}"
-                        HorizontalAlignment="Right"/>
+                <StackPanel Grid.Row="2" HorizontalAlignment="Center" >
+                    <!-- Select Delivery CheckBox -->
+                    <CheckBox Margin="10"
+                   HorizontalAlignment="Center"
+                   Content="Deliver to address"
+                   IsChecked="{Binding Path=IsDelivery, UpdateSourceTrigger=PropertyChanged}"/>
 
-            </StackPanel>
+                    <!-- Delivery Address TextBox -->
+                    <TextBox Margin="10"
+                         Width="200" Height="25"
+                         IsEnabled="{Binding ElementName=DeliveryCheckBox, Path=IsChecked}"
+                         Text="{Binding CollectionNeighborhood, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <!-- Create New Customer Button -->
-            <Button Content="Abuur Macmiil Cusub"
-                    Width="78" FontSize="8"
-                    HorizontalAlignment="Left"
-                    Margin="0 -2 0 0"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding CreateNewCustomerCommand, 
-                             UpdateSourceTrigger=PropertyChanged}"/>
-
-            <!-- <<<Delivery Section>>> -->
-            <StackPanel Orientation="Vertical"
-                        Margin="0 15 0 0">
-
-                <!-- Select Delivery CheckBox -->
-                <CheckBox  Name="DeliveryCheckBox" FontSize="10" 
-                           Content="Gaarsiin"
-                           IsChecked="{Binding Path=IsDelivery,
-                           UpdateSourceTrigger=PropertyChanged}"/>
-
-                <!-- Delivery Address TextBox -->
-                <TextBox HorizontalAlignment="Center"
-                         Width="150" Margin="0 5 0 0"
-                         IsEnabled="{Binding ElementName=DeliveryCheckBox, 
-                         Path=IsChecked}"
-                         Text="{Binding CollectionNeighborhood,
-                         UpdateSourceTrigger=PropertyChanged}"/>
-
-                <!-- Delivery Date -->
-                <!-- Turn PlaceholderText to Somali -->
-                <DatePicker HorizontalAlignment="Center"
-                            Width="150" Height="25"
-                            FontSize="8" Margin="0 5 0 0"
-                            IsEnabled="{Binding ElementName=DeliveryCheckBox, 
-                            Path=IsChecked}"
+                    <!-- Delivery Date -->
+                    <DatePicker Margin="10" 
+                                Grid.Row="4"
+                            Width="200" Height="25"                          
                             SelectedDate="{Binding CollectionDateTime,
                             UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!-- Delivery Time -->
-                <!-- Note to self: Binding!!!! -->
-                <TextBox HorizontalAlignment="Center"
-                         Width="150" Height="17"
-                         Margin="0 5 0 0" FontSize="8"
+                    <!-- Delivery Time -->
+                    <TextBox Margin="10"
+                         Width="200" Height="25"
                          IsEnabled="{Binding ElementName=DeliveryCheckBox, 
                          Path=IsChecked}"
                          Text="{Binding CollectionDateTime,
                          UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-            </StackPanel>
+        <!-- <<<Note Section>>> -->
+        <Border Style="{StaticResource whiteBorder}" 
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="0 15 0 0"
+                Background="#d1f0e5">
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
 
-            <!-- <<<Payment Section>>> -->
-            <!-- Combobox for PaymentMethods -->
-            <ComboBox Margin="0 20 0 0"
-                      Height="17"
-                      ItemsSource="{Binding Path=PaymentMethods}"
-                      DisplayMemberPath="Name"
-                      SelectedItem="{Binding Path=SelectedPaymentMethod,
-                      UpdateSourceTrigger=PropertyChanged}"/>
-
-            <!-- TextBox for Payment Amount -->
-            <StackPanel Orientation="Horizontal">
-                <TextBox HorizontalAlignment="Left"
-                         Width="110" Margin="0 5 0 0"
-                         Text="{Binding PaymentAmount, 
-                         UpdateSourceTrigger=PropertyChanged}"/>
-
-                <!-- Save Button -->
-                <Button Content="Keydi"
-                        Width="40" FontSize="10"
-                        HorizontalAlignment="Right"
-                        Margin="0 5 0 0"
-                        Command="{Binding AddPaymentCommand, 
-                        UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-
-            <!-- Cancel Delivery Button -->
-            <Button Content="Ka noqo"
-                    Width="31" FontSize="8"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding CancelPaymentCommand,
-                    UpdateSourceTrigger=PropertyChanged}"/>
-
-            <!-- Remaining Amount -->
-            <TextBlock Text="Haraadi: "
-                       FontSize="10"
-                       HorizontalAlignment="Center"
-                       Margin="0 20 0 0"/>
-            <TextBox Text="{Binding OutstandingAmount, 
-                     UpdateSourceTrigger=PropertyChanged}"
-                     FontSize="10" Width="Auto"
-                     BorderThickness="0"
-                     HorizontalAlignment="Center"/>
-        </StackPanel>
-
-        <!-- Button: Go Back -->
-        <Button Content="Ka noqo"
-                Width="60" Height="25"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Margin="20 0 0 20"
-                Command="{Binding GoBackToOrderDetailsCommand,
-                UpdateSourceTrigger=PropertyChanged}"/>
-
-        <!-- Button: Create Order -->
-        <Button Content="Abuur Dalabka"
-                Width="100" Height="25"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Margin="0 0 0 20"
-                Command="{Binding CreateOrderCommand,
-                UpdateSourceTrigger=PropertyChanged}"/>
-
-        <!-- Button: Cancel -->
-        <Button Content="Jooji"
-                Width="60" Height="25"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0 0 20 20"
-                Command="{Binding CancelNewOrderCommand,
-                UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- Header for order details -->
+                <TextBlock Text="Notes"
+                       FontSize="20"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

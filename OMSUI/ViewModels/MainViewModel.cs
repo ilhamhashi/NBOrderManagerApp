@@ -1,4 +1,6 @@
 ﻿using OrderManagerDesktopUI.Core;
+using System.Windows;
+using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
 public class MainViewModel : ViewModel
@@ -27,8 +29,31 @@ public class MainViewModel : ViewModel
     public RelayCommand NavigateToSalesDataCommand { get; set; }
     public RelayCommand NavigateToHomeCommand { get; set; }
 
+    public ICommand CloseCommand { get; }
+    public ICommand MaximizeCommand { get; }
+    public ICommand MinimizeCommand { get; }
+
+
     public MainViewModel(INavigationService navigationService)
     {
+        // Window control commands -> Luk, maksimer, minimer
+        CloseCommand = new RelayCommand(o =>
+        {
+            Application.Current.Shutdown();
+        });
+
+        MaximizeCommand = new RelayCommand(o =>
+        {
+            var window = Application.Current.MainWindow;
+            window.WindowState = window.WindowState == WindowState.Normal
+                ? WindowState.Maximized
+                : WindowState.Normal;
+        });
+
+        MinimizeCommand = new RelayCommand(o =>
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        });
         Navigation = navigationService;
         Navigation.NavigateTo<HomeViewModel>();
 

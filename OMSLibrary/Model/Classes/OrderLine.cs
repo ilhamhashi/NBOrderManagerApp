@@ -2,7 +2,6 @@
 public class OrderLine
 {
     public Product Product { get; set; }
-    public int ProductId { get; set; }
     public int OrderId { get; set; }
     public int LineNumber { get; set; }
     public int Quantity { get; set; }
@@ -11,7 +10,7 @@ public class OrderLine
 
     public OrderLine(int productId, int orderId, int lineNumber, int quantity, decimal price, decimal discount)
     {
-        ProductId = productId;
+        Product.Id = productId;
         OrderId = orderId;
         LineNumber = lineNumber;        
         Quantity = quantity;

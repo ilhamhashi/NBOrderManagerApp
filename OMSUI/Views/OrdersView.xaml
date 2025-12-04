@@ -5,12 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Background="DarkGray">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label Content="ORDERSVIEW"
-               FontSize="30"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60*"/>
+                <RowDefinition Height="40*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 7">
+                    <StackPanel>
+                        <TextBlock Text="filter by" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock Text="orderlist" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Border Style="{StaticResource whiteBorder}" Margin="15 7 0 0">
+                    <StackPanel>
+                        <TextBlock Text="selectedOrder details (orderlines)" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
