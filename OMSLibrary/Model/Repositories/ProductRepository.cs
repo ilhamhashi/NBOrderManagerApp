@@ -42,7 +42,7 @@ public class ProductRepository : IRepository<Product>
         using (SqlCommand command = new SqlCommand("spProduct_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", entity.ProductId);
+            command.Parameters.AddWithValue("@ProductId", entity.Id);
             command.Parameters.AddWithValue("@Name", entity.Name);
             command.Parameters.AddWithValue("@Description", entity.Description);
             command.Parameters.AddWithValue("@Price", entity.Price);

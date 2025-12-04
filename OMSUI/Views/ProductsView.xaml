@@ -5,10 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Background="DarkGray">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="{Binding NoteText, UpdateSourceTrigger=PropertyChanged}"
-                   FontSize="40"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.RowSpan="2">
+            <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 0">
+                <StackPanel>
+                    <TextBlock Text="filter by" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Text="productlist" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 7">
+                <TextBlock Text="create product" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Border Style="{StaticResource whiteBorder}" Margin="15 7 0 0">
+                <TextBlock Text="edit product" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

@@ -39,7 +39,8 @@ public class NewOrderViewModel : ViewModel
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
     public ICommand AddToOrderCommand {  get; private set; }
-    public ICommand NavigateToNewOrderRegistrationCommand { get; private set; }
+    public ICommand NavigateToNewOrderDetailsCommand { get; private set; }
+    public ICommand NavigateToNewOrderProductsCommand { get; private set; }
     // Navigation Commands - to be implemented
     //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
     //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
@@ -141,12 +142,13 @@ public class NewOrderViewModel : ViewModel
         _orderservice = orderService;
         Navigation = navigationService;
         Navigation.NavigateToNested<NewOrderProductsViewModel>();
-        NavigateToNewOrderRegistrationCommand = new RelayCommand(
+        NavigateToNewOrderDetailsCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<NewOrderDetailsViewModel>(); }, canExecute => true);
+        NavigateToNewOrderProductsCommand = new RelayCommand(
+            execute => { Navigation.NavigateToNested<NewOrderProductsViewModel>(); }, canExecute => true);  
 
         Products = new(_orderservice.ViewProductCatalogue());
         ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);
-
         AddToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => CanAddToOrder());
     }
 
