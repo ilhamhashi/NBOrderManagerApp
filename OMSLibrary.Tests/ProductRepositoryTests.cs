@@ -27,10 +27,10 @@ public sealed class ProductRepositoryTests
         var product = new Product("test","test",10);
 
         // Act
-        product.ProductId = _productRepository.Insert(product);
+        product.Id = _productRepository.Insert(product);
 
         // Assert
-        var retrievedProduct = _productRepository.GetById(product.ProductId);
+        var retrievedProduct = _productRepository.GetById(product.Id);
         Assert.IsNotNull(retrievedProduct);
         Assert.AreEqual(product.Name, retrievedProduct.Name);
         Assert.AreEqual(product.Description, retrievedProduct.Description);

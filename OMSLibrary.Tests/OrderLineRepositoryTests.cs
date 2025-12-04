@@ -31,9 +31,9 @@ public sealed class OrderLineRepositoryTests
         _orderLineRepository.Insert(orderLine);
 
         // Assert
-        var retrievedOrderLine = _orderLineRepository.GetById(orderLine.ProductId, orderLine.OrderId);
+        var retrievedOrderLine = _orderLineRepository.GetById(orderLine.Product.Id, orderLine.OrderId);
         Assert.IsNotNull(retrievedOrderLine);
-        Assert.AreEqual(orderLine.ProductId, retrievedOrderLine.ProductId);
+        Assert.AreEqual(orderLine.Product.Id, retrievedOrderLine.Product.Id);
         Assert.AreEqual(orderLine.OrderId, retrievedOrderLine.OrderId);
         Assert.AreEqual(orderLine.Quantity, retrievedOrderLine.Quantity);
         Assert.AreEqual(orderLine.Price, retrievedOrderLine.Price);

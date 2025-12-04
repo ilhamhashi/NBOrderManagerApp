@@ -19,7 +19,7 @@ public class OrderLineRepository : IRepository<OrderLine>
         using (SqlCommand command = new SqlCommand("spOrderLine_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", entity.ProductId);
+            command.Parameters.AddWithValue("@ProductId", entity.Product.Id);
             command.Parameters.AddWithValue("@OrderId", entity.OrderId);
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
@@ -36,7 +36,7 @@ public class OrderLineRepository : IRepository<OrderLine>
         using (SqlCommand command = new SqlCommand("spOrderLine_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", entity.ProductId);
+            command.Parameters.AddWithValue("@ProductId", entity.Product.Id);
             command.Parameters.AddWithValue("@OrderId", entity.OrderId);
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
