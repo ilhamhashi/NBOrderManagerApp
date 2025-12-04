@@ -22,8 +22,16 @@
                 <view:NewOrderView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=vm:NewOrderProductsViewModel}">
-                <view:NewOrderProductsView/>
+            <DataTemplate DataType="{x:Type TypeName=vm:NoteViewModel}">
+                <view:NoteView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type TypeName=vm:DeliveryViewModel}">
+                <view:DeliveryView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type TypeName=vm:PaymentViewModel}">
+                <view:PaymentView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TypeName=vm:NewOrderDetailsViewModel}">

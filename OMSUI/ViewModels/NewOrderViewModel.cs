@@ -19,7 +19,7 @@ public class NewOrderViewModel : ViewModel
     private OrderStatus orderStatus;
     private int lineNumber;
     private OrderLine selectedOrderLine;
-    private string noteText = "newordervm";
+    private string noteText;
     private DateTime collectionDateTime;
     private string collectionNeighborhood;    
     private decimal paymentAmount;	
@@ -41,6 +41,9 @@ public class NewOrderViewModel : ViewModel
     public ICommand AddToOrderCommand {  get; private set; }
     public ICommand NavigateToNewOrderDetailsCommand { get; private set; }
     public ICommand NavigateToNewOrderProductsCommand { get; private set; }
+    public ICommand NavigateToNoteViewCommand { get; private set; }
+    public ICommand NavigateToPaymentViewCommand { get; private set; }
+    public ICommand NavigateToDeliveryViewCommand { get; private set; }
     // Navigation Commands - to be implemented
     //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
     //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
@@ -141,11 +144,19 @@ public class NewOrderViewModel : ViewModel
     {
         _orderservice = orderService;
         Navigation = navigationService;
-        Navigation.NavigateToNested<NewOrderProductsViewModel>();
+        Navigation.NavigateToNested<NoteViewModel>();
         NavigateToNewOrderDetailsCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<NewOrderDetailsViewModel>(); }, canExecute => true);
         NavigateToNewOrderProductsCommand = new RelayCommand(
-            execute => { Navigation.NavigateToNested<NewOrderProductsViewModel>(); }, canExecute => true);  
+            execute => { Navigation.NavigateToNested<NewOrderProductsViewModel>(); }, canExecute => true);
+        NavigateToNoteViewCommand = new RelayCommand(
+    execute => { Navigation.NavigateToNested<NoteViewModel>(); }, canExecute => true);
+        NavigateToDeliveryViewCommand = new RelayCommand(
+execute => { Navigation.NavigateToNested<DeliveryViewModel>(); }, canExecute => true);
+
+        NavigateToPaymentViewCommand = new RelayCommand(
+execute => { Navigation.NavigateToNested<PaymentViewModel>(); }, canExecute => true);
+
 
         Products = new(_orderservice.ViewProductCatalogue());
         ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);

@@ -40,6 +40,9 @@ namespace OrderManagerDesktopUI
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<HomeViewModel>();
             services.AddScoped<NewOrderViewModel>();
+            services.AddScoped<NoteViewModel>();
+            services.AddScoped<DeliveryViewModel>();
+            services.AddScoped<PaymentViewModel>();
             services.AddScoped<NewOrderProductsViewModel>();
             services.AddScoped<NewOrderDetailsViewModel>();
             services.AddSingleton<OrdersViewModel>();

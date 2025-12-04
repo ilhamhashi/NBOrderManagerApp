@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NewOrderView}}">
+        <TextBox Grid.Row=" 0" Grid.Column=" 0" Text="{Binding DataContext.NoteText, UpdateSourceTrigger=PropertyChanged}" 
+                     TextWrapping="Wrap" AcceptsReturn="True"/>
     </Grid>
 </UserControl>

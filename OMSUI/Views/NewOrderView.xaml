@@ -18,8 +18,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="70*"/>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="22*"/>
+            <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
 
 
@@ -82,42 +81,53 @@
             </DataGrid>
         </Border>
 
-        <Border Grid.Row="1" Style="{StaticResource whiteBorder}" Margin="15 7 15 7">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Add" 
+        <Border Grid.Row="1" Style="{StaticResource whiteBorder}" Margin="15 7 15 0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20*" />
+                    <RowDefinition Height="80*" />
+                </Grid.RowDefinitions>
+                
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                    <TextBlock Text="Add" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Left"
                    FontWeight="Medium"
-                   Margin="15 0 20 0"/>
-                <!-- Add Note -->
-                <Button Style="{StaticResource addButton}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Note"/>
-                    </StackPanel>
-                </Button>
-                <!-- Add Discount -->
-                <Button Style="{StaticResource addButton}" >
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Discount"/>
-                    </StackPanel>
-                </Button>
-                <!-- Add Delivery -->
-                <Button Style="{StaticResource addButton}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Delivery"/>
-                    </StackPanel>
-                </Button>
-                <!-- Add Payment -->
-                <Button Style="{StaticResource addButton}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Payment"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Border>
+                   Margin="15 0 40 0"/>
+                    <!-- Add Note -->
+                    <Button Style="{StaticResource addButton}"
+                            Command="{Binding NavigateToNoteViewCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Note"/>
+                        </StackPanel>
+                    </Button>
+                    <!-- Add Discount -->
+                    <Button Style="{StaticResource addButton}" 
+                            Command="{Binding NavigateToDiscountViewCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Discount"/>
+                        </StackPanel>
+                    </Button>
+                    <!-- Add Delivery -->
+                    <Button Style="{StaticResource addButton}"
+                            Command="{Binding NavigateToDeliveryViewCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Delivery"/>
+                        </StackPanel>
+                    </Button>
+                    <!-- Add Payment -->
+                    <Button Style="{StaticResource addButton}"
+                            Command="{Binding NavigateToPaymentViewCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Payment"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
 
-        <ContentControl Grid.Row="2" Content="{Binding Navigation.CurrentNestedView}"
-                             Margin="15 7 15 0"/>
+                <ContentControl Grid.Row="1" Content="{Binding Navigation.CurrentNestedView}"
+                                Margin="15 7 15 0"/>
+            </Grid>
+        </Border>
 
         <Grid Grid.Column="1" Grid.RowSpan="3">
             <Grid.RowDefinitions>
@@ -132,9 +142,9 @@
                     <!-- Header -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Customer FullName" FontWeight="Medium" FontSize="11"/>
-                            <!-- {Binding SelectedCustomer.FullName, UpdateSourceTrigger=PropertyChanged}"-->
-                            <TextBlock Text="Customer PhoneNumber" FontWeight="Medium" FontSize="11"/>
+                            <TextBlock Text="FirstName" FontWeight="Medium" FontSize="11"/>
+                            <!-- {Binding SelectedCustomer.FirstName, UpdateSourceTrigger=PropertyChanged}"-->
+                            <TextBlock Text="PhoneNumber" FontWeight="Medium" FontSize="11"/>
                             <!-- {Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" -->
                         </StackPanel>
                         <Button Style="{StaticResource addButton}" 
@@ -144,7 +154,6 @@
                                 <TextBlock Text="Add Customer"/>
                             </StackPanel>
                         </Button>
-
                     </StackPanel>
                 </Grid>
             </Border>
@@ -228,7 +237,7 @@
             <Button Grid.Row="4"
                     Width="100"
                     Content="Cancel"
-                    Command="{Binding NavigateToNewOrderProductsCommand, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding NavigateToNewOrderProductsCommand}"
                     Padding="5"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"/>
@@ -237,7 +246,7 @@
             <Button Grid.Row="4"
                     Width="100"
                     Content="Place Order"
-                    Command="{Binding NavigateToNewOrderDetailsCommand, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding NavigateToNewOrderDetailsCommand}"
                     Padding="5"
                     HorizontalAlignment="Right"
                 VerticalAlignment="Center"/>
