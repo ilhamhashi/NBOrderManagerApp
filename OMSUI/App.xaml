@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:OrderManagerDesktopUI"
              xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:view="clr-namespace:OrderManagerDesktopUI.Views" xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+             xmlns:view="clr-namespace:OrderManagerDesktopUI.Views" 
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
     
     <Application.Resources>
 

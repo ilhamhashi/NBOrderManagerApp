@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
+             xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels" 
+             xmlns:services="clr-namespace:OrderManagerLibrary.Services" 
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60*"/>
@@ -15,20 +18,44 @@
 
             <Grid Grid.Row="0">
                 <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 7">
-                    <StackPanel>
-                        <TextBlock Text="filter by" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                        <TextBlock Text="orderlist" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Orders" 
+                                       FontSize="23" Margin="20 10 0 0"
+                                       HorizontalAlignment="Left" 
+                                       VerticalAlignment="Top"/>
+                            <TextBox Width="250" Height="25"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Top"
+                                     Margin="430 15 0 0"/>
+                        </StackPanel>
+
+                    <DataGrid x:Name="OrdersDataGrid"
+                              Margin="15"
+                              IsReadOnly="True"
+                              Style="{StaticResource DataGridStyle1}"
+                              >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order ID" Binding="{Binding OrderId}" Width="*"/>
+                            <DataGridTextColumn Header="Customer Name" Binding="{Binding CustomerName}" Width="*"/>
+                            <DataGridTextColumn Header="Order Date" Binding="{Binding OrderDate}" Width="*"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
                 </Border>
             </Grid>
 
             <Grid Grid.Row="1">
                 <Border Style="{StaticResource whiteBorder}" Margin="15 7 0 0">
                     <StackPanel>
-                        <TextBlock Text="selectedOrder details (orderlines)" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="selectedOrder details (orderlines)" 
+                                   FontSize="30" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
             </Grid>
         </Grid>
-    </Grid>
+   
 </UserControl>

@@ -1,0 +1,22 @@
+﻿sequenceDiagram 
+
+actor User 
+participant OrdersView
+participant OrdersViewModel 
+participant OrderService 
+participant OrderRepository 
+participant Database 
+
+User->>OrdersView: Click on an order
+User->>OrdersView: Click "Update order status"
+OrdersView->>OrdersViewModel: UpdateOrderStatusCommand.Execute()
+OrdersViewModel->>OrderService: UpdateOrderStatus(OrderId, NewStatusId)
+OrderService->>OrderRepository: UpdateOrderStatus(OrderId, NewStatusId)
+OrderRepository->>Database: EXEC spOrder_UpdateStatus(OrderId, NewStatusId)
+Database-->>OrderRepository: Confirmation
+OrderRepository->>OrderService: Confirmation
+OrderService ->> Database: COMMIT (transaction)
+Database ->> OrderService: Confirmation
+OrderService ->> OrdersViewModel: return result
+OrdersViewModel ->> OrdersView: Update UI with result
+OrdersView->>User: Show success/failure message

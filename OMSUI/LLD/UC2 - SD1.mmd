@@ -1,0 +1,47 @@
+﻿sequenceDiagram 
+
+actor User 
+participant OrdersView
+participant OrdersViewModel 
+participant OrderService 
+participant OrderRepository 
+participant OrderLineRepository ---
+participant CustomerRepository ---
+participant DeliveryRepository ---
+participant PickUpRepository ---
+participant Database 
+
+User->>OrdersView: Click on an order
+User->>OrdersView: Click "Edit order" 
+OrdersView->>OrdersViewModel: EditOrderCommand.Execute() 
+OrdersViewModel->>OrderService: UpdateOrder(Order, orderLines, Customer, Note, pickup, delivery) 
+OrderService->>OrderRepository: Update(Order) 
+OrderRepository->>Database: EXEC spOrder_Update(OrderDate, OrderLineId, PhoneNumber, Note) 
+Database-->>OrderRepository: return OrderId (!!!)
+OrderRepository->>OrderService: return OrderId (!!!) 
+loop For each OrderLine 
+	OrderService ->> OrderLineRepository: Update(orderLine) 
+	OrderLineRepository ->> Database: EXEC spOrderLine_Update(OrderId, ProductId, Quantity, ...) 
+	Database ->> OrderLineRepository: Confirmation 
+	OrderLineRepository ->> OrderService: Confirmation 
+end 
+alt isDelivery 
+	OrderService ->> DeliveryRepository: Update(delivery) 
+	DeliveryRepository->> Database: EXEC spDelivery_Update(CollectionDate, Neighborhood) 
+	Database ->> DeliveryRepository: Confirmation 
+	DeliveryRepository->> OrderService: Confirmation 
+else isPickUp 
+	OrderService ->> PickUpRepository: Update(pickup) 
+	PickUpRepository->> Database: EXEC spPickUp_Update(CollectionDate) 
+	Database ->> PickUpRepository: Confirmation 
+	PickUpRepository->> OrderService: Confirmation 
+end 
+OrderService ->> Database: COMMIT (transaction) 
+Database ->> OrderService: Confirmation 
+OrderService ->> OrdersViewModel: return result 
+OrdersViewModel ->> OrdersView: Update UI with result 
+OrdersView->>User: Show success/failure message 
+
+
+
+

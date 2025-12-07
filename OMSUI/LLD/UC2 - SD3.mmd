@@ -1,0 +1,23 @@
+﻿sequenceDiagram
+
+actor User
+participant OrdersView
+participant OrdersViewModel
+participant OrderService
+participant OrderRepository
+participant PaymentRepository
+participant Database
+
+User->>OrdersView: Click on an order
+User->>OrdersView: Click "Add payment"
+OrdersView->>OrdersViewModel: AddPaymentCommand.Execute()
+OrdersViewModel->>OrderService: AddPayment(OrderId, Payment, PaymentMethodId)
+OrderService->>PaymentRepository: Insert(payment)
+PaymentRepository->>Database: EXEC spPayment_Insert(PaymentAmount, PaymentDate, OrderId, PaymentMethodId)
+Database-->>PaymentRepository: return PaymentId
+PaymentRepository->>OrderService: return PaymentId
+OrderService ->> Database: COMMIT (transaction)
+Database ->> OrderService: Confirmation
+OrderService ->> OrdersViewModel: return result
+OrdersViewModel ->> OrdersView: Update UI with result
+OrdersView->>User: Show success/failure message
