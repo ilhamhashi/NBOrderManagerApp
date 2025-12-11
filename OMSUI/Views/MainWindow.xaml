@@ -25,15 +25,19 @@
                 <ColumnDefinition Width="80*"/>
             </Grid.ColumnDefinitions>
             
+            <!-- Window control commands -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <!-- Maximize window -->
                 <Button Command="{Binding MinimizeCommand}" Content="🗕" 
                             ToolTip="Minimer vindue" VerticalAlignment="Center"
                             Background="Transparent" BorderThickness="0"
                             Width="25" Foreground="#1A1A1A" FontSize="15" Margin="5 -11 5 0"/>
+                <!-- Minimize window -->
                 <Button Command="{Binding MaximizeCommand}" Content="🗖" 
                             ToolTip="Maksimer vindue" VerticalAlignment="Center"
                             Background="Transparent" BorderThickness="0"
                             Width="25" Foreground="#1A1A1A" FontSize="15" Margin="7 0 7 3"/>
+                <!-- Close window -->
                 <Button Command="{Binding CloseCommand}" Content="⨉" 
                             ToolTip="Luk app" VerticalAlignment="Center"
                             Background="Transparent" BorderThickness="0"

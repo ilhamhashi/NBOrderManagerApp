@@ -36,7 +36,7 @@ public class MainViewModel : ViewModel
 
     public MainViewModel(INavigationService navigationService)
     {
-        // Window control commands -> Luk, maksimer, minimer
+        // Window control commands -> Close, maximize, minimize
         CloseCommand = new RelayCommand(o =>
         {
             Application.Current.Shutdown();
@@ -54,6 +54,8 @@ public class MainViewModel : ViewModel
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         });
+
+        // Navigation commands
         Navigation = navigationService;
         Navigation.NavigateTo<HomeViewModel>();
 

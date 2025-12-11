@@ -75,4 +75,25 @@ public class OrderService : IOrderService
     {
         return _productRepository.GetAll();
     }
+
+    // Method: UpdateOrder
+    // Description: Updates an existing order in the repository
+    public void UpdateOrder(Order order)
+    {
+        if (order != null)
+        {
+            // Fetch the existing order from the database
+            var existingOrder = _orderRepository.GetById(order.OrderId);
+            if (existingOrder != null)
+            {
+                // Update the properties of the existing order
+                existingOrder.OrderDate = order.OrderDate;
+                existingOrder.Status = order.Status;
+                existingOrder.CustomerId = order.CustomerId;
+
+                // Save the updated order back to the repository
+                _orderRepository.Update(existingOrder);
+            }
+        }
+    }
 }

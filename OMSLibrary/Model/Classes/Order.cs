@@ -8,22 +8,19 @@ public class Order
     public DateTime OrderDate { get; set; }
     public OrderStatus Status { get; set; }
     public int CustomerId { get; set; }
-    public Payment? Payment { get; set; }
 
-    public Order(int orderId, DateTime orderDate, OrderStatus status, int customerId, Payment? payment)
+    public Order(int orderId, DateTime orderDate, OrderStatus status, int customerId)
     {
         OrderId = orderId;
         OrderDate = orderDate;
         Status = status;
         CustomerId = customerId;
-        Payment = payment;
     }
 
-    public Order(DateTime orderDate, OrderStatus status, int customerId, Payment payment)
+    public Order(DateTime orderDate, OrderStatus status, int customerId)
     {
         OrderDate = orderDate;
         Status = status;
         CustomerId = customerId;
-        Payment = payment;
     }
 }
