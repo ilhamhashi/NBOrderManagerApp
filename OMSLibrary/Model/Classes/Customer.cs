@@ -5,7 +5,7 @@ namespace OrderManagerLibrary.Model.Classes;
 /// Represents a customer with their details.
 /// </summary>
 public class Customer : ICustomer
-{
+{   
     public int CustomerId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }

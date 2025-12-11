@@ -4,9 +4,139 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
+        xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels" xmlns:services="clr-namespace:OrderManagerLibrary.Services" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        WindowStartupLocation="CenterScreen" 
+        Background="Transparent"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Height="780" Width="1280">
 
-    </Grid>
+    <Border CornerRadius="25" Padding="20" Background="#F7F6F4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="80*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Command="{Binding MinimizeCommand}" Content="🗕" 
+                            ToolTip="Minimer vindue" VerticalAlignment="Center"
+                            Background="Transparent" BorderThickness="0"
+                            Width="25" Foreground="#1A1A1A" FontSize="15" Margin="5 -11 5 0"/>
+                <Button Command="{Binding MaximizeCommand}" Content="🗖" 
+                            ToolTip="Maksimer vindue" VerticalAlignment="Center"
+                            Background="Transparent" BorderThickness="0"
+                            Width="25" Foreground="#1A1A1A" FontSize="15" Margin="7 0 7 3"/>
+                <Button Command="{Binding CloseCommand}" Content="⨉" 
+                            ToolTip="Luk app" VerticalAlignment="Center"
+                            Background="Transparent" BorderThickness="0"
+                            Width="25" Foreground="#1A1A1A" FontSize="15" Margin="5 0 5 0"/>
+            </StackPanel>
+
+            <!--Menu-->
+            <Border CornerRadius="25" Grid.RowSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#75D2B2" Offset="0"/>
+                        <GradientStop Color="#66CDAA" Offset="0.8"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <StackPanel >
+                    <!--Logo-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 30 0 40">
+
+                        <Grid>
+                            <Border Background="#ffffff" CornerRadius="50" Width="35" Height="35"/>
+
+                            <Border Width="35" Height="35" BorderThickness="3" BorderBrush="#ffffff" CornerRadius="50">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.3"/>
+                                </Border.Effect>
+
+                                <Icon:PackIconMaterial Kind="Cupcake" Width="20" Height="20" 
+                                                       Foreground="#5BB899" VerticalAlignment="Center" 
+                                                       HorizontalAlignment="Center"/>
+
+                            </Border>
+                        </Grid>
+
+                        <TextBlock Text="Naema's Bakery" Foreground="#ffffff" FontSize="24" Margin="10 0 0 3">
+                            <TextBlock.Effect>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.3"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!--Menu Items-->
+
+                    <Button Style="{StaticResource menuButton}"
+                                 Command="{Binding NavigateToHomeCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Home" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Dashboard" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource menuButton}"
+                            Command="{Binding NavigateToNewOrderCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="InvoiceTextPlusOutline" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="New Order" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource menuButton}"
+                            Command="{Binding NavigateToOrdersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="InvoiceMultipleOutline" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Orders" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource menuButton}"
+                            Command="{Binding NavigateToCustomersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="AccountGroupOutline" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Customers" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource menuButton}"
+                            Command="{Binding NavigateToProductsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="PackageVariant" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Products" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource menuButton}"
+                            Command="{Binding NavigateToSalesDataCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="ChartLine" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Sales" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <TextBlock Text="Help" Style="{StaticResource menuTitle}"/>
+
+                    <Button Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="CogOutline" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+
+            <ContentControl Grid.Column="1" Grid.RowSpan="2"
+                            Content="{Binding Navigation.CurrentView}"/>
+        </Grid>
+    </Border>
 </Window>

@@ -1,6 +1,4 @@
-﻿using OrderManagerLibrary.Model.Interfaces;
-
-namespace OrderManagerLibrary.Model.Classes;
+﻿namespace OrderManagerLibrary.Model.Classes;
 
 /// <summary>
 /// Represents the different statuses an order can have in the bakery system.

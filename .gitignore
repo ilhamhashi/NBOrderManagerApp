@@ -417,4 +417,4 @@ FodyWeavers.xsd
 *.msm
 *.msp
 /OMSUI/appsettings.json
-/OMSLibrary.Tests/appsettings.json
+/OMSLibrary.Tests/appSettings.json

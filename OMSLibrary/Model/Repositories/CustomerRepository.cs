@@ -1,5 +1,5 @@
-﻿using Microsoft.Data.SqlClient;   
-using OrderManagerLibrary.DataAccessNS;
+﻿using Microsoft.Data.SqlClient;
+using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;

@@ -1,23 +1,22 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using OrderManagerLibrary.DataAccessNS;
+﻿using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
-using System.Data;
+using OrderManagerLibrary.Model.Repositories;
 
 namespace OrderManagerLibrary.Services;
 public class OrderService : IOrderService
 {
-    private readonly DataAccess _db;
+    private readonly IDataAccess _db;
     private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<Product> _productRepository;
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
-    private readonly IRepository<ICollectionType> _collectionRepository;
-    private readonly IRepository<INote> _noteRepository;
+    private readonly IRepository<Delivery> _collectionRepository;
+    private readonly IRepository<Note> _noteRepository;
 
-    public OrderService(DataAccess dataAccess, IRepository<Order> orderRepository,
-                        IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
-                        IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
+    public OrderService(IDataAccess dataAccess, IRepository<Order> orderRepository,
+                        IRepository<OrderLine> orderLineRepository,  IRepository<Payment> paymentRepository,
+                        IRepository<Delivery> collectionRepository, IRepository<Note> noteRepository, IRepository<Product> productRepository)
     {
         _db = dataAccess;
         _orderRepository = orderRepository;
@@ -25,6 +24,7 @@ public class OrderService : IOrderService
         _paymentRepository = paymentRepository;
         _collectionRepository = collectionRepository;
         _noteRepository = noteRepository;
+        _productRepository = productRepository;
     }
 
     public void CreateOrder(Order order, List<OrderLine> orderLines,
@@ -55,10 +55,10 @@ public class OrderService : IOrderService
                 }
 
                 collection.OrderId = order.OrderId;
-                _collectionRepository.Insert(collection);
+                //_collectionRepository.Insert(collection);
 
                 note.OrderId = note.OrderId;
-                _noteRepository.Insert(note);
+                //_noteRepository.Insert(note);
 
                 // Commit transaction
                 transaction.Commit();
@@ -70,5 +70,9 @@ public class OrderService : IOrderService
                 throw; // Re-throw exception to handle it upstream
             }
         }
+    }
+    public IEnumerable<Product> ViewProductCatalogue()
+    {
+        return _productRepository.GetAll();
     }
 }

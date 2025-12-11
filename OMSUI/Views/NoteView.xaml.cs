@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace OrderManagerDesktopUI.Views
 {
     /// <summary>
-    /// Interaction logic for NewOrderRegistrationView.xaml
+    /// Interaction logic for NoteView.xaml
     /// </summary>
-    public partial class NewOrderRegistrationView : UserControl
+    public partial class NoteView : UserControl
     {
-        public NewOrderRegistrationView()
+        public NoteView()
         {
             InitializeComponent();
         }

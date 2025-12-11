@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
@@ -7,13 +9,11 @@ using OrderManagerLibrary.Model.Repositories;
 namespace OrderManagerLibrary.Tests;
 
 [TestClass]
-
-
 public sealed class MobilePaymentRepositoryTests
 {
-    private IRepository<MobilePaymentMethod> _mobilePaymentMethodRepository;
-    private ISqlDataAccess _dataAccess;
-    private IConfigurationRoot _config;
+    private IRepository<MobilePayment> _mobilePaymentRepository;
+    private IConfiguration _config;
+    private IDataAccess _db;
 
     [TestInitialize]
     public void Setup()
@@ -22,75 +22,87 @@ public sealed class MobilePaymentRepositoryTests
             .AddJsonFile("appsettings.json")
             .Build();
 
-        _dataAccess = new SqlDataAccess(_config);
-        _mobilePaymentMethodRepository = new MobilePaymentMethodRepository(_dataAccess);
+        _db = new DataAccess.DataAccess(_config);
+        _mobilePaymentRepository = new MobilePaymentRepository(_db);
     }
-    [TestMethod]
 
-    public void InsertMobilePaymentMethod_ShouldInsertSuccesfully()
+    [TestMethod]
+    public void Insert_ShouldInsertMobilePaymentSuccessfully()
     {
         // Arrange
-        var payment = new MobilePaymentMethod
-        (
-            1,
-            "EVC"
-        );
+        var payment = new MobilePayment(0, "MobilePay");
 
         // Act
-        payment.PaymentMethodId = _mobilePaymentMethodRepository.Insert(payment);
-
+        payment.PaymentMethodId = _mobilePaymentRepository.Insert(payment);
 
         // Assert
-        var retrievedPayment = _mobilePaymentMethodRepository.GetById(payment.PaymentMethodId);
+        var retrievedPayment = _mobilePaymentRepository.GetById(payment.PaymentMethodId);
         Assert.IsNotNull(retrievedPayment);
         Assert.AreEqual(payment.PaymentMethodId, retrievedPayment.PaymentMethodId);
+        Assert.AreEqual(payment.Name, retrievedPayment.Name);
     }
+
     [TestMethod]
-    public void UpdateMobilePaymenMethod_ShouldUpdateSuccessfully()
-    {
-       
-        // Arrange
-        var payment = new MobilePaymentMethod(0, "EVC");
-        int id = _mobilePaymentMethodRepository.Insert(payment);
-
-        var updatedPayment = new MobilePaymentMethod(id, "Dahabshiil");
-
-        // Act
-        _mobilePaymentMethodRepository.Update(updatedPayment);
-
-        // Assert
-        var retrieved = _mobilePaymentMethodRepository.GetById(id);
-        Assert.IsNotNull(retrieved);
-        Assert.AreEqual("Dahabshiil", retrieved.Name);
-    }
-    [TestMethod]
-    public void DeleteMobilePaymentMethod_ShouldDeleteSuccessfully()
+    public void GetById_ShouldGetExistingMobilePaymentSuccessfully()
     {
         // Arrange
-        var payment = new MobilePaymentMethod(0, "EVC");
-        int id = _mobilePaymentMethodRepository.Insert(payment);
-        Assert.IsNotNull(_mobilePaymentMethodRepository.GetById(id));
+        var payment = new MobilePayment(0, "MobilePay");
+        int id = _mobilePaymentRepository.Insert(payment);
 
         // Act
-        _mobilePaymentMethodRepository.Delete(id);
+        var retrievedPayment = _mobilePaymentRepository.GetById(id);
 
         // Assert
-        Assert.IsNull(_mobilePaymentMethodRepository.GetById(id));
+        Assert.IsNotNull(retrievedPayment);
+        Assert.AreEqual(payment.Name, retrievedPayment.Name);
     }
+
     [TestMethod]
-    public void GetById_ShouldReturnMobilePaymentMethodSuccessfully()
+    public void GetAll_ShouldGetAllMobilePaymentsSuccessfully()
     {
         // Arrange
-        var payment = new MobilePaymentMethod(0, "EVC");
-        int id = _mobilePaymentMethodRepository.Insert(payment);
+        var payments = new List<MobilePayment>();
 
         // Act
-        var retrieved = _mobilePaymentMethodRepository.GetById(id);
+        payments.AddRange(_mobilePaymentRepository.GetAll());
 
         // Assert
-        Assert.IsNotNull(retrieved);
-        Assert.AreEqual(payment.Name, retrieved.Name);
+        Assert.IsNotNull(payments);
+        // Hvis du vil være strengere:
+        // Assert.IsTrue(payments.Count > 0);
     }
 
+    [TestMethod]
+    public void Update_ShouldUpdateMobilePaymentSuccessfully()
+    {
+        // Arrange
+        var payment = new MobilePayment(0, "MobilePay");
+        int id = _mobilePaymentRepository.Insert(payment);
+
+        // Act
+        var updatedPayment = new MobilePayment(id, "Dahabshiil");
+        _mobilePaymentRepository.Update(updatedPayment);
+
+        // Assert
+        var retrievedPayment = _mobilePaymentRepository.GetById(id);
+        Assert.IsNotNull(retrievedPayment);
+        Assert.AreEqual(updatedPayment.PaymentMethodId, retrievedPayment.PaymentMethodId);
+        Assert.AreEqual(updatedPayment.Name, retrievedPayment.Name);
+    }
+
+    [TestMethod]
+    public void Delete_ShouldDeleteMobilePaymentSuccessfully()
+    {
+        // Arrange
+        var payment = new MobilePayment(0, "MobilePay");
+        payment.PaymentMethodId = _mobilePaymentRepository.Insert(payment);
+        Assert.IsNotNull(_mobilePaymentRepository.GetById(payment.PaymentMethodId));
+
+        // Act
+        _mobilePaymentRepository.Delete(payment.PaymentMethodId);
+
+        // Assert
+        var retrievedPayment = _mobilePaymentRepository.GetById(payment.PaymentMethodId);
+        Assert.IsNull(retrievedPayment);
+    }
 }
-
