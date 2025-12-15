@@ -285,7 +285,7 @@
                 <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
                 <Setter Property="AutoGenerateColumns" Value="False" />
                 <Setter Property="HeadersVisibility" Value="Column" />
-                <Setter Property="Margin" Value="0 10 0 0" />
+                <Setter Property="Margin" Value="10" />
                 <Setter Property="Grid.Row" Value="5" />
                 <Setter Property="SelectionMode" Value="Single" />
                 <Setter Property="SelectionUnit" Value="FullRow" />
@@ -296,7 +296,8 @@
                 <Setter Property="FontSize" Value="13" />
                 <Setter Property="GridLinesVisibility" Value="None" />
                 <Setter Property="ColumnWidth" Value="*" />
-                
+                <Setter Property="AlternationCount" Value="2" />
+
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type DataGrid}">
@@ -402,6 +403,9 @@
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
+                    <Trigger Property="AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="#F7F6F4"/>
+                    </Trigger>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Background" Value="#e0f5ee"/>
                         <Setter Property="Foreground" Value="#222528"/>
@@ -521,6 +525,31 @@
                 <Setter Property="Background" Value="#ffffff" />
                 <Setter Property="CornerRadius" Value="15" />
                 <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style x:Key="dashboardStats" TargetType="Border">
+                <Setter Property="CornerRadius" Value="15" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#cae3db" Offset="0.8"/>
+                            <GradientStop Color="#e0f5ee" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="menuBorder" TargetType="Border">
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#66CDAA" Offset="0.8"/>
+                            <GradientStop Color="#75D2B2" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
         </ResourceDictionary>

@@ -12,198 +12,109 @@
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 7">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Orders" 
-                                       FontSize="23" Margin="20 10 0 0"
-                                       HorizontalAlignment="Left" 
-                                       VerticalAlignment="Top"/>
-                        <TextBox Width="250" Height="25"
-                                     Margin="430 15 0 0"
-                                     Text="{Binding SearchWord,
-                                     UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
+        <Border Style="{StaticResource whiteBorder}" 
+                Margin="15 0 0 7">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="80*"/>
+                </Grid.RowDefinitions>
 
-                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                <TextBlock Grid.Row="0"
+                           Margin="15 0 0 0"
+                           Text="Orders" 
+                           FontSize="23"
+                           HorizontalAlignment="Left" 
+                           VerticalAlignment="Center"/>
+                <StackPanel Grid.Row="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0 0 15 0">
+                    <TextBlock Text="Search order (id, orderdate, customer, pickup, status)" 
+                               FontSize="11"
+                               Margin="10"/>
+                    <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Width="200"
+                             Height="30"/>
+                </StackPanel>
+
+                <DataGrid Grid.Row="2" RowStyle="{DynamicResource DataGridRowStyle1}" 
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
                               ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Stretch">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                                 Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Date" IsReadOnly="True" Width="*"
+                        <DataGridTextColumn Header="Date" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
-                                                Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="*"
+                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="Customer.FirstName" />
+                                    <Binding Path="Customer.LastName" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="*"
                                                 Binding="{Binding PickUp.Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Status" IsReadOnly="True" Width="*"
+                        <DataGridTextColumn Header="Status" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridComboBoxColumn Header="Order Status"  SelectedItemBinding="{Binding Status}" ItemsSource="{Binding Source={StaticResource Enums.OrderStatus}}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" 
+                Style="{StaticResource whiteBorder}" 
+                Margin="15 7 0 0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15*"/>
+                    <RowDefinition Height="85*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="15 5 0 0">
+                    <TextBlock Text="Order #" 
+                               FontSize="18"/>
+                    <TextBlock Text="{Binding SelectedOrder.Id, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="18"/>
+                </StackPanel>
+
+                <!-- Orderlines from the selected order -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto">
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              ItemsSource="{Binding SelectedOrder.OrderLines, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedOrderLine, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                                Binding="{Binding LineNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Product" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                                Binding="{Binding Product.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Size" IsReadOnly="True" Width="auto"
+                                                Binding="{Binding Size, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Taste" IsReadOnly="True" Width="auto"
+                                                Binding="{Binding Taste, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Quantity" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                                Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Price" IsReadOnly="True" Width="auto"
+                                                Binding="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Width="auto"
+                                                Binding="{Binding Discount, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Note" IsReadOnly="True" Width="*"
+                                                Binding="{Binding Note.Content, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                </StackPanel>
-            </Border>
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <Border Style="{StaticResource whiteBorder}" Margin="15 7 0 0">
-                <TabControl Width="770" Height="160"
-                                BorderThickness="0">
-
-                    <!-- Tab: Generel Order details -->
-                    <TabItem Header="Order Details">
-                        <StackPanel Width="700" Height="120"
-                                        Orientation="Horizontal" VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
-                            <StackPanel Orientation="Vertical" Width="250"
-                                        HorizontalAlignment="Left">
-                                <TextBlock>
-                                    <Run Text="Order number: "/>
-                                    <Run Text="{Binding OrderDetail.OrderId, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <LineBreak/>
-                                    
-                                    <Run Text="Creation date: "/>
-                                    <Run Text="{Binding OrderDetail.CreatedDate, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <LineBreak/>
-                                    
-                                    <Run Text="Order status: "/>
-                                    <Run Text="{Binding OrderDetail.Status, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <LineBreak/>
-
-
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal" Width="250"
-                                            Margin="75 0 0 0">
-                                <TextBlock/>
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
-
-                    <!-- Tab: Customer Details -->
-                    <TabItem Header="Customer Details">
-                        <StackPanel Orientation="Horizontal" Width="700"
-                                    HorizontalAlignment="Left">
-                            <StackPanel Orientation="Vertical"
-                                        Margin="20 10 50 0"
-                                        Width="250">
-                                <TextBlock>
-                                    <Run Text="First name: "/>
-                                    <Run Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <LineBreak/>
-                                    
-                                    <Run Text="Last name: "/>
-                                    <Run Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <LineBreak/>
-                                    
-                                    <Run Text="Phone number: "/>
-                                    <Run Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <LineBreak/>
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Vertical" Width="250">
-                                <Label Content="Enter new phone number:"/>
-                                <TextBox Text="{Binding NewPhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                <Button Content="Update Phone Number"
-                                        Width="130" Margin="60 10 0 0"
-                                        Command="{Binding UpdateCustomerInfoCommand,
-                                        UpdateSourceTrigger=PropertyChanged}"
-                                        HorizontalAlignment="Right"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
-
-                    <!-- Tab: Delivery and Pick-up details -->
-                    <TabItem Header="Collection Details">
-                        <!-- For date and time -->
-                        <StackPanel Margin="10 20 0 0"
-                                            Orientation="Horizontal">
-                            <StackPanel Width="250"
-                                                HorizontalAlignment="Left">
-                                <TextBlock>
-                                            <Run Text="Date and time: "/>
-                                            <Run Text="{Binding CollectionDate,
-                                                 UpdateSourceTrigger=PropertyChanged}"/>
-                                            <LineBreak/>
-                                            <Run Text="Agreed on location:"/>
-                                            <Run Text="{Binding Neighborhood,
-                                                 UpdateSourceTrigger=PropertyChanged}"/>
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel HorizontalAlignment="Right"
-                                            Width="250"
-                                            Margin="100 0 0 0">
-                                <TextBlock Text="Select new date:"
-                                               Margin="25 0 0 5"/>
-                                <DatePicker SelectedDate="{Binding CollectionDateTime, Mode=TwoWay}"
-                                                Width="200"/>
-                                <TextBox Text="{Binding Neighborhood,
-                                               UpdateSourceTrigger=PropertyChanged}"
-                                               Width="200"/>
-                                <Button Content="Update" Width="110" Margin="100 25 0 0"
-                                            Command="{Binding UpdateDeliveryAndPickUp,
-                                            UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                    </TabItem>
-
-                    <!-- Tab: Payment details -->
-                    <TabItem Header="Payment Details">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Vertical" Width=" 250"
-                                        HorizontalAlignment="Left"
-                                        Margin="10 20 100 0">
-                                <TextBlock>
-                                    <Run Text="Order Id: "/>
-                                    <Run Text="{Binding SelectedOrder.OrderId}"/>
-                                    <LineBreak/>
-                                    <Run Text="Payment Status: "/>
-                                    <Run Text="{Binding PaymentStatus}"/>
-                                    <LineBreak/>
-                                    <Run Text="Outstanding Amount: "/>
-                                    <Run Text="{Binding OutstandingAmount}"/>
-                                    <LineBreak/>
-                                    <Run Text="Payment Date: "/>
-                                    <Run Text="{Binding PaymentDate}"/>
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Vertical" Width="250"
-                                        HorizontalAlignment="Right">
-                                <TextBlock Text="Payment Method:"
-                                           Margin="25 0 0 0"/>
-                                <ComboBox ItemsSource="{Binding _paymentMethods,
-                                          UpdateSourceTrigger=PropertyChanged}"
-                                          SelectedItem="{Binding SelectedPaymentMethod,
-                                          UpdateSourceTrigger=PropertyChanged}"
-                                          Width="200"
-                                          Margin="5"/>
-                                <TextBox Text="{Binding PaymentAmount}"
-                                         Width="200" Height="25"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Top"
-                                         Margin="5 0"/>
-                                <Button Content="Update Payment"
-                                        Command="{Binding AddPaymentCommand,
-                                        UpdateSourceTrigger=PropertyChanged}"
-                                        Width="110"
-                                        Margin="100 25 0 0"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
-                </TabControl>
-            </Border>
-        </Grid>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

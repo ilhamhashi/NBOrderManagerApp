@@ -1,7 +1,7 @@
 ﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
-using OrderManagerLibrary.Services;
+using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -12,7 +12,6 @@ namespace OrderManagerDesktopUI.ViewModels;
 public class NewOrderViewModel : ViewModel
 {
     private readonly IOrderService _orderservice;
-    private readonly ProductsViewModel _productsViewModel;
     private Product? selectedProduct;
 	private ICustomer selectedCustomer;
 	private IPaymentMethod? selectedPaymentMethod;
@@ -48,26 +47,27 @@ public class NewOrderViewModel : ViewModel
 
 
 
-    private ObservableCollection<IPaymentMethod> PaymentMethods { get; set; } = [];
-    private ObservableCollection<Payment> Payments { get; set; } = [];
-    public ObservableCollection<OrderLine> OrderLines { get; set; } = [];
-    public ICollectionView OrderLinesCollectionView { get; set; } 
-    private ObservableCollection<Product> Products { get; set; } = [];
-    public ICollectionView ProductsView { get; set; }
+    private ObservableCollection<IPaymentMethod> _paymentMethods { get; } = [];
+    private ObservableCollection<Payment> _payments { get; set; } = [];
+    private ObservableCollection<OrderLine> OrderLines { get; set; } = [];
+    private ObservableCollection<Product> _products { get; }
+    public ICollectionView ProductsCollectionView { get;}
+    public ICollectionView OrderLinesCollectionView { get; } 
+    
 
-    public ICommand CreateOrderCommand { get; private set; }
-    public ICommand AddPaymentCommand {  get; private set; }
-    public ICommand AddProductToOrderCommand {  get; private set; }
+    public ICommand CreateOrderCommand { get; }
+    public ICommand AddPaymentCommand {  get; }
+    public ICommand AddProductToOrderCommand {  get; }
 
-    public ICommand IncreaseQuantityCommand { get; private set; }
-    public ICommand DecreaseQuantityCommand { get; private set; }
-    public ICommand AddDiscountCommand { get; private set; }
-    public ICommand AddPriceIncreaseCommand { get; private set; }
+    public ICommand IncreaseQuantityCommand { get; }
+    public ICommand DecreaseQuantityCommand { get; }
+    public ICommand AddDiscountCommand { get; }
+    public ICommand AddPriceIncreaseCommand { get; }
 
-    public ICommand NavigateToNoteViewCommand { get; private set; }
-    public ICommand NavigateToPriceChangeViewCommand { get; private set; }
-    public ICommand NavigateToPaymentViewCommand { get; private set; }
-    public ICommand NavigateToDeliveryViewCommand { get; private set; }
+    public ICommand NavigateToNoteViewCommand { get; }
+    public ICommand NavigateToPriceChangeViewCommand { get; }
+    public ICommand NavigateToPaymentViewCommand { get; }
+    public ICommand NavigateToDeliveryViewCommand { get; }
 
     private bool CanAddNewOrder() => true; // Placeholder for actual logic
     private bool CanCancelNewOrder() => true; // Placeholder for actual logic
@@ -166,10 +166,11 @@ public class NewOrderViewModel : ViewModel
             OnPropertyChanged();
         }
     }
-    public NewOrderViewModel(IOrderService orderService, ProductsViewModel productsViewModel, INavigationService navigationService)
+    public NewOrderViewModel(IOrderService orderService, IProductService productService, INavigationService navigationService)
     {
         _orderservice = orderService;
-        _productsViewModel = productsViewModel;
+        _products = new ObservableCollection<Product>(productService.GetAllProducts());
+        ProductsCollectionView = CollectionViewSource.GetDefaultView(_products);
         OrderLinesCollectionView = CollectionViewSource.GetDefaultView(OrderLines);
         Navigation = navigationService;
         Navigation.NavigateToNested<NoteViewModel>();
@@ -187,7 +188,7 @@ public class NewOrderViewModel : ViewModel
         NavigateToPaymentViewCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<PaymentViewModel>(); }, canExecute => true);
 
-        ProductsView = productsViewModel.ProductsView;
+        
         CreateOrderCommand = new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
         AddPaymentCommand = new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
         AddProductToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => CanAddToOrder());
@@ -201,15 +202,15 @@ public class NewOrderViewModel : ViewModel
     {
         Customer customer = new Customer(1, "FirstName", "LastName", "Phone");
         ;
-        IPickUp pickUp = new PickUp(DateTime.Now, IsDelivery, Location);
-        INote note = new Note(NoteText);
+        PickUp pickUp = new PickUp(DateTime.Now, IsDelivery, Location);
+        Note note = new Note(NoteText);
         Order newOrder = new(DateTime.Now, OrderStatus.Draft, customer, pickUp, note);
         if (outstandingAmount == 0)
         {
             newOrder.Status = OrderStatus.FullyPaid;
         }
 
-        _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. Payments]);
+        _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. _payments]);
 
         MessageBox.Show($"Order {newOrder.Id} has been saved succesfully");
         
@@ -221,7 +222,7 @@ public class NewOrderViewModel : ViewModel
         OrderLines.Clear();
         SelectedOrderLine = null;
         SelectedPaymentMethod = null;
-        Payments.Clear();
+        _payments.Clear();
         SelectedPayment = null;
         PaymentAmount = decimal.Zero;
         NoteText = string.Empty;
@@ -234,7 +235,7 @@ public class NewOrderViewModel : ViewModel
     private void AddProductToOrder(object rowData)
     {
         Product product = rowData as Product;
-        OrderLine newOrderLine = new(product, 1, product.Price, 0, product.Taste, product.Size);
+        OrderLine newOrderLine = new(product, 1, product.Price, 0, product.Taste.Name, product.Size.Name);
         ResetLineNumber();
         newOrderLine.LineNumber = OrderLines.Count() + 1;
         OrderLines?.Add(newOrderLine);
@@ -264,7 +265,7 @@ public class NewOrderViewModel : ViewModel
     private void IncreaseQuantity(object rowOrderLine)
     {
         (rowOrderLine as OrderLine).IncreaseQuantity();
-        UpdateRunningTotal(); UpdateDiscountTotal();
+        UpdateRunningTotal(); UpdateDiscountTotal(); UpdateOutstandingAmount();
         OrderLinesCollectionView.Refresh();
     }
 
@@ -301,7 +302,7 @@ public class NewOrderViewModel : ViewModel
     private void AddPaymentToOrder()
     {
         Payment newPayment = new(PaymentAmount, DateTime.Now, SelectedPaymentMethod);
-        Payments.Add(newPayment);
+        _payments.Add(newPayment);
         UpdateOutstandingAmount();
 
         SelectedPaymentMethod = null;
@@ -310,7 +311,7 @@ public class NewOrderViewModel : ViewModel
 
     private void UpdateOutstandingAmount()
     {
-        decimal totalPaid = Payments.Sum(p => p.Amount);
+        decimal totalPaid = _payments.Sum(p => p.Amount);
         OutstandingAmount = RunningTotal - totalPaid;
     }
 

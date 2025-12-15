@@ -11,11 +11,11 @@ public class Payment
     public int Id { get; set; }
     public DateTime Date { get; set; }
     public decimal Amount { get; set; }
-    public IPaymentMethod PaymentMethod { get; set; }
-    public Order Order { get; set; }
-
     public int OrderId { get; set; }
     public int PaymentMethodId { get; set; }
+
+    public IPaymentMethod PaymentMethod { get; set; }
+    public Order Order { get; set; }
 
 
     public Payment(int id,  DateTime date, decimal amount, int paymentMethodId, int orderId)

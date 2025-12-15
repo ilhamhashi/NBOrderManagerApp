@@ -27,6 +27,9 @@ public class OrderLineRepository : IRepository<OrderLine>
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
             command.Parameters.AddWithValue("@Price", entity.Price);
             command.Parameters.AddWithValue("@Discount", entity.Discount);
+            command.Parameters.AddWithValue("@Size", entity.Size);
+            command.Parameters.AddWithValue("@Taste", entity.Taste);
+
             connection.Open();
             command.ExecuteNonQuery();
             return -1;
@@ -43,7 +46,9 @@ public class OrderLineRepository : IRepository<OrderLine>
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
             command.Parameters.AddWithValue("@Price", entity.Price);
-            command.Parameters.AddWithValue("@Discount", entity.Discount);
+            command.Parameters.AddWithValue("@Discount", entity.Discount); 
+            command.Parameters.AddWithValue("@Size", entity.Size);
+            command.Parameters.AddWithValue("@Taste", entity.Taste);
 
             connection.Open();
             command.ExecuteNonQuery();
@@ -88,7 +93,9 @@ public class OrderLineRepository : IRepository<OrderLine>
                     (int)reader["LineNumber"],
                     (int)reader["Quantity"],
                     (decimal)reader["Price"],
-                    (decimal)reader["Discount"]);
+                    (decimal)reader["Discount"],
+                    (string)reader["Size"],
+                    (string)reader["Taste"]);
             }
             return orderLine;
         }
@@ -112,7 +119,9 @@ public class OrderLineRepository : IRepository<OrderLine>
                     (int)reader["LineNumber"],
                     (int)reader["Quantity"],
                     (decimal)reader["Price"],
-                    (decimal)reader["Discount"]));
+                    (decimal)reader["Discount"],
+                    (string)reader["Size"],
+                    (string)reader["Taste"]));
             }
             return orderLines;
         }

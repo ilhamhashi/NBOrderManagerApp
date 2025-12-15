@@ -3,123 +3,166 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
+             xmlns:local="clr-namespace:OrderManagerDesktopUI.Views" 
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- VENSTRE: Customer list + søg -->
-        <Border Grid.Column="0" 
-                Style="{StaticResource whiteBorder}" 
-                Margin="15 0 7 0">
-            <Grid Margin="15">
+        <Border Grid.Column="0"
+        Style="{StaticResource whiteBorder}" 
+        Margin="15 0 7 0">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="50*" />
+                    <RowDefinition Height="30*" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-                    <TextBlock Text="Search:" VerticalAlignment="Center" FontSize="16" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Margin="0,0,8,0"/>
-                    <TextBox Width="200" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" VerticalContentAlignment="Center"/>
+                <TextBlock Grid.Row="0" 
+                   Text="Customers"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="20"
+                   Margin="0 0 0 20"/>
+
+                <!-- Search field that filters customer list -->
+                <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                    <TextBlock Text="Search customer (id, name, phone)" 
+                       FontSize="11"
+                       Margin="10"/>
+                    <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center"
+                     Width="200"
+                     Height="30"/>
                 </StackPanel>
 
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                <!-- List of customers -->
+                <ScrollViewer VerticalScrollBarVisibility="auto" Grid.Row="2">
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
-                          ItemsSource="{Binding CustomersCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}"
-                           AutoGenerateColumns="false">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                          ItemsSource="{Binding Customers, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                 Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="First name" IsReadOnly="True" Width="*"
+                            <DataGridTextColumn Header="First name" IsReadOnly="True" Width="*"
                                 Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Last name" IsReadOnly="True" Width="*"
+                            <DataGridTextColumn Header="Last name" IsReadOnly="True" Width="*"
                                 Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Phone" IsReadOnly="True" Width="*"
+                            <DataGridTextColumn Header="Phone" IsReadOnly="True" Width="*"
                                 Binding="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <DataGridTemplateColumn Header="Delete" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Background="Transparent" BorderThickness="0"
+                                                Style="{DynamicResource gridAddButton}"
+                                                Command="{Binding DataContext.RemoveCustomerCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}">
+                                            <Icon:PackIconMaterial Kind="Delete" Foreground="#222528"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+                
+                <!-- Orders belonging to selected customer from list -->
+                <ScrollViewer VerticalScrollBarVisibility="auto" Grid.Row="3">
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                          CellStyle="{DynamicResource DataGridCellStyle1}" 
+                          Style="{DynamicResource DataGridStyle1}"
+                          ItemsSource="{Binding SelectedCustomer.Orders, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Date" IsReadOnly="True" Width="*"
+                                Binding="{Binding Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Pick up" IsReadOnly="True" Width="*"
+                                Binding="{Binding PickUp.Date, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Note" IsReadOnly="True" Width="*"
+                                Binding="{Binding Note.Content, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>                
             </Grid>
         </Border>
 
-        <!-- HØJRE: Create + Edit -->
         <Grid Grid.Column="1">
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Create Customer -->
-            <Border Grid.Column="0" 
-                Style="{StaticResource whiteBorder}" 
-                Margin="7 0 0 7">
-                <Grid Margin="15">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Border Style="{StaticResource whiteBorder}"
+            Margin="7 0 0 7">
+                <StackPanel Margin="10">
+                    <!-- CREATE Customer -->
+                    <TextBlock Text="Create Customr" 
+                   FontSize="20" 
+                   Margin="0 0 0 10"/>
 
-                    <TextBlock Text="Create Customer" FontSize="18" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="0" Margin="0,0,0,10"/>
+                    <TextBlock Text="First name"/>
+                    <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 5"/>
 
-                    <!-- FIRST NAME -->
-                    <TextBlock Text="First name" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="1"/>
-                    <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Grid.Row="2" Height="25"/>
+                    <TextBlock Text="Last name"/>
+                    <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 5"/>
 
-                    <!-- LAST NAME -->
-                    <TextBlock Text="Last name" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="3" Margin="0,-5,0,0"/>
-                    <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Grid.Row="4" Height="25"/>
+                    <TextBlock Text="Phone"/>
+                    <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 10"/>
 
-                    <!-- PHONE -->
-                    <TextBlock Text="Phone number" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="5" Margin="0,-6,0,0"/>
-                    <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Grid.Row="6" Height="70"/>
-
-                    <Button Content="Opret" Command="{Binding CreateCustomerCommand}" Background="#607D8B" Style="{StaticResource RoundedButton}" Grid.Row="7" Margin="0,6,0,0"/>
-                </Grid>
+                    <Button Content="Create"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding CreateCustomerCommand}"
+                            Margin="0 0 0 10"/>
+                </StackPanel>
             </Border>
 
-            <!-- Edit Customer -->
-            <Border Grid.Row="1" 
-                Style="{StaticResource whiteBorder}" 
-                Margin="7 7 0 0">                
-                <Grid Margin="15">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Border Grid.Row="1"
+                    Style="{StaticResource whiteBorder}"
+                    Margin="7 7 0 0">
+                <StackPanel Margin="10">
+                    <!-- EDIT Customer -->
+                    <TextBlock Text="Edit Customer" 
+                   FontSize="20" 
+                   Margin="0 0 0 10"/>
 
-                    <TextBlock Text="Edit Customer" FontSize="18" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="0" Margin="0,0,0,10"/>
+                    <TextBlock Text="First name"/>
+                    <TextBox Text="{Binding SelectedCustomer.FirstName, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0 0 0 5"/>
 
-                    <!-- FIRST NAME -->
-                    <TextBlock Text="First name" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="1"/>
-                    <TextBox Text="{Binding SelectedCustomer.FirstName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Grid.Row="2" Height="25"/>
+                    <TextBlock Text="Last name"/>
+                    <TextBox Text="{Binding SelectedCustomer.LastName, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0 0 0 5"/>
 
-                    <!-- LAST NAME -->
-                    <TextBlock Text="Last name" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="3" Margin="0,-5,0,0"/>
-                    <TextBox Text="{Binding SelectedCustomer.LastName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Grid.Row="4" Height="25"/>
-
-                    <!-- PHONE -->
-                    <TextBlock Text="Phone number" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Black" Grid.Row="5" Margin="0,-6,0,0"/>
-                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Grid.Row="6" Height="70"/>
-
-                    <Button Content="Rediger" Command="{Binding EditCustomerCommand}" Background="#5C6BC0" Style="{StaticResource RoundedButton}" Grid.Row="7" Margin="0,6,0,0"/>
-                </Grid>
+                    <TextBlock Text="Phone"/>
+                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0 0 0 10"/>
+                    
+                    <Button Content="Update"
+                                Width="100"
+                                Margin="5"
+                                Style="{StaticResource addButton}"
+                                Command="{Binding UpdateCustomerCommand}"/> 
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

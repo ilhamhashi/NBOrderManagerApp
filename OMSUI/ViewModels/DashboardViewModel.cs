@@ -2,7 +2,7 @@
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
-using OrderManagerLibrary.Services;
+using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace OrderManagerDesktopUI.ViewModels;

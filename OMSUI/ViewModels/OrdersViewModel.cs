@@ -1,7 +1,7 @@
 ﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
-using OrderManagerLibrary.Services;
+using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
@@ -14,6 +14,15 @@ public class OrdersViewModel : ViewModel
 
     private readonly IOrderService _orderService;
     public ObservableCollection<Order> Orders { get; private set; } = [];
+
+    private Order _selectedOrder;
+
+    public Order SelectedOrder
+    {
+        get { return _selectedOrder; }
+        set { _selectedOrder = value; OnPropertyChanged(); }
+    }
+
 
     public OrdersViewModel(IOrderService orderService)
     {

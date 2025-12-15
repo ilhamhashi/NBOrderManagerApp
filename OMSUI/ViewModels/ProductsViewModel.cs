@@ -1,6 +1,6 @@
 ﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Services;
+using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -13,8 +13,8 @@ public class ProductsViewModel : ViewModel
 {
     private readonly IProductService _productService;
 
-    public ObservableCollection<Product> Products { get; set; }
-    public ICollectionView ProductsView { get; set; }
+    private ObservableCollection<Product> Products { get; }
+    public ICollectionView ProductsCollectionView { get; }
 
     private Product? _selectedProduct;
     public Product? SelectedProduct
@@ -23,44 +23,57 @@ public class ProductsViewModel : ViewModel
         set { _selectedProduct = value; OnPropertyChanged(); }
     }
 
-    // OPRET NYT PRODUKT FELTER
-    public string NewName { get; set; }
-    public string NewDescription { get; set; }
-    public decimal NewPrice { get; set; }
+    private string _name;
 
-    // Filter
-    private string _filterText;
-    public string FilterText
+    public string Name
     {
-        get => _filterText;
+        get { return _name; }
+        set { _name = value; OnPropertyChanged(); }
+    }
+
+    private string _description;
+
+    public string Description
+    {
+        get { return _description; }
+        set { _description = value; OnPropertyChanged(); }
+    }
+
+    private decimal _price;
+
+    public decimal Price
+    {
+        get { return _price; }
+        set { _price = value; OnPropertyChanged(); }
+    }
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get => searchTerm;
         set
         {
-            _filterText = value;
+            searchTerm = value;
             OnPropertyChanged();
-            ProductsView.Refresh();   // Filter når tekst ændres
+            ProductsCollectionView.Refresh();
         }
     }
 
-    // Commands
-    public ICommand CreateCommand { get; set; }
-    public ICommand UpdateCommand { get; set; }
-    public ICommand DeleteCommand { get; set; }
+    public ICommand CreateProductCommand { get; }
+    public ICommand UpdateProductCommand { get; }
+    public ICommand DeleteProductCommand { get; }
 
     public ProductsViewModel(IProductService productService)
     {
         _productService = productService;
-
-        // Hent produkter
         Products = new ObservableCollection<Product>(_productService.GetAllProducts());
-
-        // Setup filter
-        ProductsView = CollectionViewSource.GetDefaultView(Products);
-        ProductsView.Filter = FilterProducts;
+        ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);
+        ProductsCollectionView.Filter = FilterProducts;
 
         // Commands
-        CreateCommand = new RelayCommand(o => CreateProduct(), o => true);
-        UpdateCommand = new RelayCommand(o => UpdateProduct(), o => SelectedProduct != null);
-        DeleteCommand = new RelayCommand(o => DeleteProduct(), o => SelectedProduct != null);
+        CreateProductCommand = new RelayCommand(execute => CreateProduct(), canExecute => true);
+        UpdateProductCommand = new RelayCommand(execute => UpdateProduct(), canExecute => SelectedProduct != null);
+        DeleteProductCommand = new RelayCommand((param) => DeleteProduct(param), canExecute => true);
     }
 
 
@@ -68,39 +81,37 @@ public class ProductsViewModel : ViewModel
     {
         if (obj is not Product p) return false;
 
-        if (string.IsNullOrWhiteSpace(FilterText))
+        if (string.IsNullOrWhiteSpace(SearchTerm))
             return true;
 
-        return p.Name.ToLower().Contains(FilterText.ToLower());
+        return p.Name.ToLower().Contains(SearchTerm.ToLower());
     }
 
     private void CreateProduct()
     {
-        var p = new Product(NewName, NewDescription, NewPrice);
+        var product = new Product(Name, Description, Price);
+        _productService.CreateProduct(product);
+        Products.Add(product);
+        MessageBox.Show($"You have succesfully created {product.Name}.");
+        ResetFields();
+    }
 
-        _productService.CreateProduct(p);
-        Products.Add(p);
-
-        MessageBox.Show($"You have succesfully created {p.Name}.");
-
-        // Clear fields
-        NewName = "";
-        NewDescription = "";
-        NewPrice = 0;
-        OnPropertyChanged(nameof(NewName));
-        OnPropertyChanged(nameof(NewDescription));
-        OnPropertyChanged(nameof(NewPrice));
+    private void ResetFields()
+    {
+        Name = string.Empty;
+        Description = string.Empty;
+        Price = 0;
     }
 
     private void UpdateProduct()
     {
         _productService.UpdateProduct(SelectedProduct);
-        ProductsView.Refresh();
+        ProductsCollectionView.Refresh();
     }
 
-    private void DeleteProduct()
+    private void DeleteProduct(object rowData)
     {
-        _productService.RemoveProduct(SelectedProduct.Id);
-        Products.Remove(SelectedProduct);
+        _productService.RemoveProduct((rowData as Product).Id);
+        Products.Remove(rowData as Product);
     }
 }

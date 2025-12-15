@@ -113,8 +113,10 @@ public class SizeRepository : IRepository<Size>
             while (reader.Read())
             {
                 sizes.Add(new Size
-                    ((int)reader["Id"],
-                    (string)reader["Name"]));
+                    (
+                        (int)reader["Id"],
+                        (string)reader["Name"]
+                    ));
             }
             return sizes;
         }

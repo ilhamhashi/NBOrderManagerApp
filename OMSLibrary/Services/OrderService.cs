@@ -3,30 +3,31 @@ using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
+using OrderManagerLibrary.Services.Interfaces;
 
 namespace OrderManagerLibrary.Services;
 public class OrderService : IOrderService
 {
     private readonly IDataAccess _db;
     private readonly IRepository<Order> _orderRepository;
-    private readonly IRepository<OrderLine> _orderLineRepository;
-    private readonly IRepository<Payment> _paymentRepository;
+    private readonly IOrderLineService _orderLineService;
+    private readonly IPaymentService _paymentService;
     private readonly IRepository<PickUp> _pickUpRepository;
     private readonly IRepository<Note> _noteRepository;
     private readonly IRepository<Customer> _customerRepository;
 
     public OrderService(IDataAccess dataAccess, IRepository<Order> orderRepository,
-                        IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository,
-                        IRepository<Note> noteRepository, IRepository<PickUp> pickUpRepository, 
-                        IRepository<Customer> customerRepository)
+                        IRepository<Note> noteRepository, IRepository<PickUp> pickUpRepository,
+                        IRepository<Customer> customerRepository, IOrderLineService orderLineService, 
+                        IPaymentService paymentService)
     {
         _db = dataAccess;
         _orderRepository = orderRepository;
-        _orderLineRepository = orderLineRepository;
-        _paymentRepository = paymentRepository;
         _noteRepository = noteRepository;
         _pickUpRepository = pickUpRepository;
         _customerRepository = customerRepository;
+        _orderLineService = orderLineService;
+        _paymentService = paymentService;
     }
 
     public IEnumerable<Order> GetAllOrders()
@@ -35,11 +36,25 @@ public class OrderService : IOrderService
 
         foreach (var order in orders)
         {
-            order.Customer = (_customerRepository as CustomerRepository).GetById(order.CustomerId);
-            order.PickUp = (_pickUpRepository as PickUpRepository).GetById(order.PickUpId);
-            order.Note = (_noteRepository as NoteRepository).GetById(order.NoteId);
+            order.Customer = _customerRepository.GetById(order.CustomerId);
+            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
+            order.Note = _noteRepository.GetById(order.NoteId);
+            order.OrderLines = [.. _orderLineService.GetAllOrderLinesByOrder(order)];
+            //order.Payments = [.. _paymentService.GetAllPaymentsByOrder(order)];
         }
         return orders;
+    }
+
+    public IEnumerable<Order> GetAllOrdersByCustomer(Customer customer)
+    {
+        var customerOrders = (_orderRepository as OrderRepository).GetByCustomerId(customer.Id);
+        foreach (var order in customerOrders)
+        {
+            order.Customer = customer;
+            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
+            order.Note = _noteRepository.GetById(order.NoteId);
+        }
+        return customerOrders;
     }
 
     public IEnumerable<Order> GetUpcomingOrders()
@@ -47,9 +62,9 @@ public class OrderService : IOrderService
         var upcomingOrders = (_orderRepository as OrderRepository).GetUpcomingOrders();
         foreach (var order in upcomingOrders)
         {
-            order.Customer = (_customerRepository as CustomerRepository).GetById(order.CustomerId);
-            order.PickUp = (_pickUpRepository as PickUpRepository).GetById(order.PickUpId);
-            order.Note = (_noteRepository as NoteRepository).GetById(order.NoteId);
+            order.Customer = _customerRepository.GetById(order.CustomerId);
+            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
+            order.Note = _noteRepository.GetById(order.NoteId);
         }
         return upcomingOrders;
     }
@@ -58,8 +73,8 @@ public class OrderService : IOrderService
         var pendingPaymentOrders = (_orderRepository as OrderRepository).GetPendingPaymentOrders();
         foreach (var order in pendingPaymentOrders)
         {
-            order.Customer = (_customerRepository as CustomerRepository).GetById(order.CustomerId);
-            order.PickUp = (_pickUpRepository as PickUpRepository).GetById(order.PickUpId);
+            order.Customer = _customerRepository.GetById(order.CustomerId);
+            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
         }
         return pendingPaymentOrders;
     }
@@ -74,21 +89,20 @@ public class OrderService : IOrderService
                 try
                 {
 
-                    order.PickUp.Id = _pickUpRepository.Insert((order.PickUp as PickUp));
-                    order.Note.Id = _noteRepository.Insert((order.Note as Note));
+                    order.PickUp.Id = _pickUpRepository.Insert(order.PickUp);
+                    order.Note.Id = _noteRepository.Insert(order.Note);
                     order.Id = _orderRepository.Insert(order);
 
                     // Opret ordrelinjer
                     foreach (var line in orderLines)
                     {
-                        line.OrderId = order.Id; // Sæt OrderId for ordrelinjen
-                        _orderLineRepository.Insert(line);
+                        line.Order = order; // Sæt OrderId for ordrelinjen
+                        _orderLineService.CreateOrderLine(line);
                     }
 
                     foreach (var payment in payments)
                     {
-                        payment.OrderId = order.Id;
-                        _paymentRepository.Insert(payment);
+                        payment.Order = order;
                     }
 
                     // Commit transaction

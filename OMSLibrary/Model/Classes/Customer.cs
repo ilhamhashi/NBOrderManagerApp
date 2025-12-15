@@ -11,7 +11,7 @@ public class Customer : ICustomer
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
-    public List<Order> Orders { get; set; }
+    public List<Order> Orders { get; set; } = [];
 
 
     /// <summary>
@@ -35,10 +35,5 @@ public class Customer : ICustomer
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;
-    }
-
-    public string GetFullName()
-    {
-        return FirstName + " " + LastName;
     }
 }

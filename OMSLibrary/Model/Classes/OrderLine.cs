@@ -6,30 +6,34 @@
 /// </summary>
 public class OrderLine
 {
-    public Product Product { get; set; }
-    public Order Order { get; set; }
+    public int ProductId { get; set; }
+    public int OrderId { get; set; }
     public int LineNumber { get; set; }
     public int Quantity { get; set; }
     public decimal Price { get; set; }
     public decimal Discount { get; set; }
-    public Taste Taste { get; set; }
-    public Size Size { get; set; }
-    public int OrderId { get; set; }
+    public string Size { get; set; }
+    public string Taste { get; set; }
+
+    public Product Product { get; set; }
+    public Order Order { get; set; }
 
     /// <summary>
     /// Creates an order line using a product ID and order details
     /// </summary>
-    public OrderLine(int productId, int orderId, int lineNumber, int quantity, decimal price, decimal discount)
+    public OrderLine(int productId, int orderId, int lineNumber, int quantity, decimal price, decimal discount, string size, string taste)
     {
-        Product.Id = productId;
+        ProductId = productId;
         OrderId = orderId;
         LineNumber = lineNumber;        
         Quantity = quantity;
         Price = price;
         Discount = discount;
+        Size = size;
+        Taste = taste;
     }
 
-    public OrderLine(Product product, int quantity, decimal price, decimal discount, Taste taste, Size size)
+    public OrderLine(Product product, int quantity, decimal price, decimal discount, string taste, string size)
     {
         Product = product;
         Quantity = quantity;

@@ -9,8 +9,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="70*" />
-            <RowDefinition Height="30*" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="20*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -30,9 +30,15 @@
                         <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
                         Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Date" IsReadOnly="True" Width="auto"
-                        Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="auto"
-                        Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                        Binding="{Binding Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="auto">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="Customer.FirstName" />
+                                    <Binding Path="Customer.LastName" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
                         <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="auto"
                         Binding="{Binding PickUp.Date, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Status" IsReadOnly="True" Width="auto"
@@ -71,39 +77,50 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" 
-                    CornerRadius="7" Margin="15 7 7 0">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="#cae3db" Offset="0"/>
-                        <GradientStop Color="#e0f5ee" Offset="0.8"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+                    Style="{StaticResource dashboardStats}"
+                    Margin="15 7 7 0">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="{Binding WeeklyRevenue, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="this week" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="revenue" TextWrapping="Wrap" 
+                               FontSize="12" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding WeeklyRevenue, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="25" TextAlignment="Center" VerticalAlignment="Center" Margin="7"/>
+                    <TextBlock Text="this week" TextWrapping="Wrap" 
+                               FontSize="20" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
             <Border Grid.Column="1" 
-                    Style="{StaticResource whiteBorder}" Margin="7 7 7 0"
-                    Background="#e0f5ee">
+                    Style="{StaticResource dashboardStats}" 
+                    Margin="7 7 7 0">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="{Binding MonthlyRevenue, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="this month" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="revenue" TextWrapping="Wrap" 
+                               FontSize="12" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding MonthlyRevenue, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="25" TextAlignment="Center" VerticalAlignment="Center" Margin="7"/>
+                    <TextBlock Text="this month" TextWrapping="Wrap" 
+                               FontSize="20" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
             <Border Grid.Column="2" 
-                    Style="{StaticResource whiteBorder}" Margin="7 7 7 0"
-                    Background="#e0f5ee">
+                    Style="{StaticResource dashboardStats}" 
+                    Margin="7 7 7 0">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="{Binding MostPopularProduct, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="most popular" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="product" TextWrapping="Wrap" 
+                               FontSize="12" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding MostPopularProduct, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="25" TextAlignment="Center" VerticalAlignment="Center" Margin="7"/>
+                    <TextBlock Text="most popular" TextWrapping="Wrap" 
+                               FontSize="20" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>            </Border>
             <Border Grid.Column="3" 
-                    Style="{StaticResource whiteBorder}" Margin="7 7 0 0"
-                    Background="#e0f5ee">
+                    Style="{StaticResource dashboardStats}" 
+                    Margin="7 7 0 0">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="{Binding MonthlyOrdersCount, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="this month" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="orders" TextWrapping="Wrap" 
+                               FontSize="12" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding MonthlyOrdersCount, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="25" TextAlignment="Center" VerticalAlignment="Center" Margin="7"/>
+                    <TextBlock Text="this month" TextWrapping="Wrap" 
+                               FontSize="20" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>

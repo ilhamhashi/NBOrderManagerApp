@@ -9,6 +9,7 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services;
+using OrderManagerLibrary.Services.Interfaces;
 using System.Data;
 using System.IO;
 using System.Windows;
@@ -37,19 +38,22 @@ namespace OrderManagerDesktopUI
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
+            services.AddSingleton<Func<Type, ViewModel>>(_serviceProvider =>
+                             viewModelType => (ViewModel)_serviceProvider.GetRequiredService(viewModelType));
+
             services.AddSingleton<IConfiguration>(config);
-            services.AddSingleton<MainViewModel>();
-            services.AddScoped<DashboardViewModel>();
-            services.AddScoped<NewOrderViewModel>();
-            services.AddScoped<NoteViewModel>();
-            services.AddScoped<DeliveryViewModel>();
-            services.AddScoped<PaymentViewModel>();
-            services.AddScoped<PriceChangeViewModel>();
-            services.AddScoped<OrdersViewModel>();
-            services.AddScoped<ProductsViewModel>();
-            services.AddScoped<CustomersViewModel>();
-            services.AddScoped<SalesDataViewModel>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddTransient<MainViewModel>();
+            services.AddTransient<DashboardViewModel>();
+            services.AddTransient<NewOrderViewModel>();
+            services.AddTransient<NoteViewModel>();
+            services.AddTransient<DeliveryViewModel>();
+            services.AddTransient<PaymentViewModel>();
+            services.AddTransient<PriceChangeViewModel>();
+            services.AddTransient<OrdersViewModel>();
+            services.AddTransient<ProductsViewModel>();
+            services.AddTransient<CustomersViewModel>();
+            services.AddTransient<SalesDataViewModel>();
             services.AddScoped<IDataAccess, DataAccess>();
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
             services.AddScoped<IRepository<PaymentMethod>, PaymentMethodRepository>();
@@ -65,9 +69,9 @@ namespace OrderManagerDesktopUI
             services.AddScoped<IRepository<ProductTaste>, ProductTasteRepository>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
-
-            services.AddSingleton<Func<Type, ViewModel>>(_serviceProvider =>
-                viewModelType => (ViewModel)_serviceProvider.GetRequiredService(viewModelType));
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IOrderLineService, OrderLineService> ();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             _serviceProvider = services.BuildServiceProvider();
         }

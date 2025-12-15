@@ -2,23 +2,24 @@
 namespace OrderManagerLibrary.Model.Classes;
 
 /// <summary>
-/// Represents an order from a customer in the bakery. 
-/// Contains information such as order date, status, and customer reference.
+/// Represents an order from a customer.
 /// </summary>
 public class Order
 {
     public int Id { get; set; }
     public DateTime Date { get; set; }
     public OrderStatus Status { get; set; }
+    public int CustomerId { get; set; }
+    public int PickUpId { get; set; }
+    public int NoteId { get; set; }    
+    
     public Customer Customer { get; set; }
-    public IPickUp PickUp { get; set; }
-    public INote Note { get; set; }
+    public PickUp PickUp { get; set; }
+    public Note Note { get; set; }
     public List<OrderLine> OrderLines { get; set; }
     public List<Payment> Payments { get; set; }
 
-    public int CustomerId { get; set; }
-    public int PickUpId { get; set; }
-    public int NoteId { get; set; }
+
 
     public Order(int id, DateTime date, OrderStatus status, int customerId, int pickUpId, int noteId)
     {
@@ -47,7 +48,7 @@ public class Order
     /// OrderId will be generated automatically when inserted.
     /// </summary>
 
-    public Order(DateTime orderDate, OrderStatus status, Customer customer, IPickUp pickUp, INote note)
+    public Order(DateTime orderDate, OrderStatus status, Customer customer, PickUp pickUp, Note note)
     {
         Date = orderDate;
         Status = status;

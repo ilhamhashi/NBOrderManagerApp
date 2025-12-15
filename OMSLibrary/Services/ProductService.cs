@@ -1,21 +1,18 @@
-﻿using OrderManagerLibrary.DataAccess;
-using OrderManagerLibrary.Model.Classes;
+﻿using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
-using System.Linq.Expressions;
+using OrderManagerLibrary.Services.Interfaces;
 
 namespace OrderManagerLibrary.Services;
 public class ProductService : IProductService
 {
-    private readonly IDataAccess _db;
     private readonly IRepository<Product> _productRepository;
     private readonly IRepository<Size> _sizeRepository;
     private readonly IRepository<Taste> _tasteRepository;
 
-    public ProductService(IDataAccess dataAccess, IRepository<Product> productRepository, 
+    public ProductService(IRepository<Product> productRepository, 
                           IRepository<Size> sizeRepository, IRepository<Taste> tasteRepository)
     {
-        _db = dataAccess;
         _productRepository = productRepository;
         _sizeRepository = sizeRepository;
         _tasteRepository = tasteRepository;
@@ -32,13 +29,17 @@ public class ProductService : IProductService
             product.TasteOptions.AddRange((_tasteRepository as TasteRepository).GetByProductId(product.Id));
             product.Taste = (product.TasteOptions.Count > 0) ? product.TasteOptions[0] : null;            
         }
-
         return products;
     }
 
     public Product? GetProductById(int id) => _productRepository.GetById(id);
-    public void CreateProduct(Product product) => _productRepository.Insert(product);
+
+    public Product CreateProduct(Product product)
+    {
+        product.Id = _productRepository.Insert(product);
+        return product;
+    }
+
     public void UpdateProduct(Product product) => _productRepository.Update(product);
     public void RemoveProduct(int id) => _productRepository.Delete(id);
-
 }

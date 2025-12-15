@@ -1,5 +1,7 @@
 ﻿using OrderManagerDesktopUI.Core;
+using OrderManagerDesktopUI.Views;
 using OrderManagerLibrary.Model.Classes;
+using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -7,118 +9,106 @@ using System.Windows.Input;
 namespace OrderManagerDesktopUI.ViewModels;
 public class CustomersViewModel : ViewModel
 {
+    private readonly ICustomerService _customerService;
     public ObservableCollection<Customer> Customers { get; set; } = new();
     public static ICollectionView CustomersCollectionView { get; set; }
 
     private Customer _selectedCustomer;
     public Customer SelectedCustomer
     {
-        get => _selectedCustomer;
-        set
-        {
-            _selectedCustomer = value;
-            OnPropertyChanged(nameof(SelectedCustomer));
-            if (_selectedCustomer != null)
-            {
-                FirstName = _selectedCustomer.FirstName;
-                LastName = _selectedCustomer.LastName;
-                PhoneNumber = _selectedCustomer.PhoneNumber;
-            }
-        }
+        get { return _selectedCustomer; }
+        set { _selectedCustomer = value; OnPropertyChanged(); }
     }
 
     private string _firstName;
     public string FirstName
     {
-        get => _firstName;
-        set { _firstName = value; OnPropertyChanged(nameof(FirstName)); }
+        get { return _firstName; }
+        set { _firstName = value; OnPropertyChanged(); }
     }
 
     private string _lastName;
     public string LastName
     {
-        get => _lastName;
-        set { _lastName = value; OnPropertyChanged(nameof(LastName)); }
+        get { return _lastName; }
+        set { _lastName = value; OnPropertyChanged(); }
     }
 
     private string _phoneNumber;
     public string PhoneNumber
     {
-        get => _phoneNumber;
-        set { _phoneNumber = value; OnPropertyChanged(nameof(PhoneNumber)); }
+        get { return _phoneNumber; }
+        set { _phoneNumber = value; OnPropertyChanged(); }
     }
 
-    private string _searchText;
-    public string SearchText
+    private string _searchTerm;
+    public string SearchTerm
     {
-        get => _searchText;
-        set { _searchText = value; OnPropertyChanged(nameof(SearchText)); FilterCustomers(); }
+        get => _searchTerm;
+        set
+        {
+            _searchTerm = value;
+            OnPropertyChanged(nameof(SearchTerm));
+            FilterCustomers();
+        }
     }
 
+    public ICommand CreateCustomerCommand { get; private set; }
+    public ICommand UpdateCustomerCommand { get; private set; }
+    public ICommand RemoveCustomerCommand { get; private set; }
 
-
-    // Commands
-    public ICommand CreateCustomerCommand { get; }
-    public ICommand EditCustomerCommand { get; }
-
-    public ICommand DeleteCustomerCommand { get; }
-
-    public CustomersViewModel()
+    public CustomersViewModel(ICustomerService customerService)
     {
-        CreateCustomerCommand = new RelayCommand(o => CreateCustomer());
-        EditCustomerCommand = new RelayCommand(o => EditCustomer());
-        DeleteCustomerCommand = new RelayCommand(o => DeleteCustomer());
+        _customerService = customerService;
+        Customers = new ObservableCollection<Customer>(_customerService.GetAllCustomers());
 
-
-        // Eksempel-data
-        Customers.Add(new Customer("Ali", "Hassan", "12345678"));
-        Customers.Add(new Customer("Sara", "Mohamed", "87654321"));
-        Customers = new ObservableCollection<Customer>(Customers);
+        CreateCustomerCommand = new RelayCommand(execute => CreateCustomer(), canExecute => CanCreateCustomer());
+        UpdateCustomerCommand = new RelayCommand(execute => UpdateCustomer(), canExecute => true);
+        RemoveCustomerCommand = new RelayCommand((param) => RemoveCustomer(param), canExecute => true);
     }
+
+    private bool CanCreateCustomer() => (!string.IsNullOrWhiteSpace(FirstName) &&
+                                         !string.IsNullOrWhiteSpace(LastName) &&
+                                         !string.IsNullOrWhiteSpace(PhoneNumber));
 
     private void CreateCustomer()
     {
-        if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName))
-        {
-            var newCustomer = new Customer(FirstName, LastName, PhoneNumber);
-            Customers.Add(newCustomer);
-        }
+        var newCustomer = new Customer(FirstName, LastName, PhoneNumber);
+        newCustomer = _customerService.CreateCustomer(newCustomer);
+        Customers.Add(newCustomer);
+        ResetFields();
     }
 
-    private void EditCustomer()
+    private void ResetFields()
     {
-        if (SelectedCustomer != null)
-        {
-            SelectedCustomer.FirstName = FirstName;
-            SelectedCustomer.LastName = LastName;
-            SelectedCustomer.PhoneNumber = PhoneNumber;
-            OnPropertyChanged(nameof(Customers));
-        }
+        FirstName = string.Empty;
+        LastName = string.Empty;
+        PhoneNumber = string.Empty;
     }
 
-    private void DeleteCustomer()
+    private void UpdateCustomer()
     {
-        if (SelectedCustomer != null)
-        {
-            Customers.Remove(SelectedCustomer);
-            Customers.Remove(SelectedCustomer);
-            FirstName = "";
-            LastName = "";
-            PhoneNumber = "";
-        }
+        _customerService.UpdateCustomer(SelectedCustomer);
+        SelectedCustomer = null;
+    }
+
+    private void RemoveCustomer(object rowData)
+    {
+        _customerService.RemoveCustomer((rowData as Customer).Id);
+        Customers.Remove(rowData as Customer);
     }
 
     private void FilterCustomers()
     {
-        if (!string.IsNullOrWhiteSpace(SearchText))
+        if (!string.IsNullOrWhiteSpace(SearchTerm))
         {
             CustomersCollectionView.Filter = c =>
             {
                 if (c is Customer customer)
                 {
-                    return customer.FirstName.Contains(SearchText) ||
-                         customer.LastName.Contains(SearchText) ||
-                         customer.PhoneNumber.Contains(SearchText);
+                    return customer.FirstName.Contains(SearchTerm) ||
+                           customer.LastName.Contains(SearchTerm) ||
+                           customer.PhoneNumber.Contains(SearchTerm);
                 }
 
                 return false;

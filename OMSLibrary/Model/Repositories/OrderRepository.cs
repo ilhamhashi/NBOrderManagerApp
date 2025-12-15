@@ -166,5 +166,32 @@ public class OrderRepository : IRepository<Order>
             return pendingPaymentOrders;
         }
     }
+
+    public IEnumerable<Order> GetByCustomerId(int id)
+    {
+        var orders = new List<Order>();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spOrder_GetAllByCustomerId", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@CustomerId", id);
+            connection.Open();
+
+            using SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                orders.Add(new Order
+                (
+                    (int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
+                    (int)reader["CustomerId"],
+                    (int)reader["PickUpId"],
+                    (int)reader["NoteId"]
+                ));
+            }
+            return orders;
+        }
+    }
 }
 
