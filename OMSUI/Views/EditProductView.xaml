@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="OrderManagerDesktopUI.Views.EditProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Border  Grid.Row="1" Grid.ColumnSpan="2"
+          Style="{StaticResource whiteBorder}" 
+          Margin="15 7 0 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Edit | Product #" 
+                        FontSize="18"/>
+                        <TextBlock Text="{Binding SelectedProduct.Id, UpdateSourceTrigger=PropertyChanged}" 
+                        FontSize="18"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Name"/>
+                    <TextBox Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
+                  Margin="0 0 0 5"/>
+
+                    <TextBlock Text="Description"/>
+                    <TextBox Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
+                  Margin="0 0 0 5"/>
+
+                    <TextBlock Text="Price"/>
+                    <TextBox Text="{Binding SelectedProduct.Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
+                  Margin="0 0 0 10"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Edit size options"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ListBox ItemsSource="{Binding AvailableSizes, UpdateSourceTrigger=PropertyChanged}"
+           SelectedItem="{Binding SelectedSize, UpdateSourceTrigger=PropertyChanged}"
+           DisplayMemberPath="Name"
+           MinWidth="80">
+                        </ListBox>
+                        <StackPanel>
+                            <Button Content=">>"
+              Style="{StaticResource addButton}"
+              Command="{Binding AddSizeToProductCommand}"
+              Margin="0 0 0 10"
+              HorizontalAlignment="Center"/>
+                            <Button Content="&lt;&lt;"
+              Style="{StaticResource addButton}"
+              Command="{Binding RemoveSizeFromProductCommand}"
+              Margin="0 0 0 10"
+              HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <ListBox ItemsSource="{Binding SizeOptions, UpdateSourceTrigger=PropertyChanged}"
+           SelectedItem="{Binding SelectedSize, UpdateSourceTrigger=PropertyChanged}"
+           DisplayMemberPath="Name"
+           MinWidth="80"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Add taste options" Margin="0 20 0 0"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ListBox ItemsSource="{Binding AvailableTastes, UpdateSourceTrigger=PropertyChanged}"
+           SelectedItem="{Binding SelectedTaste, UpdateSourceTrigger=PropertyChanged}"
+           DisplayMemberPath="Name"
+           MinWidth="80">
+                        </ListBox>
+                        <StackPanel>
+                            <Button Content=">>"
+              Style="{StaticResource addButton}"
+              Command="{Binding AddTasteToProductCommand}"
+              Margin="0 0 0 10"
+              HorizontalAlignment="Center"/>
+                            <Button Content="&lt;&lt;"
+              Style="{StaticResource addButton}"
+              Command="{Binding RemoveTasteFromProductCommand}"
+              Margin="0 0 0 10"
+              HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <ListBox ItemsSource="{Binding TasteOptions, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedItem="{Binding SelectedTaste, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Name"
+                          MinWidth="80"/>
+                    </StackPanel>
+
+                    <Button Content="Update"
+                     Style="{StaticResource addButton}"
+                     Command="{Binding UpdateProductCommand}"
+                     Margin="0 0 0 10"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

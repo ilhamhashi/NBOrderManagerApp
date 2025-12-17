@@ -1,6 +1,6 @@
 ﻿using OrderManagerDesktopUI.Core;
 
 namespace OrderManagerDesktopUI.ViewModels;
-class PriceChangeViewModel : ViewModel
+public class EditProductViewModel : ViewModel
 {
 }

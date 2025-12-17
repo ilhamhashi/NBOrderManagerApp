@@ -47,11 +47,11 @@ namespace OrderManagerDesktopUI
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<NewOrderViewModel>();
             services.AddTransient<NoteViewModel>();
-            services.AddTransient<DeliveryViewModel>();
-            services.AddTransient<PaymentViewModel>();
-            services.AddTransient<PriceChangeViewModel>();
+            services.AddTransient<NewOrderDetailsViewModel>();
             services.AddTransient<OrdersViewModel>();
             services.AddTransient<ProductsViewModel>();
+            services.AddTransient<AddProductViewModel>();
+            services.AddTransient<EditProductViewModel>();
             services.AddTransient<CustomersViewModel>();
             services.AddTransient<SalesDataViewModel>();
             services.AddScoped<IDataAccess, DataAccess>();

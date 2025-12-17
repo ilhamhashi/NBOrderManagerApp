@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="OrderManagerDesktopUI.Views.AddProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <!-- CREATE PRODUCT -->
+        <Border Grid.Column="1" Style="{StaticResource whiteBorder}"
+            Margin="7 0 0 7">
+            <StackPanel Margin="10">
+
+                <TextBlock Text="Create Product" 
+                   FontSize="20" 
+                   Margin="0 0 0 10"/>
+
+                <TextBlock Text="Name"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 5"/>
+
+                <TextBlock Text="Description"/>
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 5"/>
+
+                <TextBlock Text="Price"/>
+                <TextBox Text="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 10"/>
+
+                <TextBlock Text="Add size options"/>
+                <StackPanel Orientation="Horizontal">
+                    <ListBox ItemsSource="{Binding AvailableSizes, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedItem="{Binding SelectedSize, UpdateSourceTrigger=PropertyChanged}"
+                         DisplayMemberPath="Name"
+                         MinWidth="80">
+                    </ListBox>
+                    <StackPanel>
+                        <Button Content=">>"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding AddSizeToNewProductCommand}"
+                            Margin="0 0 0 10"
+                            HorizontalAlignment="Center"/>
+                        <Button Content="&lt;&lt;"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding RemoveSizeFromNewProductCommand}"
+                            Margin="0 0 0 10"
+                            HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding SizeOptions, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedItem="{Binding SelectedSize, UpdateSourceTrigger=PropertyChanged}"
+                         DisplayMemberPath="Name"
+                         MinWidth="80"/>
+                </StackPanel>
+
+                <TextBlock Text="Add taste options" Margin="0 20 0 0"/>
+                <StackPanel Orientation="Horizontal">
+                    <ListBox ItemsSource="{Binding AvailableTastes, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedItem="{Binding SelectedTaste, UpdateSourceTrigger=PropertyChanged}"
+                         DisplayMemberPath="Name"
+                         MinWidth="80">
+                    </ListBox>
+                    <StackPanel>
+                        <Button Content=">>"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding AddTasteToNewProductCommand}"
+                            Margin="0 0 0 10"
+                            HorizontalAlignment="Center"/>
+                        <Button Content="&lt;&lt;"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding RemoveTasteFromNewProductCommand}"
+                            Margin="0 0 0 10"
+                            HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding TasteOptions, UpdateSourceTrigger=PropertyChanged}" 
+                         SelectedItem="{Binding SelectedTaste, UpdateSourceTrigger=PropertyChanged}"
+                         DisplayMemberPath="Name"
+                         MinWidth="80"/>
+                </StackPanel>
+
+
+                <Button Content="Create"
+                Style="{StaticResource addButton}"
+                Command="{Binding CreateProductCommand}"
+                Margin="0 0 0 10"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

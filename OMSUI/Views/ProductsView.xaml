@@ -11,7 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="30*"/>
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>       
 
         <Border Grid.Column="0"
                 Style="{StaticResource whiteBorder}" 
@@ -24,12 +24,15 @@
                 </Grid.RowDefinitions>
 
                 <!-- Search field that filters product list -->
-                <TextBox 
-                         Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
-                         VerticalContentAlignment="Center"
-                         HorizontalAlignment="Right"
-                         Margin="5"
-                         Style="{StaticResource SearchTextbox}"/>
+                <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                    <!-- overlay with hint text -->
+                    <TextBlock Margin="5,2" FontSize="14" Text="Search product" 
+                       Visibility="{Binding ElementName=txtSearchProducts, Path=Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}}" 
+                       IsHitTestVisible="False" />
+                    <!-- enter term here -->
+                    <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" FontSize="14"
+                     TextWrapping="Wrap" AcceptsReturn="True" Name="txtSearchProducts" Background="Transparent" />
+                </Grid>
 
                 <TextBlock Grid.Row="1" 
                            Text="Products"
@@ -105,83 +108,13 @@
             </Grid>
         </Border>
 
-        <!-- HØJRE: CREATE + EDIT -->
-        <Grid Grid.Column="1">
+        <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="7 0 0 0">
+            <Grid>
+                <ContentControl Grid.Row="1" 
+                                Content="{Binding Navigation.CurrentNestedView}"
+                                Margin="15"/>
+            </Grid>
+        </Border>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Border Style="{StaticResource whiteBorder}"
-                    Margin="7 0 0 7">
-                <StackPanel Margin="10">
-                    <!-- CREATE PRODUCT -->
-                    <TextBlock Text="Create Product" 
-                           FontSize="20" 
-                           Margin="0 0 0 10"/>
-
-                    <TextBlock Text="Name"/>
-                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0 0 0 5"/>
-
-                    <TextBlock Text="Description"/>
-                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0 0 0 5"/>
-
-                    <TextBlock Text="Price"/>
-                    <TextBox Text="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0 0 0 10"/>
-
-                    <ListBox ItemsSource="{Binding SizesCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                                 SelectionMode="Multiple"
-                                 DisplayMemberPath="Name"
-                                 Height="30" Width="200"/>
-
-                    <Button Content="Add size options"
-                        Style="{StaticResource addButton}"
-                        Command="{Binding AddSizeOptionsCommand}"
-                        Margin="0 0 0 10"/>
-
-                    <ListBox ItemsSource="{Binding SelectedProduct.Sizes, UpdateSourceTrigger=PropertyChanged}" 
-                             DisplayMemberPath="Name"
-                             Height="30" Width="200"/>
-
-                    <Button Content="Create"
-                        Style="{StaticResource addButton}"
-                        Command="{Binding CreateProductCommand}"
-                        Margin="0 0 0 10"/>
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Row="1"
-                Style="{StaticResource whiteBorder}"
-                Margin="7 7 0 0">
-                <StackPanel Margin="10">
-                    <!-- EDIT PRODUCT -->
-                    <TextBlock Text="Edit Product" 
-                           FontSize="20" 
-                           Margin="0 0 0 10"/>
-
-                    <TextBlock Text="Name"/>
-                    <TextBox Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0 0 0 5"/>
-
-                    <TextBlock Text="Description"/>
-                    <TextBox Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0 0 0 5"/>
-
-                    <TextBlock Text="Price"/>
-                    <TextBox Text="{Binding SelectedProduct.Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0 0 0 10"/>
-
-                    <Button Content="Update"
-                            Width="100"
-                            Margin="5"
-                            Style="{StaticResource addButton}"
-                            Command="{Binding UpdateProductCommand}"/>
-                </StackPanel>
-            </Border>
-        </Grid>
     </Grid>
 </UserControl>

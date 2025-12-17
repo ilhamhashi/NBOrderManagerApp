@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace OrderManagerDesktopUI.Views
 {
     /// <summary>
-    /// Interaction logic for PriceChangeView.xaml
+    /// Interaction logic for AddProductView.xaml
     /// </summary>
-    public partial class PriceChangeView : UserControl
+    public partial class AddProductView : UserControl
     {
-        public PriceChangeView()
+        public AddProductView()
         {
             InitializeComponent();
         }

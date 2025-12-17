@@ -23,10 +23,12 @@ public class Product
         Price = price;
     }
 
-    public Product(string name, string description, decimal price)
+    public Product(string name, string description, decimal price, List<Size> sizes, List<Taste> tastes)
     {
         Name = name;
         Description = description;
         Price = price;
+        SizeOptions = sizes;
+        TasteOptions = tastes;
     }
 }

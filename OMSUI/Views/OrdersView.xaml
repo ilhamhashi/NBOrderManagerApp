@@ -109,8 +109,6 @@
                                                 Binding="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Discount" IsReadOnly="True" Width="auto"
                                                 Binding="{Binding Discount, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Note" IsReadOnly="True" Width="*"
-                                                Binding="{Binding Note.Content, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>

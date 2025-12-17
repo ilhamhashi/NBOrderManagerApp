@@ -1,6 +1,6 @@
 ﻿using OrderManagerDesktopUI.Core;
 
 namespace OrderManagerDesktopUI.ViewModels;
-public class DeliveryViewModel : ViewModel
+public class AddProductViewModel : ViewModel
 {
 }

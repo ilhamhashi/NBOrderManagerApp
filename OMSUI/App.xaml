@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:OrderManagerDesktopUI"
              xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModels"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:view="clr-namespace:OrderManagerDesktopUI.Views" xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+             xmlns:view="clr-namespace:OrderManagerDesktopUI.Views" 
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
     
     <Application.Resources>
 
@@ -27,16 +28,8 @@
                 <view:NoteView/>
             </DataTemplate>
             
-            <DataTemplate DataType="{x:Type TypeName=vm:DeliveryViewModel}">
-                <view:DeliveryView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type TypeName=vm:PaymentViewModel}">
-                <view:PaymentView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type TypeName=vm:PriceChangeViewModel}">
-                <view:PriceChangeView/>
+            <DataTemplate DataType="{x:Type TypeName=vm:NewOrderDetailsViewModel}">
+                <view:NewOrderDetailsView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TypeName=vm:OrdersViewModel}">
@@ -45,6 +38,14 @@
 
             <DataTemplate DataType="{x:Type TypeName=vm:ProductsViewModel}">
                 <view:ProductsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=vm:AddProductViewModel}">
+                <view:AddProductView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type TypeName=vm:EditProductViewModel}">
+                <view:EditProductView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TypeName=vm:CustomersViewModel}">
@@ -77,7 +78,8 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-
+            
+            <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
             <!-- Rund Button -->
             <Style TargetType="Button" x:Key="RoundedButton">
                 <Setter Property="FontFamily" Value="Segoe UI"/>

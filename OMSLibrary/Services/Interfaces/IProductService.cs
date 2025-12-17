@@ -7,4 +7,6 @@ public interface IProductService
     Product CreateProduct(Product product);
     void UpdateProduct(Product product);
     void RemoveProduct(int id);
+    IEnumerable<Size> GetAllSizes();
+    IEnumerable<Taste> GetAllTastes();
 }

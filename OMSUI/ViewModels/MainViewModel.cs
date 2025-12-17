@@ -15,13 +15,6 @@ public class MainViewModel : ViewModel
             OnPropertyChanged();
         }
     }
-    private string noteText = "mainvm";
-
-    public string NoteText
-    {
-        get { return noteText; }
-        set { noteText = value; OnPropertyChanged(); }
-    }
     public RelayCommand NavigateToNewOrderCommand { get; set; }
     public RelayCommand NavigateToOrdersCommand { get; set; }
     public RelayCommand NavigateToCustomersCommand { get; set; }

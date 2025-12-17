@@ -107,25 +107,11 @@
                             <TextBlock Text="Note"/>
                         </StackPanel>
                     </Button>
-                    <!-- Add Price change -->
-                    <Button Style="{StaticResource addButton}" 
-                    Command="{Binding NavigateToPriceChangeViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Price change"/>
-                        </StackPanel>
-                    </Button>
-                    <!-- Add Delivery -->
+                    <!-- Add Delivery & Payment -->
                     <Button Style="{StaticResource addButton}"
-                    Command="{Binding NavigateToDeliveryViewCommand}">
+                    Command="{Binding NavigateToNewOrderDetailsViewCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Delivery"/>
-                        </StackPanel>
-                    </Button>
-                    <!-- Add Payment -->
-                    <Button Style="{StaticResource addButton}"
-                    Command="{Binding NavigateToPaymentViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Payment"/>
+                            <TextBlock Text="Delivery and Payment"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -241,6 +227,20 @@
                                                 HorizontalAlignment="Right"
                                                 Margin="3">
                                                 <Icon:PackIconMaterial Kind="PlusCircleOutline"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid>
+                                        <TextBox Text="{Binding Discount, UpdateSourceTrigger=PropertyChanged}" 
+                                                 BorderThickness="0" FontSize="14"
+                                                 TextWrapping="Wrap" AcceptsReturn="True" 
+                                                 MinWidth="10" Background="Transparent" />
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Background="Transparent" BorderThickness="0"
+                                                    Content="Add discount"
+                                                    Command="{Binding DataContext.AddDiscountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"
+                                                    CommandParameter="{Binding}"
+                                                    Margin="3">
                                             </Button>
                                         </StackPanel>
                                     </Grid>
