@@ -20,45 +20,44 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Column="0"
-        Style="{StaticResource whiteBorder}" 
-        Margin="15 0 7 7">
+                Style="{StaticResource whiteBorder}" 
+                Margin="15 0 7 7">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="10*" />
-                    <RowDefinition Height="10*" />
-                    <RowDefinition Height="50*" />
-                    <RowDefinition Height="30*" />
+                    <RowDefinition Height="20*" />
+                    <RowDefinition Height="80*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" 
-                   Text="Customers"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="20"
-                   Margin="0 0 0 20"/>
-
-                <!-- Search field that filters customer list -->
-                <StackPanel Grid.Row="1" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
-                    <TextBlock Text="Search customer (id, name, phone)" 
-                       FontSize="11"
-                       Margin="10"/>
-                    <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalContentAlignment="Center"
-                     Width="200"
-                     Height="30"/>
+                <StackPanel>
+                    <TextBlock Grid.Row="0" 
+                               Text="Customers"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="23"
+                               Margin="20 10 0 0"/>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0 0 15 0">
+                        <TextBlock Text="Search customer (id, name, phone)" 
+                               FontSize="11"
+                               Margin="10"
+                               HorizontalAlignment="Right"/>
+                        <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Width="200"
+                             Height="30"/>
+                    </StackPanel>
                 </StackPanel>
-
                 <!-- List of customers -->
-                <ScrollViewer VerticalScrollBarVisibility="auto" Grid.Row="2">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto">
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                          CellStyle="{DynamicResource DataGridCellStyle1}" 
-                          Style="{DynamicResource DataGridStyle1}"
-                          ItemsSource="{Binding CustomerCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}">
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              ItemsSource="{Binding CustomerCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" 
+                              VerticalAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                 Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
@@ -136,7 +135,7 @@
             Margin="7 0 0 7">
                 <StackPanel Margin="10">
                     <!-- CREATE Customer -->
-                    <TextBlock Text="Create Customr" 
+                    <TextBlock Text="Create Customer" 
                    FontSize="20" 
                    Margin="0 0 0 10"/>
 

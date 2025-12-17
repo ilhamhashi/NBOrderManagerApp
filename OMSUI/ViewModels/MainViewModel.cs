@@ -38,15 +38,14 @@ public class MainViewModel : ViewModel
         MaximizeCommand = new RelayCommand(o =>
         {
             var window = Application.Current.MainWindow;
-            window.WindowState = window.WindowState == WindowState.Normal
-                ? WindowState.Maximized
-                : WindowState.Normal;
+            window.WindowState = window.WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
         });
 
         MinimizeCommand = new RelayCommand(o =>
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         });
+
         Navigation = navigationService;
         Navigation.NavigateTo<DashboardViewModel>();
 

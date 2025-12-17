@@ -48,10 +48,9 @@ public class Order
     /// OrderId will be generated automatically when inserted.
     /// </summary>
 
-    public Order(DateTime orderDate, OrderStatus status, Customer customer, PickUp pickUp, Note note)
+    public Order(DateTime orderDate, Customer customer, PickUp pickUp, Note note)
     {
         Date = orderDate;
-        Status = status;
         Customer = customer;
         PickUp = pickUp;
         Note = note;

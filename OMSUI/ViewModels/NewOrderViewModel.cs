@@ -157,7 +157,7 @@ public class NewOrderViewModel : ViewModel
         PaymentMethodsCollectionView = CollectionViewSource.GetDefaultView(_paymentMethods);
         OrderLinesCollectionView = CollectionViewSource.GetDefaultView(OrderLines);
         Navigation = navigationService;
-        Navigation.NavigateToNested<NewOrderDetailsViewModel>();
+        Navigation.NavigateToNested<NoteViewModel>();
 
         NavigateToNoteViewCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<NoteViewModel>(); }, canExecute => true);
@@ -177,14 +177,14 @@ public class NewOrderViewModel : ViewModel
     {
         PickUp pickUp = new PickUp(PickUpDateTime, IsDelivery, Location);
         Note note = new Note(NoteContent);
-        Order newOrder = new(DateTime.Now, OrderStatus.Draft, SelectedCustomer, pickUp, note);
-        if (outstandingAmount == 0)
-        {
-            newOrder.Status = OrderStatus.FullyPaid;
-        }
-
-        MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} {SelectedCustomer.LastName}?",
-                                  "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        Order newOrder = new(DateTime.Now, SelectedCustomer, pickUp, note);
+        newOrder.Status = SetOrderStatus();
+        
+        MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} {SelectedCustomer.LastName}" +
+                                                  $"\nPickUp: {PickUpDateTime}" +
+                                                  $"\nLocation: {Location}" +
+                                                  $"\nOutstanding: ${OutstandingAmount} ",
+                                                  "OrderManager", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
         if (result == MessageBoxResult.Yes)
         {
@@ -195,6 +195,22 @@ public class NewOrderViewModel : ViewModel
 
             ResetFieldsAfterOrderCompletion();
         }        
+    }
+
+    private OrderStatus SetOrderStatus()
+    {
+        if (outstandingAmount == 0)
+        {
+            return OrderStatus.Paid;
+        }
+        else if (outstandingAmount > 0 && outstandingAmount < RunningTotal)
+        {
+            return OrderStatus.PartiallyPaid;
+        }
+        else
+        {
+            return OrderStatus.Draft;
+        }
     }
 
     private void ResetFieldsAfterOrderCompletion()
@@ -259,7 +275,8 @@ public class NewOrderViewModel : ViewModel
             OrderLines.Remove(orderline);
             ResetLineNumber();
         }
-        UpdateRunningTotal(); UpdateDiscountTotal();
+        UpdateRunningTotal(); UpdateDiscountTotal(); 
+        UpdateOutstandingAmount();
         OrderLinesCollectionView.Refresh();
     }
 

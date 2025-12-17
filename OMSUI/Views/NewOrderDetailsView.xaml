@@ -67,7 +67,7 @@
                  Text="{Binding DataContext.PaymentAmount, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
                  Margin="20 5 20 0"/>
         
-        <StackPanel Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Orientation="Horizontal" Margin="20 5 20 0">
+        <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="2" Orientation="Horizontal" Margin="20 0 20 0">
             <Button Content="Save payment" 
                     Style="{StaticResource addButton}"
                     Command="{Binding DataContext.AddPaymentCommand}"/>

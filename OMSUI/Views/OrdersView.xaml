@@ -22,7 +22,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Margin="15 0 0 0"
+                           Margin="20 10 0 0"
                            Text="Orders" 
                            FontSize="23"
                            HorizontalAlignment="Left" 
@@ -97,17 +97,17 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                                 Binding="{Binding LineNumber, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Product" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                            <DataGridTextColumn Header="Product" IsReadOnly="True" CanUserResize="False" Width="*" 
                                                 Binding="{Binding Product.Name, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Size" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Size" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Size, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Taste" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Taste" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Taste, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Quantity" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                            <DataGridTextColumn Header="Quantity" IsReadOnly="True" CanUserResize="False" Width="*" 
                                                 Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Price" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Price" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Discount, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
                     </DataGrid>

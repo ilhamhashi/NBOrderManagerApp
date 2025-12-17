@@ -165,13 +165,6 @@
                                    Text="Select Customer" 
                                    Style="{StaticResource ComboBoxSelectOverlay}"/>
                     </Grid>
-                    <!-- Customer section 
-                    <StackPanel VerticalAlignment="Center" Margin="15">
-                        <TextBlock Text="{Binding SelectedCustomer.FirstName, UpdateSourceTrigger=PropertyChanged}" 
-                                   FontWeight="Medium" FontSize="11"/>
-                        <TextBlock Text="{Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" 
-                                   FontWeight="Medium" FontSize="11"/>
-                    </StackPanel> -->
                     <Button Grid.Column="1" 
                                 HorizontalAlignment="Right" 
                                 Style="{StaticResource addButton}" 

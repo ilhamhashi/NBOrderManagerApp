@@ -40,14 +40,6 @@
                 <view:ProductsView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=vm:AddProductViewModel}">
-                <view:AddProductView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type TypeName=vm:EditProductViewModel}">
-                <view:EditProductView/>
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type TypeName=vm:CustomersViewModel}">
                 <view:CustomersView/>
             </DataTemplate>

@@ -29,8 +29,6 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15 5 0 0">
                         <TextBlock Text="Upcoming Orders" 
                                FontSize="18"/>
-                        <TextBlock Text="{Binding SelectedOrder.Id, UpdateSourceTrigger=PropertyChanged}" 
-                               FontSize="18"/>
                     </StackPanel>
                     
                     <DataGrid Grid.Row="1" RowStyle="{DynamicResource DataGridRowStyle1}" 
@@ -54,7 +52,7 @@
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="auto"
-                        Binding="{Binding PickUp.Date, UpdateSourceTrigger=PropertyChanged}"/>
+                        Binding="{Binding PickUp.Date, StringFormat={}{0:g}, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Status" IsReadOnly="True" Width="auto"
                         Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
 
@@ -72,7 +70,6 @@
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15 5 0 0">
                         <TextBlock Text="Pending Payment" FontSize="18"/>
-                        <TextBlock Text="{Binding SelectedOrder.Id, UpdateSourceTrigger=PropertyChanged}" FontSize="18"/>
                     </StackPanel>
 
                     <DataGrid Grid.Row="1" RowStyle="{DynamicResource DataGridRowStyle1}" 
@@ -86,9 +83,9 @@
                             <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                                 Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
-                                                Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                                                Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Amount" IsReadOnly="True" Width="*"
-                                                Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
+                                                Binding="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

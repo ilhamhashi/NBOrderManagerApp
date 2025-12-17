@@ -13,18 +13,6 @@ namespace OrderManagerDesktopUI.ViewModels;
 public class ProductsViewModel : ViewModel
 {
     private readonly IProductService _productService;
-
-    private INavigationService _navigation;
-    public INavigationService Navigation
-    {
-        get => _navigation;
-        set
-        {
-            _navigation = value;
-            OnPropertyChanged();
-        }
-    }
-
     private ObservableCollection<Product> Products { get; }
     public ObservableCollection<Size> SizeOptions { get; } = [];
     public ObservableCollection<Taste> TasteOptions { get; } = [];
@@ -110,16 +98,8 @@ public class ProductsViewModel : ViewModel
     public ICommand RemoveSizeFromProductCommand { get; }
     public ICommand RemoveTasteFromProductCommand { get; }
 
-    public ProductsViewModel(IProductService productService, INavigationService navigationService)
+    public ProductsViewModel(IProductService productService)
     {
-        Navigation = navigationService;
-        Navigation.NavigateToNested<AddProductViewModel>();
-
-        NavigateToAddProductViewCommand = new RelayCommand(
-            execute => { Navigation.NavigateToNested<AddProductViewModel>(); }, canExecute => true);
-
-        NavigateToEditProductViewCommand = new RelayCommand(
-            execute => { Navigation.NavigateToNested<EditProductViewModel>(); }, canExecute => true);
         _productService = productService;
         Products = new ObservableCollection<Product>(_productService.GetAllProducts());
         ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);
@@ -129,48 +109,34 @@ public class ProductsViewModel : ViewModel
         CreateProductCommand = new RelayCommand(execute => CreateProduct(), canExecute => true);
         UpdateProductCommand = new RelayCommand(execute => UpdateProduct(), canExecute => SelectedProduct != null);
         DeleteProductCommand = new RelayCommand((param) => DeleteProduct(param), canExecute => true);
-        AddSizeToProductCommand = new RelayCommand(execute => AddSizeToNewProduct(), canExecute => SelectedSize != null);
-        AddTasteToProductCommand = new RelayCommand(execute => AddTasteToNewProduct(), canExecute => SelectedTaste != null);
-        RemoveSizeFromProductCommand = new RelayCommand(execute => RemoveSizeFromNewProduct(), canExecute => SelectedSize != null);
-        RemoveTasteFromProductCommand = new RelayCommand(execute => RemoveTasteFromNewProduct(), canExecute => SelectedTaste != null);
+        AddSizeToProductCommand = new RelayCommand(execute => AddSizeToProduct(), canExecute => SelectedSize != null);
+        AddTasteToProductCommand = new RelayCommand(execute => AddTasteToProduct(), canExecute => SelectedTaste != null);
+        RemoveSizeFromProductCommand = new RelayCommand(execute => RemoveSizeFromProduct(), canExecute => SelectedSize != null);
+        RemoveTasteFromProductCommand = new RelayCommand(execute => RemoveTasteFromProduct(), canExecute => SelectedTaste != null);
     }
 
-    private ObservableCollection<Size> GetAvailableSizesForSP()
-    {
-        var availableSizes = new ObservableCollection<Size>(_productService.GetAllSizes());
-        foreach (var size in availableSizes)
-        {
-            foreach (var sizeOption in SelectedProduct.SizeOptions)
-            {
-                if (!size.Id.Equals(sizeOption.Id))
-                    AvailableSizes.Remove(size);
-            }
-        }
-        return availableSizes;
-    }
-
-    private void AddSizeToNewProduct()
+    private void AddSizeToProduct()
     {        
         SizeOptions.Add(SelectedSize);
         AvailableSizes.Remove(SelectedSize);
         SelectedSize = null;
     }
 
-    private void AddTasteToNewProduct()
+    private void AddTasteToProduct()
     {
         TasteOptions.Add(SelectedTaste);
         AvailableTastes.Remove(SelectedTaste);
         SelectedTaste = null;
     }
 
-    private void RemoveSizeFromNewProduct()
+    private void RemoveSizeFromProduct()
     {        
         AvailableSizes.Add(SelectedSize);
         SizeOptions.Remove(SelectedSize);
         SelectedSize = null;
     }
 
-    private void RemoveTasteFromNewProduct()
+    private void RemoveTasteFromProduct()
     {
         AvailableTastes.Add(SelectedTaste);
         TasteOptions.Remove(SelectedTaste);

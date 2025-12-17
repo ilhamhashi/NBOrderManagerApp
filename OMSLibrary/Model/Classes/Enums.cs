@@ -22,7 +22,7 @@ public enum OrderStatus
     /// <summary>
     /// The order is fully paid and production can begin.
     /// </summary>
-    FullyPaid,
+    Paid,
 
     /// <summary>
     /// Production has completed the order,
