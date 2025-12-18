@@ -24,9 +24,10 @@
                 <TextBlock Grid.Row="0"
                            Margin="20 10 0 0"
                            Text="Orders" 
-                           FontSize="23"
+                           FontSize="20"
                            HorizontalAlignment="Left" 
                            VerticalAlignment="Center"/>
+                
                 <StackPanel Grid.Row="1" 
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right"
@@ -65,6 +66,8 @@
                                                 Binding="{Binding PickUp.Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Status" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Note" IsReadOnly="True" Width="*"
+                                            Binding="{Binding Note.Content, UpdateSourceTrigger=PropertyChanged}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

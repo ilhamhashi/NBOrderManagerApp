@@ -10,14 +10,13 @@ using Size = OrderManagerLibrary.Model.Classes.Size;
 
 namespace OrderManagerDesktopUI.ViewModels;
 
-public class ProductsViewModel : ViewModel
+public class ProductsViewModel : ViewModelBase
 {
     private readonly IProductService _productService;
-    private ObservableCollection<Product> Products { get; }
+    private ObservableCollection<Product> _products { get; }
+    public ICollectionView ProductsCollectionView { get; }
     public ObservableCollection<Size> SizeOptions { get; } = [];
     public ObservableCollection<Taste> TasteOptions { get; } = [];
-    public ICollectionView ProductsCollectionView { get; }
-
     private ObservableCollection<Size> _availableSizes;
     public ObservableCollection<Size> AvailableSizes
     {
@@ -32,15 +31,14 @@ public class ProductsViewModel : ViewModel
         set { _availableTastes = value; OnPropertyChanged(); }
     }
 
-    private Product? _selectedProduct;
-    public Product? SelectedProduct
+    private Product _selectedProduct;
+    public Product SelectedProduct
     {
         get { return _selectedProduct; }
         set { _selectedProduct = value; OnPropertyChanged(); }
     }
 
     private string _name;
-
     public string Name
     {
         get { return _name; }
@@ -48,7 +46,6 @@ public class ProductsViewModel : ViewModel
     }
 
     private string _description;
-
     public string Description
     {
         get { return _description; }
@@ -56,7 +53,6 @@ public class ProductsViewModel : ViewModel
     }
 
     private decimal _price;
-
     public decimal Price
     {
         get { return _price; }
@@ -76,7 +72,6 @@ public class ProductsViewModel : ViewModel
         get { return _selectedTaste; }
         set { _selectedTaste = value; OnPropertyChanged(); }
     }
-
 
     private string searchTerm;
     public string SearchTerm
@@ -101,8 +96,8 @@ public class ProductsViewModel : ViewModel
     public ProductsViewModel(IProductService productService)
     {
         _productService = productService;
-        Products = new ObservableCollection<Product>(_productService.GetAllProducts());
-        ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);
+        _products = new ObservableCollection<Product>(_productService.GetAllProducts());
+        ProductsCollectionView = CollectionViewSource.GetDefaultView(_products);
         ProductsCollectionView.Filter = FilterProducts;
         AvailableSizes = new ObservableCollection<Size>(_productService.GetAllSizes());
         AvailableTastes = new ObservableCollection<Taste>(_productService.GetAllTastes());
@@ -157,7 +152,7 @@ public class ProductsViewModel : ViewModel
     {
         var product = new Product(Name, Description, Price, [.. SizeOptions], [.. TasteOptions]);
         _productService.CreateProduct(product);
-        Products.Add(product);
+        _products.Add(product);
         MessageBox.Show($"You have succesfully created {product.Name}.");
         ResetFields();
     }
@@ -178,27 +173,32 @@ public class ProductsViewModel : ViewModel
 
     private void UpdateProduct()
     {
-        SelectedProduct.SizeOptions = [.. SizeOptions];
-        SelectedProduct.TasteOptions = [.. TasteOptions];
-        _productService.UpdateProduct(SelectedProduct);
-        ProductsCollectionView.Refresh();
-        ResetFields();
+        if (SelectedProduct != null)
+        {
+            SelectedProduct.SizeOptions = [.. SizeOptions];
+            SelectedProduct.TasteOptions = [.. TasteOptions];
+            _productService.UpdateProduct(SelectedProduct);
+            ProductsCollectionView.Refresh();
+            ResetFields();
+        }
     }
 
     private void DeleteProduct(object rowData)
     {
-        var product = rowData as Product;
-        MessageBoxResult result = MessageBox.Show($"Do you want to remove {product.Name}?",
-                                  "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-        if (result == MessageBoxResult.Yes)
+        if (rowData != null)
         {
-            _productService.RemoveProduct(product.Id);
-            Products.Remove(product);
+            var product = rowData as Product;
+            MessageBoxResult result = MessageBox.Show($"Do you want to remove {product.Name}?",
+                                      "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            MessageBox.Show($"{product.Name} is removed.", "Completed",
-                       MessageBoxButton.OK, MessageBoxImage.Information);
+            if (result == MessageBoxResult.Yes)
+            {
+                _productService.RemoveProduct(product.Id);
+                _products.Remove(product);
+
+                MessageBox.Show($"{product.Name} is removed.", "OrderManager",
+                           MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
-
 }

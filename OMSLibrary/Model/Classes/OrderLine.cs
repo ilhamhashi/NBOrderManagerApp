@@ -4,9 +4,8 @@
 /// Represents a productline in an order
 /// </summary>
 public class OrderLine
-{
-    public int ProductId { get; set; }
-    public int OrderId { get; set; }
+{   public Product Product { get; set; }
+    public Order Order { get; set; }
     public int LineNumber { get; set; }
     public int Quantity { get; set; }
     public decimal Price { get; set; }
@@ -14,16 +13,15 @@ public class OrderLine
     public string Size { get; set; }
     public string Taste { get; set; }
 
-    public Product Product { get; set; }
-    public Order Order { get; set; }
+
 
     /// <summary>
     /// Creates an order line using a product ID and order details
     /// </summary>
-    public OrderLine(int productId, int orderId, int lineNumber, int quantity, decimal price, decimal discount, string size, string taste)
+    public OrderLine(Product product, Order order, int lineNumber, int quantity, decimal price, decimal discount, string size, string taste)
     {
-        ProductId = productId;
-        OrderId = orderId;
+        Product = product;
+        Order = order;
         LineNumber = lineNumber;        
         Quantity = quantity;
         Price = price;
@@ -48,14 +46,6 @@ public class OrderLine
     public void ApplyDiscount()
     {
         Price -= Discount;
-    }
-
-    /// <summary>
-    /// Increases the price by the paramenter given amount 
-    /// </summary>
-    public void IncreasePrice(decimal increaseAmount)
-    {
-        Price += increaseAmount;
     }
 
     /// <summary>

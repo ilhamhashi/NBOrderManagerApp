@@ -1,6 +1,6 @@
 ﻿using OrderManagerDesktopUI.Core;
 
 namespace OrderManagerDesktopUI.ViewModels;
-public class NoteViewModel : ViewModel
+public class NoteViewModel : ViewModelBase
 {
 }

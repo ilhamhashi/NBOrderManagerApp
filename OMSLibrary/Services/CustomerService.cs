@@ -1,9 +1,7 @@
 ﻿using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services.Interfaces;
-using System.Reflection.Metadata.Ecma335;
 
 namespace OrderManagerLibrary.Services;
 public class CustomerService : ICustomerService
@@ -31,7 +29,7 @@ public class CustomerService : ICustomerService
         return customers;
     }
 
-    public Customer? GetCustomerById(int id) => _customerRepository.GetById(id);
+    public Customer GetCustomerById(int id) => _customerRepository.GetById(id);
     public Customer CreateCustomer(Customer customer)
     {
         customer.Id = _customerRepository.Insert(customer);

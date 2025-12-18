@@ -25,18 +25,19 @@
                         <RowDefinition Height="8*"/>
                         <RowDefinition Height="92*"/>
                     </Grid.RowDefinitions>
-                    
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15 5 0 0">
-                        <TextBlock Text="Upcoming Orders" 
-                               FontSize="18"/>
-                    </StackPanel>
-                    
+
+                    <TextBlock Grid.Row="0"
+                               Margin="20 10 0 0"
+                               Text="Upcoming Orders" 
+                               FontSize="20"
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center"/>
+
                     <DataGrid Grid.Row="1" RowStyle="{DynamicResource DataGridRowStyle1}" 
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
                           ItemsSource="{Binding UpcomingOrders, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
                           VerticalAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
@@ -68,24 +69,24 @@
                         <RowDefinition Height="92*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15 5 0 0">
-                        <TextBlock Text="Pending Payment" FontSize="18"/>
-                    </StackPanel>
+                    <TextBlock Grid.Row="0"
+                               Margin="20 10 0 0"
+                               Text="Pending Payment" 
+                               FontSize="20"
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center"/>
 
                     <DataGrid Grid.Row="1" RowStyle="{DynamicResource DataGridRowStyle1}" 
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
                               ItemsSource="{Binding PendingPaymentOrders, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                                 Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
                                                 Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Width="*"
-                                                Binding="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

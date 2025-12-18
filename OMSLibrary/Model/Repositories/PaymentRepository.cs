@@ -1,8 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
@@ -22,7 +20,7 @@ public class PaymentRepository : IRepository<Payment>
         using (SqlCommand command = new SqlCommand("spPayment_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            SqlParameter outputParam = new SqlParameter("@PaymentId", SqlDbType.Int);
+            SqlParameter outputParam = new SqlParameter("@Id", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
             command.Parameters.AddWithValue("@Date", entity.Date);
@@ -82,8 +80,8 @@ public class PaymentRepository : IRepository<Payment>
                     ((int)reader["Id"],
                     (DateTime)reader["Date"], 
                     (decimal)reader["Amount"], 
-                    (int)reader["PaymentMethodId"],
-                    (int)reader["OrderId"]);
+                    new PaymentMethod((int)reader["PaymentMethodId"]),
+                    new Order((int)reader["OrderId"]));
             }
             return payment;
         }
@@ -106,8 +104,8 @@ public class PaymentRepository : IRepository<Payment>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (decimal)reader["Amount"],
-                    (int)reader["PaymentMethodId"],
-                    (int)reader["OrderId"]
+                    new PaymentMethod((int)reader["PaymentMethodId"]),
+                    new Order((int)reader["OrderId"])
                 ));
             }
             return payments;

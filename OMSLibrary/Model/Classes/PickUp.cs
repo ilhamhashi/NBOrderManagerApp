@@ -1,12 +1,10 @@
-﻿using OrderManagerLibrary.Model.Interfaces;
-
-namespace OrderManagerLibrary.Model.Classes;
+﻿namespace OrderManagerLibrary.Model.Classes;
 
 /// <summary>
 /// Represents a pickup collection for an order, including the pickup date
 /// and whether delivery is included and the location for the pickup
 /// </summary>
-public class PickUp : IPickUp
+public class PickUp
 {
     public int Id { get; set; }
     public DateTime Date { get; set; }
@@ -34,5 +32,10 @@ public class PickUp : IPickUp
         Date = date;
         IsDelivery = isDelivery;
         Location = location;
+    }
+
+    public PickUp(int id)
+    {
+        Id = id;
     }
 }

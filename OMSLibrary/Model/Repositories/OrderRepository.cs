@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
@@ -82,9 +81,9 @@ public class OrderRepository : IRepository<Order>
                     ((int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    (int)reader["CustomerId"],
-                    (int)reader["PickUpId"],
-                    (int)reader["NoteId"]);
+                    new Customer((int)reader["CustomerId"]),
+                    new PickUp((int)reader["PickUpId"]),
+                    new Note((int)reader["NoteId"]));
             }
             return order;
         }
@@ -107,9 +106,9 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    (int)reader["CustomerId"],
-                    (int)reader["PickUpId"],
-                    (int)reader["NoteId"]
+                    new Customer((int)reader["CustomerId"]),
+                    new PickUp((int)reader["PickUpId"]),
+                    new Note((int)reader["NoteId"])
                 ));
             }
             return orders;
@@ -133,9 +132,9 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    (int)reader["CustomerId"],
-                    (int)reader["PickUpId"],
-                    (int)reader["NoteId"]
+                    new Customer((int)reader["CustomerId"]),
+                    new PickUp((int)reader["PickUpId"]),
+                    new Note((int)reader["NoteId"])
                 ));
             }
             return upcomingOrders;
@@ -158,9 +157,9 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    (int)reader["CustomerId"],
-                    (int)reader["PickUpId"],
-                    (int)reader["NoteId"]
+                    new Customer((int)reader["CustomerId"]),
+                    new PickUp((int)reader["PickUpId"]),
+                    new Note((int)reader["NoteId"])
                 ));
             }
             return pendingPaymentOrders;
@@ -185,9 +184,9 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    (int)reader["CustomerId"],
-                    (int)reader["PickUpId"],
-                    (int)reader["NoteId"]
+                    new Customer((int)reader["CustomerId"]),
+                    new PickUp((int)reader["PickUpId"]),
+                    new Note((int)reader["NoteId"])
                 ));
             }
             return orders;

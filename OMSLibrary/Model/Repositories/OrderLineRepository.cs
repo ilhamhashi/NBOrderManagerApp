@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
@@ -88,8 +87,8 @@ public class OrderLineRepository : IRepository<OrderLine>
             if (reader.Read())
             {
                 orderLine = new OrderLine
-                    ((int)reader["ProductId"],
-                    (int)reader["OrderId"],
+                    (new Product((int)reader["ProductId"]),
+                    new Order((int)reader["OrderId"]),
                     (int)reader["LineNumber"],
                     (int)reader["Quantity"],
                     (decimal)reader["Price"],
@@ -114,8 +113,8 @@ public class OrderLineRepository : IRepository<OrderLine>
             while (reader.Read())
             {
                 orderLines.Add(new OrderLine
-                    ((int)reader["ProductId"],
-                    (int)reader["OrderId"],
+                    (new Product((int)reader["ProductId"]),
+                    new Order((int)reader["OrderId"]),
                     (int)reader["LineNumber"],
                     (int)reader["Quantity"],
                     (decimal)reader["Price"],

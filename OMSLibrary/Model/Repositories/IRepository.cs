@@ -1,4 +1,4 @@
-﻿namespace OrderManagerLibrary.Model.Interfaces;
+﻿namespace OrderManagerLibrary.Model.Repositories;
 public interface IRepository<T> where T : class
 {
     int Insert(T entity);

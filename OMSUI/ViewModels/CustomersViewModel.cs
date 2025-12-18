@@ -1,5 +1,4 @@
 ﻿using OrderManagerDesktopUI.Core;
-using OrderManagerDesktopUI.Views;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
@@ -9,10 +8,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
-public class CustomersViewModel : ViewModel
+public class CustomersViewModel : ViewModelBase
 {
     private readonly ICustomerService _customerService;
-    private ObservableCollection<Customer> Customers { get; }
+    private ObservableCollection<Customer> _customers { get; }
     public ICollectionView CustomerCollectionView { get; }
 
     private Customer _selectedCustomer;
@@ -62,8 +61,8 @@ public class CustomersViewModel : ViewModel
     public CustomersViewModel(ICustomerService customerService)
     {
         _customerService = customerService;
-        Customers = new ObservableCollection<Customer>(_customerService.GetAllCustomers());
-        CustomerCollectionView = CollectionViewSource.GetDefaultView(Customers);
+        _customers = new ObservableCollection<Customer>(_customerService.GetAllCustomers());
+        CustomerCollectionView = CollectionViewSource.GetDefaultView(_customers);
 
         CreateCustomerCommand = new RelayCommand(execute => CreateCustomer(), canExecute => CanCreateCustomer());
         UpdateCustomerCommand = new RelayCommand(execute => UpdateCustomer(), canExecute => CanUpdateCustomer());
@@ -78,9 +77,9 @@ public class CustomersViewModel : ViewModel
 
     private void CreateCustomer()
     {
-        var newCustomer = new Customer(FirstName, LastName, PhoneNumber);
+        Customer newCustomer = new Customer(FirstName, LastName, PhoneNumber);
         newCustomer = _customerService.CreateCustomer(newCustomer);
-        Customers.Add(newCustomer);
+        _customers.Add(newCustomer);
         ResetFields();
     }
 
@@ -93,23 +92,29 @@ public class CustomersViewModel : ViewModel
 
     private void UpdateCustomer()
     {
-        _customerService.UpdateCustomer(SelectedCustomer);
-        SelectedCustomer = null;
+        if (SelectedCustomer != null)
+        {
+            _customerService.UpdateCustomer(SelectedCustomer);
+            SelectedCustomer = null;
+        }
     }
 
     private void RemoveCustomer(object rowData)
     {
-        var customer = rowData as Customer;
-        MessageBoxResult result = MessageBox.Show($"Do you want to remove {customer.FirstName} {customer.LastName}?",
-                                  "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-        if (result == MessageBoxResult.Yes)
+        if (rowData != null)
         {
-            _customerService.RemoveCustomer(customer.Id);
-            Customers.Remove(customer);
+            var customer = rowData as Customer;
+            MessageBoxResult result = MessageBox.Show($"Do you want to remove {customer.FirstName} {customer.LastName}?",
+                                      "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            MessageBox.Show($"{customer.FirstName} {customer.LastName} is removed.", "Completed", 
-                       MessageBoxButton.OK, MessageBoxImage.Information);
+            if (result == MessageBoxResult.Yes)
+            {
+                _customerService.RemoveCustomer(customer.Id);
+                _customers.Remove(customer);
+
+                MessageBox.Show($"{customer.FirstName} {customer.LastName} is removed.", "OrderManager",
+                           MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 

@@ -116,16 +116,6 @@
                             <TextBlock Text="Sales" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-
-                    <TextBlock Text="Help" Style="{StaticResource menuTitle}"/>
-
-                    <RadioButton Style="{StaticResource menuButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="CogOutline" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </RadioButton>
-
                 </StackPanel>
             </Border>
 

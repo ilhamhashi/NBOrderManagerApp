@@ -1,7 +1,7 @@
 ﻿
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services.Interfaces;
 
 namespace OrderManagerLibrary.Services;
@@ -24,11 +24,11 @@ public class OrderLineService : IOrderLineService
 
     public IEnumerable<OrderLine> GetAllOrderLinesByOrder(Order order)
     {
-        var orderLines = _orderLineRepository.GetAll().Where(o => o.OrderId == order.Id);
+        var orderLines = _orderLineRepository.GetAll().Where(o => o.Order.Id == order.Id);
         foreach (var line in orderLines)
         {
             line.Order = order;
-            line.Product = _productService.GetAllProducts().FirstOrDefault(p => p.Id == line.ProductId);
+            line.Product = _productService.GetAllProducts().FirstOrDefault(p => p.Id == line.Product.Id);
         }
         return orderLines;
     }

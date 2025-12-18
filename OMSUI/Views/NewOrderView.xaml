@@ -253,21 +253,18 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel HorizontalAlignment="Left">
-                        <TextBlock Text="Discount" FontSize="12" FontWeight="Regular"/>
-                        <TextBlock Text="Subtotal" FontSize="12" FontWeight="Regular" Margin="0 5 0 0"/>
-                        <TextBlock Text="Total" FontSize="14" FontWeight="Medium" Margin="0 10 0 0"/>
-                        <TextBlock Text="Outstanding" FontSize="12" FontWeight="Medium" Margin="0 10 0 0" />
+                        <TextBlock Text="Discount" FontSize="14" FontWeight="Regular"/>
+                        <TextBlock Text="Total" FontSize="16" FontWeight="Medium" Margin="0 20 0 0"/>
+                        <TextBlock Text="Outstanding" FontSize="14" FontWeight="Medium" Margin="0 10 0 0" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="{Binding DiscountTotal, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
-                                   FontSize="12" FontWeight="Regular" HorizontalAlignment="Right"/>
-                        <TextBlock Text="{Binding Subtotal, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
-                                   FontSize="12" FontWeight="Regular" Margin="0 5 0 0" HorizontalAlignment="Right"/>
+                                   FontSize="14" FontWeight="Regular" HorizontalAlignment="Right"/>
                         <TextBlock Text="{Binding RunningTotal, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
-                                   FontSize="14" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 10 0 0"/>
+                                   FontSize="16" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 20 0 0"/>
                         <TextBlock Text="{Binding OutstandingAmount, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
-                                   FontSize="12" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 10 0 0" />
+                                   FontSize="14" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 10 0 0" />
                     </StackPanel>
                 </Grid>
             </Border>

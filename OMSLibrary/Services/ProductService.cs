@@ -1,7 +1,4 @@
-﻿using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
-using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
+﻿using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services.Interfaces;
 
@@ -27,7 +24,6 @@ public class ProductService : IProductService
 
     public IEnumerable<Size> GetAllSizes() => _sizeRepository.GetAll();
     public IEnumerable<Taste> GetAllTastes() => _tasteRepository.GetAll();
-
     public IEnumerable<Product> GetAllProducts()
     { 
         var products = _productRepository.GetAll();

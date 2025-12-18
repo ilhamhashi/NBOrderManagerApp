@@ -1,6 +1,6 @@
 ﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
+
 using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
-public class NewOrderViewModel : ViewModel
+public class NewOrderViewModel : ViewModelBase
 {
     private readonly IOrderService _orderservice;
 
@@ -36,7 +36,7 @@ public class NewOrderViewModel : ViewModel
 
     private Product selectedProduct;
     private Customer selectedCustomer;
-    private IPaymentMethod? selectedPaymentMethod;
+    private PaymentMethod? selectedPaymentMethod;
     private DateTime pickUpDateTime = DateTime.Today.AddDays(1);
     private OrderLine? selectedOrderLine;
     private bool isDelivery = false;
@@ -59,7 +59,6 @@ public class NewOrderViewModel : ViewModel
     public ICommand NavigateToNewOrderDetailsViewCommand { get; }
 
     private bool CanAddNewOrder() => SelectedCustomer != null && OrderLines.Count() != 0; 
-    private bool CanAddToOrder() => true;
     private bool CanAddPaymentToOrder() => SelectedPaymentMethod != null && PaymentAmount > 0;
 
     public Product SelectedProduct
@@ -74,7 +73,7 @@ public class NewOrderViewModel : ViewModel
         set { selectedCustomer = value; OnPropertyChanged(); }
     }
 
-    public IPaymentMethod? SelectedPaymentMethod
+    public PaymentMethod? SelectedPaymentMethod
     {
         get { return selectedPaymentMethod; }
         set { selectedPaymentMethod = value; OnPropertyChanged(); }
@@ -167,7 +166,7 @@ public class NewOrderViewModel : ViewModel
 
         CreateOrderCommand = new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
         AddPaymentCommand = new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
-        AddProductToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => CanAddToOrder());
+        AddProductToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => true);
         IncreaseQuantityCommand = new RelayCommand((param) => IncreaseQuantity(param), canExecute => true);
         DecreaseQuantityCommand = new RelayCommand((param) => DecreaseQuantity(param), canExecute => true);
         AddDiscountCommand = new RelayCommand((param) => AddDiscountToOrderLine(param), canExecute => true);
@@ -181,7 +180,7 @@ public class NewOrderViewModel : ViewModel
         newOrder.Status = SetOrderStatus();
         
         MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} {SelectedCustomer.LastName}" +
-                                                  $"\nPickUp: {PickUpDateTime}" +
+                                                  $"\nPickUp: {PickUpDateTime.Date} {PickUpTime}" +
                                                   $"\nLocation: {Location}" +
                                                   $"\nOutstanding: ${OutstandingAmount} ",
                                                   "OrderManager", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -216,6 +215,7 @@ public class NewOrderViewModel : ViewModel
     private void ResetFieldsAfterOrderCompletion()
     {
         OrderLines.Clear();
+        SelectedCustomer = null;
         SelectedOrderLine = null;
         SelectedPaymentMethod = null;
         _payments.Clear();
@@ -228,12 +228,23 @@ public class NewOrderViewModel : ViewModel
 
     private void AddProductToOrder(object rowData)
     {
-        Product product = rowData as Product;
-        OrderLine newOrderLine = new(product, 1, product.Price, 0, product.Taste.Name, product.Size.Name);
-        ResetLineNumber();
-        newOrderLine.LineNumber = OrderLines.Count() + 1;
-        OrderLines?.Add(newOrderLine);
-        UpdateRunningTotal(); UpdateDiscountTotal(); UpdateOutstandingAmount();
+        if (rowData != null)
+        {
+            Product product = rowData as Product;
+            if (product.Taste != null && product.Size != null)
+            {
+                OrderLine newOrderLine = new(product, 1, product.Price, 0, product.Taste.Name, product.Size.Name);
+                ResetLineNumber();
+                newOrderLine.LineNumber = OrderLines.Count + 1;
+                OrderLines?.Add(newOrderLine);
+                UpdateRunningTotal(); UpdateDiscountTotal(); UpdateOutstandingAmount();
+            }
+            else
+            {
+                MessageBox.Show($"Please select a size and taste before adding to order", "OrderManager",
+                       MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
     }
 
     private void ResetLineNumber()
@@ -258,43 +269,55 @@ public class NewOrderViewModel : ViewModel
 
     private void IncreaseQuantity(object rowOrderLine)
     {
-        (rowOrderLine as OrderLine).IncreaseQuantity();
-        UpdateRunningTotal(); UpdateDiscountTotal(); UpdateOutstandingAmount();
-        OrderLinesCollectionView.Refresh();
+        if (rowOrderLine != null)
+        {
+            (rowOrderLine as OrderLine).IncreaseQuantity();
+            UpdateRunningTotal(); UpdateDiscountTotal(); UpdateOutstandingAmount();
+            OrderLinesCollectionView.Refresh();
+        }
     }
 
     private void DecreaseQuantity(object rowOrderLine)
     {
-        OrderLine orderline = rowOrderLine as OrderLine;
-        if (orderline.Quantity > 1)
+        if (rowOrderLine != null)
         {
-            orderline.DecreaseQuantity();
+            OrderLine orderline = rowOrderLine as OrderLine;
+            if (orderline.Quantity > 1)
+            {
+                orderline.DecreaseQuantity();
+            }
+            else
+            {
+                OrderLines.Remove(orderline);
+                ResetLineNumber();
+            }
+            UpdateRunningTotal(); UpdateDiscountTotal();
+            UpdateOutstandingAmount();
+            OrderLinesCollectionView.Refresh();
         }
-        else
-        {
-            OrderLines.Remove(orderline);
-            ResetLineNumber();
-        }
-        UpdateRunningTotal(); UpdateDiscountTotal(); 
-        UpdateOutstandingAmount();
-        OrderLinesCollectionView.Refresh();
     }
 
     private void AddDiscountToOrderLine(object rowOrderLine)
     {
-        (rowOrderLine as OrderLine).ApplyDiscount();
-        UpdateRunningTotal(); UpdateDiscountTotal();
-        OrderLinesCollectionView.Refresh();
+        if (rowOrderLine != null)
+        {
+            (rowOrderLine as OrderLine).ApplyDiscount();
+            UpdateRunningTotal(); UpdateDiscountTotal();
+            OrderLinesCollectionView.Refresh();
+        }
     }
 
     private void AddPaymentToOrder()
     {
-        Payment newPayment = new(PaymentAmount, DateTime.Now, SelectedPaymentMethod);
-        _payments.Add(newPayment);
-        UpdateOutstandingAmount();
+        if (selectedPaymentMethod != null)
+        {
+            Payment newPayment = new(PaymentAmount, DateTime.Now, SelectedPaymentMethod);
+            _payments.Add(newPayment);
+            UpdateOutstandingAmount();
 
-        SelectedPaymentMethod = null;
-        PaymentAmount = decimal.Zero;
+            SelectedPaymentMethod = null;
+            PaymentAmount = decimal.Zero;
+        }
     }
 
     private void UpdateOutstandingAmount()

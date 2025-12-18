@@ -1,11 +1,10 @@
-﻿using OrderManagerLibrary.Model.Interfaces;
-
+﻿
 namespace OrderManagerLibrary.Model.Classes;
 
 /// <summary>
 /// Represents a customer ordering from the bakery
 /// </summary>
-public class Customer : ICustomer
+public class Customer
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
@@ -35,5 +34,10 @@ public class Customer : ICustomer
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;
+    }
+
+    public Customer(int id)
+    {
+        Id = id;
     }
 }

@@ -1,12 +1,10 @@
-﻿using OrderManagerLibrary.Model.Interfaces;
-
-namespace OrderManagerLibrary.Model.Classes;
+﻿namespace OrderManagerLibrary.Model.Classes;
 
 /// <summary>
 /// Represents a specific payment method
 /// used to process payments for an order.
 /// </summary>
-public class PaymentMethod : IPaymentMethod
+public class PaymentMethod
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -15,5 +13,10 @@ public class PaymentMethod : IPaymentMethod
     {
         Id = id;
         Name = name;
+    }
+
+    public PaymentMethod(int id)
+    {
+        Id = id;
     }
 }    

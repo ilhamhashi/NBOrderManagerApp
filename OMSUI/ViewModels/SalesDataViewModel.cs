@@ -2,7 +2,7 @@
 
 namespace OrderManagerDesktopUI.ViewModels
 {
-    public class SalesDataViewModel : ViewModel
+    public class SalesDataViewModel : ViewModelBase
     {
     }
 }

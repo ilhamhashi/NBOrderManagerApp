@@ -1,16 +1,13 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManagerDesktopUI.Core;
 using OrderManagerDesktopUI.ViewModels;
 using OrderManagerDesktopUI.Views;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services;
 using OrderManagerLibrary.Services.Interfaces;
-using System.Data;
 using System.IO;
 using System.Windows;
 using Size = OrderManagerLibrary.Model.Classes.Size;
@@ -38,8 +35,8 @@ namespace OrderManagerDesktopUI
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            services.AddSingleton<Func<Type, ViewModel>>(_serviceProvider =>
-                             viewModelType => (ViewModel)_serviceProvider.GetRequiredService(viewModelType));
+            services.AddSingleton<Func<Type, ViewModelBase>>(_serviceProvider =>
+                             viewModelType => (ViewModelBase)_serviceProvider.GetRequiredService(viewModelType));
 
             services.AddSingleton<IConfiguration>(config);
             services.AddSingleton<INavigationService, NavigationService>();
@@ -80,11 +77,5 @@ namespace OrderManagerDesktopUI
             mainWindow.Show();
             base.OnStartup(e);
         }
-
-        private void Trigger_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-
-        }
     }
-
 }

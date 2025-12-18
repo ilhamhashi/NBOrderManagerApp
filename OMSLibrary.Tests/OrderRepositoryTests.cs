@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
 namespace OrderManagerLibrary.Tests;
 

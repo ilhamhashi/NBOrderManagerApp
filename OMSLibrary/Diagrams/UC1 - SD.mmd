@@ -2,26 +2,34 @@ sequenceDiagram
 
 actor User 
 participant NewOrderView 
-participant OrderViewModel 
+participant NewOrderViewModel 
 participant OrderService 
 participant OrderRepository 
-participant OrderLineRepository 
-participant PaymentRepository 
-participant DeliveryRepository 
+participant OrderLineService
+participant PaymentService
+participant NoteRepository
 participant PickUpRepository 
-participant Database 
+participant DataBase
 
 User->>NewOrderView: Enter new order information 
-User->>NewOrderView: Click "Create order" 
 NewOrderView->>OrderViewModel: CreateOrderCommand.Execute() 
-OrderViewModel->>OrderService: CreateOrder(newOrder, orderLines, paymentMethodId) 
-OrderService->>OrderRepository: Insert(newOrder) 
-OrderRepository->>Database: EXEC spOrder_Insert(OrderDate, OrderStatusId, CustomerId) 
-Database-->>OrderRepository: return OrderId 
-OrderRepository->>OrderService: return OrderId 
+OrderViewModel->>OrderService: CreateOrder(order, orderLines, payments) 
+OrderService->>PickUpRepository: Insert(order.PickUp) 
+PickUpRepository->> Database: EXEC spPickUp_Insert(Date, IsDelivery, Location) 
+Database ->> PickUpRepository: return Id 
+PickUpRepository->> OrderService: return Id 
+OrderService->>NoteRepository: Insert(order.Note) 
+NoteRepository->> Database: EXEC spNote_Insert(Content) 
+Database ->> NoteRepository: return Id 
+NoteRepository->> OrderService: return Id 
+OrderService->>OrderRepository: Insert(order) 
+OrderRepository->>Database: EXEC spOrder_Insert(Date, Status, CustomerId, PickUpId, NoteId) 
+Database-->>OrderRepository: return Id 
+OrderRepository->>OrderService: return Id 
 loop For each OrderLine 
-	OrderService ->> OrderLineRepository: Insert(orderLine) 
-	OrderLineRepository ->> Database: EXEC spOrderLine_Insert(OrderId, ProductId, Quantity, ...) 
+	OrderService ->> OrderLineService: CreateOrderLine(line)
+	OrderLineServiceRepository: Insert(orderLine) 
+	OrderLineRepository ->> Database: EXEC spOrderLine_Insert(OrderId, ProductId, LineNumber, ...) 
 	Database ->> OrderLineRepository: Confirmation 
 	OrderLineRepository ->> OrderService: Confirmation 
 end 
@@ -39,8 +47,7 @@ alt isDelivery
 else isPickUp 
 	OrderService ->> PickUpRepository: Insert(pickup) 
 	PickUpRepository->> Database: EXEC spPickUp_Insert(CollectionDate, OrderId) 
-	Database ->> PickUpRepository: Confirmation 
-	PickUpRepository->> OrderService: Confirmation 
+
 end 
 OrderService ->> Database: COMMIT (transaction) 
 Database ->> OrderService: Confirmation 

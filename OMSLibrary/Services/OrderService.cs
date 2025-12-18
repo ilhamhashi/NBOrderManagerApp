@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
-using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
 using OrderManagerLibrary.Services.Interfaces;
 
@@ -36,11 +35,11 @@ public class OrderService : IOrderService
 
         foreach (var order in orders)
         {
-            order.Customer = _customerRepository.GetById(order.CustomerId);
-            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
-            order.Note = _noteRepository.GetById(order.NoteId);
+            order.Customer = _customerRepository.GetById(order.Customer.Id);
+            order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
+            order.Note = _noteRepository.GetById(order.Note.Id);
             order.OrderLines = [.. _orderLineService.GetAllOrderLinesByOrder(order)];
-            //order.Payments = [.. _paymentService.GetAllPaymentsByOrder(order)];
+            order.Payments = [.. _paymentService.GetAllPayments().Where(p => p.Order.Id == order.Id)];
         }
         return orders;
     }
@@ -51,8 +50,8 @@ public class OrderService : IOrderService
         foreach (var order in customerOrders)
         {
             order.Customer = customer;
-            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
-            order.Note = _noteRepository.GetById(order.NoteId);
+            order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
+            order.Note = _noteRepository.GetById(order.Note.Id);
         }
         return customerOrders;
     }
@@ -62,9 +61,8 @@ public class OrderService : IOrderService
         var upcomingOrders = (_orderRepository as OrderRepository).GetUpcomingOrders();
         foreach (var order in upcomingOrders)
         {
-            order.Customer = _customerRepository.GetById(order.CustomerId);
-            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
-            order.Note = _noteRepository.GetById(order.NoteId);
+            order.Customer = _customerRepository.GetById(order.Customer.Id);
+            order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
         }
         return upcomingOrders;
     }
@@ -73,8 +71,8 @@ public class OrderService : IOrderService
         var pendingPaymentOrders = (_orderRepository as OrderRepository).GetPendingPaymentOrders();
         foreach (var order in pendingPaymentOrders)
         {
-            order.Customer = _customerRepository.GetById(order.CustomerId);
-            order.PickUp = _pickUpRepository.GetById(order.PickUpId);
+            order.Customer = _customerRepository.GetById(order.Customer.Id);
+            order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
         }
         return pendingPaymentOrders;
     }
@@ -101,6 +99,7 @@ public class OrderService : IOrderService
                     foreach (var payment in payments)
                     {
                         payment.Order = order;
+                        _paymentService.CreatePayment(payment);
                     }
 
                     transaction.Commit();
@@ -109,10 +108,8 @@ public class OrderService : IOrderService
                 }
                 catch (Exception)
                 {
-                    transaction.Rollback();
                     throw;
                 }
-
             }
         }
     }

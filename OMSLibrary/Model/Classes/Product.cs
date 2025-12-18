@@ -31,4 +31,9 @@ public class Product
         SizeOptions = sizes;
         TasteOptions = tastes;
     }
+
+    public Product(int id)
+    {
+        Id = id;
+    }
 }

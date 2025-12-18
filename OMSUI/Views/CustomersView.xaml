@@ -33,7 +33,7 @@
                                Text="Customers"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="23"
+                               FontSize="20"
                                Margin="20 10 0 0"/>
                     <StackPanel Orientation="Horizontal" 
                                 HorizontalAlignment="Right"
@@ -136,7 +136,7 @@
                 <StackPanel Margin="10">
                     <!-- CREATE Customer -->
                     <TextBlock Text="Create Customer" 
-                   FontSize="20" 
+                   FontSize="18" 
                    Margin="0 0 0 10"/>
 
                     <TextBlock Text="First name"/>
@@ -164,7 +164,7 @@
                 <StackPanel Margin="10">
                     <!-- EDIT Customer -->
                     <TextBlock Text="Edit Customer" 
-                   FontSize="20" 
+                   FontSize="18" 
                    Margin="0 0 0 10"/>
 
                     <TextBlock Text="First name"/>

@@ -1,0 +1,149 @@
+﻿classDiagram
+
+class NewOrderView{
+    <<userControl>>
+}
+
+class MainWindow{
+    <<window>>
+}
+
+class RelayCommand{
+    -Action~object~ _execute
+    -Func~object, bool~ _canExecute
+    event EventHandler? CanExecuteChanged
+    RelayCommand(Action~object~ execute, Func~object, bool~ canExecute = null)
+    CanExecute(object? parameter)
+    Execute(object? parameter)
+}
+
+class IRepository~T~{
+    <<interface>>
+    int Insert(T entity)
+    void Update(T entity)
+    void Delete(params object[] keyValues)
+    T GetById(params object[] keyValues)
+    IEnumerable~T~ GetAll()
+}
+
+class OrderRepository{
+    int Insert(Order entity)
+    void Update(Order entity)
+    void Delete(params object[] keyValues)
+    Order GetById(params object[] keyValues)
+    IEnumerable~Order~ GetAll()
+}
+
+class IOrderService{
+    <<interface>>
+    IEnumerable~Order~ GetAllOrders()
+    IEnumerable~Order~ GetAllOrdersByCustomer(Customer customer)
+    IEnumerable~Order~ GetUpcomingOrders()
+    IEnumerable~Order~ GetPendingPaymentOrders()
+    Order CreateOrder(Order order, List~OrderLine~ orderLines,List~Payment~ payments)
+}
+
+class OrderService{
+    -IDataAccess _db
+    -IRepository~Order~ _orderRepository
+    -IOrderLineService _orderLineService
+    -IPaymentService _paymentService
+    -IRepository~PickUp~ _pickUpRepository
+    -IRepository~Note~ _noteRepository
+    -IRepository~Customer~ _customerRepository
+    +IEnumerable~Order~ GetAllOrders()
+    +IEnumerable~Order~ GetAllOrdersByCustomer(Customer customer)
+    +IEnumerable~Order~ GetUpcomingOrders()
+    +IEnumerable~Order~ GetPendingPaymentOrders()
+    +Order CreateOrder(Order order, List~OrderLine~ orderLines, List~Payment~ payments)
+}
+
+class INavigation{
+    <<interface>>
+    ViewModel CurrentNestedView
+    ViewModel CurrentView
+    void NavigateTo~T~()
+    void NavigateToNested~T~()
+}
+
+class Navigation{
+    ViewModel CurrentNestedView
+    ViewModel CurrentView
+    NavigationService(Func~Type, ViewModelBase~ viewModelFactory)
+    void NavigateTo~T~()
+    void NavigateToNested~T~()
+}
+
+class NewOrderViewModel{
+     -IOrderService _orderservice
+     -ObservableCollection~PaymentMethod~ _paymentMethods
+     -ObservableCollection~Payment~ _payments
+     -ObservableCollection~OrderLine~ OrderLines
+     -ObservableCollection~Product~ _products
+     -ObservableCollection~Customer~ _customers
+     +ICollectionView PaymentMethodsCollectionView
+     +ICollectionView ProductsCollectionView
+     +ICollectionView CustomersCollectionView
+     +ICollectionView OrderLinesCollectionView
+     +ICommand CreateOrderCommand
+     +ICommand AddPaymentCommand
+     +ICommand AddProductToOrderCommand
+     +ICommand IncreaseQuantityCommand
+     +ICommand DecreaseQuantityCommand
+     +ICommand AddDiscountCommand
+     +ICommand NavigateToNoteViewCommand
+     +ICommand NavigateToNewOrderDetailsViewCommand
+     +Product SelectedProduct
+     +Customer SelectedCustomer
+     +PaymentMethod SelectedPaymentMethod
+     +DateTime PickUpDateTime
+     +DateTime PickUpDate
+     +DateTime PickUpTime
+     +OrderLine SelectedOrderLine
+     +bool IsDelivery
+     +string Location
+     +string NoteContent
+     +decimal RunningTotal
+     +decimal DiscountTotal
+     +decimal PaymentAmount
+     +decimal OutstandingAmount
+     -bool CanAddNewOrder()
+     -bool CanAddToOrder()
+     -bool CanAddPaymentToOrder()
+     -void AddNewOrder()
+     -OrderStatus SetOrderStatus()
+     -void ResetFieldsAfterOrderCompletion()
+     -void AddProductToOrder(object rowData)
+     -void ResetLineNumber()
+     -void UpdateRunningTotal()
+     -void UpdateDiscountTotal()
+     -void IncreaseQuantity(object rowOrderLine)
+     -void DecreaseQuantity(object rowOrderLine)
+     -void AddDiscountToOrderLine(object rowOrderLine)
+     -void AddPaymentToOrder()
+     -void UpdateOutstandingAmount()
+}
+
+class DataAccess{
+    -IConfiguration _config
+    +DataAcess(IConfiguration config)
+    +SqlConnection GetConnection()
+}
+
+class IDataAccess{
+    <<interface>>
+    +SqlConnection GetConnection()
+}
+
+INavigation <|-- Navigation    
+IDataAccess <|-- DataAccess    
+IOrderService <|-- OrderService
+IProductService <|-- ProductService
+OrderService o-- OrderRepository
+OrderService o-- IDataAccess
+IRepository~T~ <|-- OrderRepository
+NewOrderViewModel o-- IOrderService
+NewOrderViewModel o-- INavigation
+NewOrderViewModel *-- NewOrderView
+NewOrderViewModel --o RelayCommand
+MainWindow *-- NewOrderView

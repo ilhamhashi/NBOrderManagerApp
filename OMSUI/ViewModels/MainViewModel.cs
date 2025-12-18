@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
-public class MainViewModel : ViewModel
+public class MainViewModel : ViewModelBase
 {
     private INavigationService _navigation;
     public INavigationService Navigation

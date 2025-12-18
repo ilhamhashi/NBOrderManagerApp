@@ -1,4 +1,4 @@
-﻿using OrderManagerLibrary.Model.Interfaces;
+﻿
 
 namespace OrderManagerLibrary.Model.Classes;
 
@@ -11,23 +11,20 @@ public class Payment
     public int Id { get; set; }
     public DateTime Date { get; set; }
     public decimal Amount { get; set; }
-    public int OrderId { get; set; }
-    public int PaymentMethodId { get; set; }
-
-    public IPaymentMethod PaymentMethod { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }
     public Order Order { get; set; }
 
 
-    public Payment(int id,  DateTime date, decimal amount, int paymentMethodId, int orderId)
+    public Payment(int id,  DateTime date, decimal amount, PaymentMethod paymentMethod, Order order)
     {
         Id = id;
         Date = date;
         Amount = amount;
-        PaymentMethod.Id = paymentMethodId;
-        Order.Id = orderId;
+        PaymentMethod = paymentMethod;
+        Order = order;
     }
 
-    public Payment(decimal paymentAmount, DateTime paymentDate, IPaymentMethod paymentMethod)
+    public Payment(decimal paymentAmount, DateTime paymentDate, PaymentMethod paymentMethod)
     {
         Amount = paymentAmount;
         Date = paymentDate;

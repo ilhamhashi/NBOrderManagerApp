@@ -1,0 +1,99 @@
+﻿classDiagram
+
+    class Customer{
+        +string FirstName
+        +string LastName
+        +string PhoneNumber
+    }
+
+    class Order {
+        +int Id
+        +DateTime Date
+        +OrderStatus Status
+        +Customer Customer
+        +PickUp PickUp
+        +Note Note
+        +List~OrderLine~ OrderLines
+        +List~Payment~ Payments
+    }
+
+        class Note{
+        +int Id
+        +string Content
+        }
+
+        class PaymentMethod{
+        +int Id
+        +string Name
+        }
+
+        class Payment{
+        +int Id
+        +DateTime Date
+        +decimal Amount
+        +PaymentMethod PaymentMethod
+        +Order order
+        }
+
+
+        class PickUp{
+        +int Id
+        +DateTime Date
+        +bool IsDelivery
+        +string Location
+        }
+
+        class Product {
+        +string Name
+        +string Description
+        +decimal Price
+        +Size size
+        +Taste Taste
+        +List~Size~ SizeOptions
+        +List~Taste~ TasteOptions
+        }
+
+        class OrderLine {
+        +Product Product
+        +Order Order
+        +int LineNumber
+        +int Quantity
+        +decimal Discount
+        +string Size
+        +string Taste
+        +ApplyDiscount()
+        +IncreaseQuantity()
+        +DecreaseQuantity()
+        }
+
+        class ProductTaste{
+        +int TasteId
+        +int ProductId
+        }
+
+        class Taste{
+        +int Id
+        +string Name
+        }
+
+        class ProductSize{
+        +int SizeId
+        +int ProductId
+        }
+
+        class Size{
+        +int Id
+        +string Name
+        }
+
+    Payment "*" o-- "1" PaymentMethod
+    Order "1" *-- "*" Payment
+    Order "*" o-- "1" Customer
+    Order "1" *-- "1" Note
+    Order "1" *-- "1" PickUp
+    Order "*" *-- "1" OrderLine
+    Product "1" o-- "*" OrderLine
+    Product "1" *-- "*" ProductSize
+    Product "1" *-- "*" ProductTaste
+    Size "1" *-- "*" ProductSize   
+    Taste "1" *-- "*" ProductTaste
