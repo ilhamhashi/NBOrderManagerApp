@@ -40,7 +40,7 @@ public class NewOrderViewModel : ViewModelBase
     private DateTime pickUpDateTime = DateTime.Today.AddDays(1);
     private OrderLine? selectedOrderLine;
     private bool isDelivery = false;
-    private string location = "Store";
+    private string location = "PickUp at Bakery";
     private string noteContent = string.Empty;
     private decimal runningTotal;
     private decimal discountTotal;
@@ -50,15 +50,14 @@ public class NewOrderViewModel : ViewModelBase
     public ICommand CreateOrderCommand { get; }
     public ICommand AddPaymentCommand {  get; }
     public ICommand AddProductToOrderCommand {  get; }
-
     public ICommand IncreaseQuantityCommand { get; }
     public ICommand DecreaseQuantityCommand { get; }
     public ICommand AddDiscountCommand { get; }
-
     public ICommand NavigateToNoteViewCommand { get; }
     public ICommand NavigateToNewOrderDetailsViewCommand { get; }
 
-    private bool CanAddNewOrder() => SelectedCustomer != null && OrderLines.Count() != 0; 
+    private bool CanAddNewOrder() => SelectedCustomer != null 
+                                     && OrderLines.Count != 0; 
     private bool CanAddPaymentToOrder() => SelectedPaymentMethod != null && PaymentAmount > 0;
 
     public Product SelectedProduct
@@ -155,22 +154,17 @@ public class NewOrderViewModel : ViewModelBase
         CustomersCollectionView = CollectionViewSource.GetDefaultView(_customers);
         PaymentMethodsCollectionView = CollectionViewSource.GetDefaultView(_paymentMethods);
         OrderLinesCollectionView = CollectionViewSource.GetDefaultView(OrderLines);
+
         Navigation = navigationService;
         Navigation.NavigateToNested<NoteViewModel>();
-
         NavigateToNoteViewCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<NoteViewModel>(); }, canExecute => true);
-
         NavigateToNewOrderDetailsViewCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<NewOrderDetailsViewModel>(); }, canExecute => true);
 
         CreateOrderCommand = new RelayCommand(execute => CreateOrder(), canExecute => CanAddNewOrder());
         AddPaymentCommand = new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
-        AddProductToOrderCommand = new RelayCommand
-            ((param) => AddProductToOrder(param), canExecute => true);
-
-
-
+        AddProductToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => true);
         IncreaseQuantityCommand = new RelayCommand((param) => IncreaseQuantity(param), canExecute => true);
         DecreaseQuantityCommand = new RelayCommand((param) => DecreaseQuantity(param), canExecute => true);
         AddDiscountCommand = new RelayCommand((param) => AddDiscountToOrderLine(param), canExecute => true);
@@ -183,19 +177,19 @@ public class NewOrderViewModel : ViewModelBase
         Order newOrder = new(DateTime.Now, SelectedCustomer, pickUp, note);
         newOrder.Status = SetOrderStatus();
         
-        MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} {SelectedCustomer.LastName}" +
+        MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} " +
+                                                  $"{SelectedCustomer.LastName}" +
                                                   $"\nPickUp: {PickUpTime.ToLongDateString()}" +
                                                   $"\nLocation: {Location}" +
                                                   $"\nOutstanding: ${OutstandingAmount} ",
-                                                  "OrderManager", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
+                                                  "OrderManager", MessageBoxButton.YesNo, 
+                                                  MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
             newOrder = _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. _payments]);
 
             MessageBox.Show($"Order {newOrder.Id} has been created!", "Completed",
                        MessageBoxButton.OK, MessageBoxImage.Information);
-
             ResetFieldsAfterOrderCompletion();
         }        
     }
@@ -237,7 +231,8 @@ public class NewOrderViewModel : ViewModelBase
             Product product = rowData as Product;
             if (product.Taste != null && product.Size != null)
             {
-                OrderLine newOrderLine = new(product, 1, product.Price, 0, product.Taste.Name, product.Size.Name);
+                OrderLine newOrderLine = new(product, 1, product.Price, 0, 
+                                             product.Taste.Name, product.Size.Name);
                 ResetLineNumber();
                 newOrderLine.LineNumber = OrderLines.Count + 1;
                 OrderLines?.Add(newOrderLine);
@@ -245,7 +240,8 @@ public class NewOrderViewModel : ViewModelBase
             }
             else
             {
-                MessageBox.Show($"Please select a size and taste before adding to order", "OrderManager",
+                MessageBox.Show($"Please select a size and taste before adding to order", 
+                                "OrderManager",
                        MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

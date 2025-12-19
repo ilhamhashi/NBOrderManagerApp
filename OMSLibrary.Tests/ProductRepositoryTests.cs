@@ -23,7 +23,7 @@ public sealed class ProductRepositoryTests
     public void InsertOrder_ShouldInsertProductSuccesfully()
     {
         // Arrange
-        var product = new Product("test","test",10);
+        var product = new Product(1, "test","test",10,false);
 
         // Act
         product.Id = _productRepository.Insert(product);

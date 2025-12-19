@@ -6,9 +6,9 @@ using OrderManagerLibrary.Model.Repositories;
 namespace OrderManagerLibrary.Tests;
 
 [TestClass]
-public sealed class MobilePaymentRepositoryTests
+public sealed class PaymentMethodRepositoryTests
 {
-    private IRepository<PaymentMethod> _mobilePaymentRepository;
+    private IRepository<PaymentMethod> PaymentMethodRepository;
     private IConfiguration _config;
     private IDataAccess _db;
 
@@ -17,7 +17,7 @@ public sealed class MobilePaymentRepositoryTests
     {
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         _db = new DataAccess.DataAccess(_config);
-        _mobilePaymentRepository = new PaymentMethodRepository(_db);
+        PaymentMethodRepository = new PaymentMethodRepository(_db);
     }
 
     [TestMethod]
@@ -27,10 +27,10 @@ public sealed class MobilePaymentRepositoryTests
         var payment = new PaymentMethod (1,"EVC");
 
         // Act
-        payment.Id = _mobilePaymentRepository.Insert(payment);
+        payment.Id = PaymentMethodRepository.Insert(payment);
 
         // Assert
-        var retrievedPayment = _mobilePaymentRepository.GetById(payment.Id);
+        var retrievedPayment = PaymentMethodRepository.GetById(payment.Id);
         Assert.IsNotNull(retrievedPayment);
         Assert.AreEqual(payment.Id, retrievedPayment.Id);
         Assert.AreEqual(payment.Name, retrievedPayment.Name);
@@ -42,15 +42,15 @@ public sealed class MobilePaymentRepositoryTests
 
         // Arrange
         var payment = new PaymentMethod(0, "EVC");
-        int id = _mobilePaymentRepository.Insert(payment);
+        int id = PaymentMethodRepository.Insert(payment);
 
         var updatedPayment = new PaymentMethod(id, "Dahabshiil");
 
         // Act
-        _mobilePaymentRepository.Update(updatedPayment);
+        PaymentMethodRepository.Update(updatedPayment);
 
         // Assert
-        var retrieved = _mobilePaymentRepository.GetById(id);
+        var retrieved = PaymentMethodRepository.GetById(id);
         Assert.IsNotNull(retrieved);
         Assert.AreEqual("Dahabshiil", retrieved.Name);
     }
@@ -59,24 +59,24 @@ public sealed class MobilePaymentRepositoryTests
     {
         // Arrange
         var payment = new PaymentMethod(0, "EVC");
-        int id = _mobilePaymentRepository.Insert(payment);
-        Assert.IsNotNull(_mobilePaymentRepository.GetById(id));
+        int id = PaymentMethodRepository.Insert(payment);
+        Assert.IsNotNull(PaymentMethodRepository.GetById(id));
 
         // Act
-        _mobilePaymentRepository.Delete(id);
+        PaymentMethodRepository.Delete(id);
 
         // Assert
-        Assert.IsNull(_mobilePaymentRepository.GetById(id));
+        Assert.IsNull(PaymentMethodRepository.GetById(id));
     }
     [TestMethod]
     public void GetById_ShouldReturnMobilePaymentMethodSuccessfully()
     {
         // Arrange
         var payment = new PaymentMethod(0, "EVC");
-        int id = _mobilePaymentRepository.Insert(payment);
+        int id = PaymentMethodRepository.Insert(payment);
 
         // Act
-        var retrieved = _mobilePaymentRepository.GetById(id);
+        var retrieved = PaymentMethodRepository.GetById(id);
 
         // Assert
         Assert.IsNotNull(retrieved);

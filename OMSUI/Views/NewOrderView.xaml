@@ -30,7 +30,6 @@
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
                           ItemsSource="{Binding ProductsCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
                           VerticalAlignment="Stretch">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No." IsReadOnly="True" CanUserResize="False" Width="auto" 
@@ -73,7 +72,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Background="Transparent" BorderThickness="0"
-                                            Style="{StaticResource gridAddButton}"
+                                            Style="{DynamicResource gridAddButton}"
                                             Command="{Binding DataContext.AddProductToOrderCommand, 
                                             RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}">
@@ -184,10 +183,9 @@
                 <ScrollViewer  VerticalScrollBarVisibility="Auto">
                     <!-- List of orderlines -->
                     <ListBox ItemsSource="{Binding OrderLinesCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                         SelectedItem="{Binding SelectedOrderLine, UpdateSourceTrigger=PropertyChanged}"
-                         Background="Transparent"
-                         HorizontalContentAlignment="Stretch"
-                         BorderThickness="0">
+                             Background="Transparent"
+                             HorizontalContentAlignment="Stretch"
+                             BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="2">
@@ -212,15 +210,15 @@
                                             </Button>
 
                                             <TextBlock Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
-                                                   FontSize="14"
-                                                   Margin="3"/>
+                                                       FontSize="14"
+                                                       Margin="3"/>
 
                                             <Button Background="Transparent" BorderThickness="0" 
-                                                Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"
+                                                    Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"
                                                     CommandParameter="{Binding}"
-                                                HorizontalContentAlignment="Right"
-                                                HorizontalAlignment="Right"
-                                                Margin="3">
+                                                    HorizontalContentAlignment="Right"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="3">
                                                 <Icon:PackIconMaterial Kind="PlusCircleOutline"/>
                                             </Button>
                                         </StackPanel>

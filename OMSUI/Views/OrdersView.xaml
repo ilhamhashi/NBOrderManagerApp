@@ -95,8 +95,7 @@
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
-                              ItemsSource="{Binding SelectedOrder.OrderLines, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedOrderLine, UpdateSourceTrigger=PropertyChanged}">
+                              ItemsSource="{Binding SelectedOrder.OrderLines, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
                                                 Binding="{Binding LineNumber, UpdateSourceTrigger=PropertyChanged}"/>
