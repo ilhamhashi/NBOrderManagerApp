@@ -14,11 +14,12 @@ public class OrderService : IOrderService
     private readonly IRepository<PickUp> _pickUpRepository;
     private readonly IRepository<Note> _noteRepository;
     private readonly IRepository<Customer> _customerRepository;
+    private readonly ISalesDataRepository _salesDataRepository;
 
     public OrderService(IDataAccess dataAccess, IRepository<Order> orderRepository,
                         IRepository<Note> noteRepository, IRepository<PickUp> pickUpRepository,
-                        IRepository<Customer> customerRepository, IOrderLineService orderLineService, 
-                        IPaymentService paymentService)
+                        IRepository<Customer> customerRepository, IOrderLineService orderLineService,
+                        IPaymentService paymentService, ISalesDataRepository salesDataRepository)
     {
         _db = dataAccess;
         _orderRepository = orderRepository;
@@ -27,6 +28,7 @@ public class OrderService : IOrderService
         _customerRepository = customerRepository;
         _orderLineService = orderLineService;
         _paymentService = paymentService;
+        _salesDataRepository = salesDataRepository;
     }
 
     public IEnumerable<Order> GetAllOrders()
@@ -113,4 +115,8 @@ public class OrderService : IOrderService
             }
         }
     }
+
+    public decimal GetWeeklyRevenue() => _salesDataRepository.GetWeeklyRevenue();
+    public decimal GetMonthlyRevenue() => _salesDataRepository.GetMonthlyRevenue();
+    public int GetMonthlyOrdersCount() => _salesDataRepository.GetMonthlyOrdersCount();
 }

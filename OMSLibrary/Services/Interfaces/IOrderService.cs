@@ -11,5 +11,8 @@ namespace OrderManagerLibrary.Services.Interfaces
         IEnumerable<Order> GetUpcomingOrders();
         IEnumerable<Order> GetPendingPaymentOrders();
         Order CreateOrder(Order order, List<OrderLine> orderLines,List<Payment> payments);
+        decimal GetWeeklyRevenue();
+        decimal GetMonthlyRevenue();
+        int GetMonthlyOrdersCount();
     }
 }

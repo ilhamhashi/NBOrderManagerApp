@@ -62,6 +62,7 @@ namespace OrderManagerDesktopUI
             services.AddScoped<IRepository<Taste>, TasteRepository>();
             services.AddScoped<IRepository<ProductSize>, ProductSizeRepository>();
             services.AddScoped<IRepository<ProductTaste>, ProductTasteRepository>();
+            services.AddScoped<ISalesDataRepository, SalesDataRepository>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
